@@ -14,7 +14,7 @@ import {
   View
 } from 'react-native';
 import styles from './styles';
-import Button from './homeButton';
+import HomeButton from './homeButton';
 
 class capstone extends Component {
   constructor(props) {
@@ -24,11 +24,22 @@ class capstone extends Component {
     }
   }
 
+  configureScene(route, routeStack) {
+    var sceneSwitch = Navigator.SceneConfigs;
+    console.log(route);
+    switch(route.name) {
+      case 'Charts':
+        return sceneSwitch.HorizontalSwipeJump;
+      break;
+      default:
+      break;
+    }
+  }
+
   renderScene(route, navigator) {
-    var Component = route.component;
-    return <Component
-      navigator={navigator}
-      {...route.passProps}
+    return <route.component
+      navigator={ navigator }
+      { ...route.passProps }
     />
   }
 
@@ -37,8 +48,10 @@ class capstone extends Component {
       <Navigator
         style={styles.topBar}
         initialRoute={{
-          component: Button
+          name: 'Home',
+          component: HomeButton
         }}
+        configureScene={ this.configureScene }
         renderScene={ this.renderScene }
       />
     );

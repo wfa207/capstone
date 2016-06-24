@@ -7,19 +7,25 @@ import {
 } from 'react-native';
 import styles from './styles';
 import Charts from './charts';
+import TabBar from './tabBar';
 
-class Button extends Component {
+class HomeButton extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      logging: false
+      logging: false,
+      selectedTab: 'home'
     }
   }
 
-  _navigate() {
+  _navigate(name) {
     this.props.navigator.push({
-      component: Charts
-    })
+      component: Charts,
+      name: name,
+      passProps: {
+        name: name
+      }
+    });
   }
 
   render() {
@@ -27,17 +33,18 @@ class Button extends Component {
       <View style={styles.container}>
         <TouchableHighlight
           style={styles.button}
-          onPress={() => this._navigate}
+          onPress={() => this._navigate('Charts')}
           underlayColor='#99d9f4'>
           <Text style={styles.buttonText}>
             Start log!
           </Text>
         </TouchableHighlight>
+        <TabBar/>
       </View>
     );
   }
 }
 
-AppRegistry.registerComponent('Button', () => Button);
+AppRegistry.registerComponent('Button', () => HomeButton);
 
-module.exports = Button;
+module.exports = HomeButton;

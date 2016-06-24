@@ -8,9 +8,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#232323'
   },
   topBar: {
     flex: 1,
+  },
+  nav: {
+
   },
   buttonText: {
     fontSize: 50,
@@ -33,13 +37,13 @@ const styles = StyleSheet.create({
     borderLeftColor: '#48BBEC',
     borderTopColor: '#48BBEC',
     borderWidth: 1,
-    shadowColor: '#A3A3A3',
+    shadowColor: '#434343',
     shadowOffset: {
-      width: 15,
-      height: 15
+      width: 10,
+      height: 10
     },
-    shadowOpacity: 100,
-    shadowRadius: 20,
+    shadowOpacity: 50,
+    shadowRadius: 30,
     borderRadius: 25,
     borderWidth: 10,
     alignSelf: 'center',
