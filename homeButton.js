@@ -7,13 +7,14 @@ import {
 } from 'react-native';
 import styles from './styles';
 
-class button extends Component {
+class Button extends Component {
   constructor(props) {
     super(props)
     this.state = {
       logging: false
     }
   }
+
   render() {
     return (
       <View style={styles.container}>
@@ -29,6 +30,6 @@ class button extends Component {
   }
 }
 
-AppRegistry.registerComponent('button', () => button);
+AppRegistry.registerComponent('Button', () => Button);
 
-module.exports = button;
+module.exports = Button;
