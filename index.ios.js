@@ -25,12 +25,11 @@ class capstone extends Component {
   }
 
   renderScene(route, navigator) {
-      if (route.name === 'Home Button') {
-        return <Button
-          navigator={navigator}
-          route={route}
-        />
-      }
+    var Component = route.component;
+    return <Component
+      navigator={navigator}
+      {...route.passProps}
+    />
   }
 
   render() {
@@ -38,8 +37,7 @@ class capstone extends Component {
       <Navigator
         style={styles.topBar}
         initialRoute={{
-          name: 'Home Button',
-          title: 'Down Time'
+          component: Button
         }}
         renderScene={ this.renderScene }
       />

@@ -6,6 +6,7 @@ import {
   View
 } from 'react-native';
 import styles from './styles';
+import Charts from './charts';
 
 class Button extends Component {
   constructor(props) {
@@ -15,11 +16,18 @@ class Button extends Component {
     }
   }
 
+  _navigate() {
+    this.props.navigator.push({
+      component: Charts
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <TouchableHighlight
           style={styles.button}
+          onPress={() => this._navigate}
           underlayColor='#99d9f4'>
           <Text style={styles.buttonText}>
             Start log!

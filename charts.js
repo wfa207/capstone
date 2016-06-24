@@ -12,7 +12,12 @@ class Charts extends Component {
   }
 
   render() {
-    return <Text>Would be Charts!</Text>
+    return <Text
+      style={{ fontSize: 80,
+        fontWeight: '800',
+        color: 'black'}}>
+        Would be Charts!
+    </Text>
   }
 }
 
