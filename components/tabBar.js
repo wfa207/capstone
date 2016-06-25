@@ -2,7 +2,6 @@
 
 import React, {Component} from 'react';
 import {
-  AppRegistry,
   TabBarIOS,
   Text,
   View
@@ -18,19 +17,17 @@ var settingsIcon = require('../resources/spanner.png');
 class TabBar extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedTab: 'Home'
-    }
+    this.state = {selectedTab: 'Home'}
   }
 
   _setTab(tabName) {
     this.setState({selectedTab: tabName});
   }
 
-  _renderContent(color, pageText, num) {
+  _renderContent(text) {
     return (
-      <View style={[styles.tabContent, {backgroundColor: color}]}>
-        <Text style={styles.tabText}>{pageText}</Text>
+      <View style={styles.container}>
+        <Text style={styles.buttonText}>{text}</Text>
       </View>
     );
   }
@@ -55,27 +52,25 @@ class TabBar extends Component {
           icon={mapIcon}
           selected={this.state.selectedTab === 'Map'}
           onPress={() => this._setTab('Map')}>
-          {this._renderContent('darkslateblue', 'Map Page')}
+          {this._renderContent('Map Page')}
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Chart"
           icon={chartIcon}
           selected={this.state.selectedTab === 'Chart'}
           onPress={() => this._setTab('Chart')}>
-          {this._renderContent('red', 'Chart Page')}
+          {this._renderContent('Chart Page')}
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Settings"
           icon={settingsIcon}
           selected={this.state.selectedTab === 'Settings'}
           onPress={() => this._setTab('Settings')}>
-          {this._renderContent('grey', 'Settings Page')}
+          {this._renderContent('Settings Page')}
         </TabBarIOS.Item>
       </TabBarIOS>
     );
   }
 }
-
-AppRegistry.registerComponent('TabBar', () => TabBar);
 
 module.exports = TabBar;

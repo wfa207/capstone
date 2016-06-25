@@ -47,7 +47,7 @@ class capstone extends Component {
       <Navigator
         style={styles.topBar}
         initialRoute={{
-          name: 'TabBar',
+          name: 'Home',
           component: TabBar
         }}
         configureScene={this.configureScene}

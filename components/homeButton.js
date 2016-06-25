@@ -2,7 +2,6 @@
 
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   Text,
   TouchableHighlight,
   View
@@ -11,7 +10,10 @@ import styles from './styles';
 
 class HomeButton extends Component {
   constructor(props) {
-    super(props)
+    super(props);
+    this.state = {
+      logging: false
+    }
   }
 
   _navigate(name) {
@@ -33,12 +35,13 @@ class HomeButton extends Component {
       <View style={styles.container}>
         <View style={styles.container}>
           <TouchableHighlight
-            style={styles.button}
+            logging={false}
+            style={this.state.logging ? styles.stopButton : styles.logButton}
             // onPress={() => this._navigate('Charts')}
-            onPress={() => this._setTab('Map')}
+            onPress={() => this.setState({logging: !this.state.logging})}
             underlayColor='#99d9f4'>
             <Text style={styles.buttonText}>
-              Start log!
+              {this.state.logging ? 'Stop' : 'Start log!'}
             </Text>
           </TouchableHighlight>
         </View>
@@ -46,7 +49,5 @@ class HomeButton extends Component {
     );
   }
 }
-
-AppRegistry.registerComponent('HomeButton', () => HomeButton);
 
 module.exports = HomeButton;

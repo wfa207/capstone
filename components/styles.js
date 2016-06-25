@@ -10,15 +10,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#232323'
   },
-  tabContent: {
-    flex: 1,
-    alignItems: 'center'
-  },
-  tabText: {
-    fontSize: 20,
-    color: 'black',
-    margin: 50
-  },
   topBar: {
     flex: 1,
   },
@@ -44,7 +35,7 @@ const styles = StyleSheet.create({
     },
     textShadowRadius: 6
   },
-  button: {
+  logButton: {
     height: 450,
     width: 325,
     backgroundColor: '#48BBEC',
@@ -61,6 +52,23 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center'
   },
+  stopButton: {
+    height: 450,
+    width: 325,
+    backgroundColor: '#D84727',
+    borderRightColor: '#B93C22',
+    borderBottomColor: '#B93C22',
+    borderLeftColor: '#D84727',
+    borderTopColor: '#D84727',
+    borderWidth: 1,
+    shadowColor: '#636363',
+    shadowOpacity: 90,
+    shadowRadius: 50,
+    borderRadius: 25,
+    borderWidth: 10,
+    alignSelf: 'center',
+    justifyContent: 'center'
+  }
 });
 
 module.exports = styles;
