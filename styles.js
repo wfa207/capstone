@@ -10,11 +10,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#232323'
   },
+  tabContent: {
+    flex: 1,
+    alignItems: 'center'
+  },
+  tabText: {
+    fontSize: 20,
+    color: 'black'
+  },
   topBar: {
     flex: 1,
   },
-  nav: {
-
+  tabBar: {
+    flex: 1,
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0
+  },
+  tabBarItem: {
+    color: '#BFBDC1'
   },
   buttonText: {
     fontSize: 50,
@@ -37,13 +52,9 @@ const styles = StyleSheet.create({
     borderLeftColor: '#48BBEC',
     borderTopColor: '#48BBEC',
     borderWidth: 1,
-    shadowColor: '#434343',
-    shadowOffset: {
-      width: 10,
-      height: 10
-    },
-    shadowOpacity: 50,
-    shadowRadius: 30,
+    shadowColor: '#636363',
+    shadowOpacity: 90,
+    shadowRadius: 50,
     borderRadius: 25,
     borderWidth: 10,
     alignSelf: 'center',

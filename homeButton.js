@@ -31,15 +31,17 @@ class HomeButton extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableHighlight
-          style={styles.button}
-          onPress={() => this._navigate('Charts')}
-          underlayColor='#99d9f4'>
-          <Text style={styles.buttonText}>
-            Start log!
-          </Text>
-        </TouchableHighlight>
-        <TabBar/>
+        <View style={styles.container}>
+          <TouchableHighlight
+            style={styles.button}
+            onPress={() => this._navigate('Charts')}
+            underlayColor='#99d9f4'>
+            <Text style={styles.buttonText}>
+              Start log!
+            </Text>
+          </TouchableHighlight>
+        </View>
+      <TabBar/>
       </View>
     );
   }

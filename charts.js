@@ -16,7 +16,7 @@ class Charts extends Component {
       style={{ fontSize: 80,
         fontWeight: '800',
         color: 'black'}}>
-        Would be Charts!
+        Charts Page
     </Text>
   }
 }
