@@ -1,3 +1,5 @@
+'use strict'
+
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -6,26 +8,24 @@ import {
   View
 } from 'react-native';
 import styles from './styles';
-import Charts from './charts';
-import TabBar from './tabBar';
 
 class HomeButton extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      logging: false,
-      selectedTab: 'home'
-    }
   }
 
   _navigate(name) {
     this.props.navigator.push({
-      component: Charts,
       name: name,
       passProps: {
         name: name
       }
     });
+  }
+
+  _setTab(tabName) {
+    console.log(tabName);
+    this.setState({selectedTab: tabName})
   }
 
   render() {
@@ -34,19 +34,19 @@ class HomeButton extends Component {
         <View style={styles.container}>
           <TouchableHighlight
             style={styles.button}
-            onPress={() => this._navigate('Charts')}
+            // onPress={() => this._navigate('Charts')}
+            onPress={() => this._setTab('Map')}
             underlayColor='#99d9f4'>
             <Text style={styles.buttonText}>
               Start log!
             </Text>
           </TouchableHighlight>
         </View>
-      <TabBar/>
       </View>
     );
   }
 }
 
-AppRegistry.registerComponent('Button', () => HomeButton);
+AppRegistry.registerComponent('HomeButton', () => HomeButton);
 
 module.exports = HomeButton;

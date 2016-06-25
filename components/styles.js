@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
   },
   tabText: {
     fontSize: 20,
-    color: 'black'
+    color: 'black',
+    margin: 50
   },
   topBar: {
     flex: 1,
