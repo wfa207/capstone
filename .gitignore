@@ -40,5 +40,5 @@ buck-out/
 android/app/libs
 android/keystores/debug.keystore
 
-env/development.js
-env/testing.js
+server/env/development.js
+server/env/testing.js
