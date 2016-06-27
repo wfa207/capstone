@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "react": "15.1.0",
-    "react-native": "0.28.0",
+    "react-native": "0.28.0"
   },
   "devDependencies": {
     "babel-register": "^6.9.0",
@@ -28,7 +28,7 @@
     "sequelize": "^3.23.4",
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.4.8",
-    "util": "^0.10.3"
+    "util": "^0.10.3",
     "react-native-vector-icons": "^2.0.3"
   }
 }
