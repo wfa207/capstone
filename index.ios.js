@@ -15,6 +15,7 @@ import {
 } from 'react-native';
 import styles from './styles';
 import Button from './homeButton';
+import Map from './maps';
 
 class capstone extends Component {
   constructor(props) {
@@ -35,14 +36,14 @@ class capstone extends Component {
 
   render() {
     return (
-      <Navigator
-        style={styles.topBar}
-        initialRoute={{
-          name: 'Home Button',
-          title: 'Down Time'
-        }}
-        renderScene={ this.renderScene }
-      />
+        <Navigator
+          style={styles.topBar}
+          initialRoute={{
+            name: 'Home Button',
+            title: 'Down Time'
+          }}
+          renderScene={ this.renderScene }
+        />
     );
   }
 }

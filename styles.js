@@ -45,6 +45,17 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center'
   },
+  map: {
+    flex: 1,
+    height: 475,
+    width: 350,
+    margin: 20,
+    borderWidth: 1,
+    borderRadius: 25,
+    borderColor: '#48BBEC',
+    alignSelf: 'center',
+    justifyContent: 'center'
+  },
 });
 
 module.exports = styles;
