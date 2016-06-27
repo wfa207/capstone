@@ -35,10 +35,11 @@ class TabBar extends Component {
   render() {
     return (
       <TabBarIOS
-        styles={styles.tabBar}
+        style={styles.tabBar}
         unselectedTintColor="#929292"
         tintColor="#232323"
         itemPositioning="fill"
+        translucent={true}
         barTintColor="#56545C">
         <TabBarIOS.Item
           title="Home"

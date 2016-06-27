@@ -10,30 +10,55 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#232323'
   },
-  topBar: {
-    flex: 1,
+  navBar: {
+    height: 60,
+    backgroundColor: '#E0E0E0',
+    borderBottomColor: '#404040',
+    borderBottomWidth: 1,
+    shadowColor: '#1B998B',
+    shadowOpacity: 50,
+    shadowRadius: 20,
+  },
+  leftNavButtonText: {
+    color: '#000000',
+    fontSize: 16,
+    marginLeft: 10,
+    marginTop: 8,
+    fontWeight: '400'
+  },
+  rightNavButtonText: {
+    color: '#000000',
+    fontSize: 16,
+    marginRight: 10,
+    marginTop: 8,
+    fontWeight: '400'
+  },
+  NavBarTitle: {
+    flex: 3,
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#232323',
+    marginTop: 5
   },
   tabBar: {
     flex: 1,
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0
   },
-  tabBarItem: {
-    color: '#BFBDC1'
+  tabBarPlaceholder: {
+    height: 49
   },
   buttonText: {
     fontSize: 50,
     fontWeight: '700',
     color: 'white',
     alignSelf: 'center',
+    textAlign: 'center',
     textShadowColor: '#999999',
     textShadowOffset: {
       width: 3,
       height: 3
     },
-    textShadowRadius: 6
+    textShadowRadius: 6,
+    padding: 6
   },
   logButton: {
     height: 450,
@@ -47,6 +72,9 @@ const styles = StyleSheet.create({
     shadowColor: '#636363',
     shadowOpacity: 90,
     shadowRadius: 50,
+    shadowOffset: {
+      height: 7
+    },
     borderRadius: 25,
     borderWidth: 10,
     alignSelf: 'center',
@@ -64,6 +92,9 @@ const styles = StyleSheet.create({
     shadowColor: '#636363',
     shadowOpacity: 90,
     shadowRadius: 50,
+    shadowOffset: {
+      height: 7
+    },
     borderRadius: 25,
     borderWidth: 10,
     alignSelf: 'center',
