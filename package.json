@@ -3,11 +3,32 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start"
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "server": "nodemon --watch server -e js,html server/start.js"
   },
   "dependencies": {
     "react": "15.1.0",
     "react-native": "0.28.0",
+  },
+  "devDependencies": {
+    "babel-register": "^6.9.0",
+    "chance": "^1.0.3",
+    "connect-session-sequelize": "^3.0.0",
+    "cookie-parser": "^1.4.3",
+    "crypto": "0.0.3",
+    "express": "^4.14.0",
+    "express-session": "^1.13.0",
+    "lodash": "^4.13.1",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-local": "^1.0.0",
+    "passport-twitter": "^1.0.4",
+    "path": "^0.12.7",
+    "sequelize": "^3.23.4",
+    "serve-favicon": "^2.3.0",
+    "socket.io": "^1.4.8",
+    "util": "^0.10.3"
     "react-native-vector-icons": "^2.0.3"
   }
 }
