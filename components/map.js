@@ -8,13 +8,9 @@ import {
 import styles from './styles';
 
 class Map extends Component {
-  constructor(props) {
-    super(props);
-  }
-  
   render() {
     return (
-      <View style={styles.container}>
+      <View>
         <MapView style={styles.map}/>
       </View>
     )

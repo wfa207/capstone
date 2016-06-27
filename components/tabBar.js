@@ -7,12 +7,8 @@ import {
   View
 } from 'react-native'
 import styles from './styles';
-// import HomeButton from './homeButton';
-// import Map from './map';
-import {
-  HomeRender,
-  MapRender
-} from './compiledRender';
+import HomeButton from './homeButton';
+import Map from './map';
 
 var homeIcon = require('../resources/home.png');
 var mapIcon = require('../resources/compass.png')
@@ -40,7 +36,7 @@ class TabBar extends Component {
   render() {
     return (
       <TabBarIOS
-        style={styles.banner}
+        style={styles.tabBar}
         unselectedTintColor="#929292"
         tintColor="#232323"
         itemPositioning="fill"
@@ -51,14 +47,14 @@ class TabBar extends Component {
           icon={homeIcon}
           selected={this.state.selectedTab === 'Home'}
           onPress={() => this._setTab('Home')}>
-          <HomeRender/>
+          <HomeButton/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Map"
           icon={mapIcon}
           selected={this.state.selectedTab === 'Map'}
           onPress={() => this._setTab('Map')}>
-          <MapRender/>
+          <Map/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Chart"
