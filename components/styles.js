@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     color: '#232323',
     marginTop: 5
   },
-  banner: {
+  tabBar: {
     flex: 1,
   },
   tabBarPlaceholder: {

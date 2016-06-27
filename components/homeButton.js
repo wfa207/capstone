@@ -9,6 +9,30 @@ import {
 } from 'react-native';
 import styles from './styles';
 
+var NavigationBarRouteMapper = {
+  LeftButton(route, navigator, index, navState) {
+    if (index > 0) {
+      return (
+        <TouchableHighlight
+          underlayColor="transparent"
+          onPress={() => {if (index > 0) navigator.pop()}}>
+          <Text style={styles.leftNavButtonText}>Back</Text>
+        </TouchableHighlight>
+      )
+    } else {
+      return null;
+    }
+  },
+
+  RightButton(route, navigator, index, navState) {
+    return null;
+  },
+
+  Title(route, navigator, index, navState) {
+    return <Text style={styles.NavBarTitle}>Down Time</Text>;
+  },
+}
+
 class HomeButton extends Component {
   constructor(props) {
     super(props)
@@ -34,4 +58,37 @@ class HomeButton extends Component {
   }
 }
 
-module.exports = HomeButton;
+class HomeButtonNavigator extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  renderScene(route, navigator) {
+    return (
+      <route.component
+        navigator={navigator}
+        {...route.passProps}
+      />
+    )
+  }
+
+  render() {
+    return (
+      <Navigator
+        style={{flex: 1}}
+        initialRoute={{
+          name: 'Home',
+          component: HomeButton
+        }}
+        renderScene={this.renderScene}
+        navigationBar={
+          <Navigator.NavigationBar
+            style={styles.navBar}
+            routeMapper={NavigationBarRouteMapper}/>
+        }
+      />
+    );
+  }
+}
+Navigator
+module.exports = HomeButtonNavigator;
