@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 import styles from './styles';
 import HomeButton from './homeButton';
+import Map from './map';
 
 var homeIcon = require('../resources/home.png');
 var mapIcon = require('../resources/compass.png')
@@ -53,7 +54,7 @@ class TabBar extends Component {
           icon={mapIcon}
           selected={this.state.selectedTab === 'Map'}
           onPress={() => this._setTab('Map')}>
-          {this._renderContent('Map Page')}
+          <Map/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Chart"
