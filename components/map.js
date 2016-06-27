@@ -10,7 +10,7 @@ import styles from './styles';
 class Map extends Component {
   render() {
     return (
-      <View style={styles.container}>
+      <View>
         <MapView style={styles.map}/>
       </View>
     )
