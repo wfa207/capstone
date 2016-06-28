@@ -101,16 +101,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   map: {
-    flex: 1,
-    height: 475,
-    width: 350,
-    margin: 20,
-    borderWidth: 1,
-    borderRadius: 25,
-    borderColor: '#48BBEC',
-    alignSelf: 'center',
-    justifyContent: 'center'
-  }
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    // flex: 1,
+    // height: 400,
+    // width: 350,
+    // margin: 20,
+    // borderWidth: 1,
+    // borderRadius: 25,
+    // borderColor: '#48BBEC',
+    // alignSelf: 'center',
+    // justifyContent: 'center'
+  },
 });
 
 module.exports = styles;
