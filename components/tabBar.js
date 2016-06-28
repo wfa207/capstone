@@ -38,6 +38,16 @@ class TabBar extends Component {
     );
   }
 
+  centerOnUser(){
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        this.refs.map.refs.node.animateToCoordinate(position.coords)
+      },
+      (error) => alert(error.message),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+  }
+
   render() {
     return (
       <TabBarIOS
@@ -58,7 +68,10 @@ class TabBar extends Component {
           title="Map"
           icon={mapIcon}
           selected={this.state.selectedTab === 'Map'}
-          onPress={() => this._setTab('Map')}>
+          onPress={() => {
+            this._setTab('Map')
+            this.centerOnUser();
+          }}>
           <MapRender/>
         </TabBarIOS.Item>
         <TabBarIOS.Item

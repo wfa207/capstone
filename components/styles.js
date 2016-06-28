@@ -102,19 +102,10 @@ const styles = StyleSheet.create({
   },
   map: {
     position: 'absolute',
-    top: 0,
+    top: 60,
     left: 0,
     right: 0,
-    bottom: 0,
-    // flex: 1,
-    // height: 400,
-    // width: 350,
-    // margin: 20,
-    // borderWidth: 1,
-    // borderRadius: 25,
-    // borderColor: '#48BBEC',
-    // alignSelf: 'center',
-    // justifyContent: 'center'
+    bottom: 48,
   },
 });
 

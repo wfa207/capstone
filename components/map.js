@@ -1,6 +1,10 @@
 'use strict';
 
 import React, { Component } from 'react';
+import {
+  View,
+  TouchableHighlight
+} from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import styles from './styles';
 
@@ -30,7 +34,12 @@ class Map extends Component {
 
   render() {
     return (
-      <MapView
+      <View style={{flex: 1}}>
+      <MapView.Animated
+        ref="map"
+        showsUserLocation={true}
+        followsUserLocation={true}
+        showsPointsOfInterest={true}
         style={styles.map}
         region={this.state.region}
         onRegionChange={this.onRegionChange}
@@ -43,7 +52,8 @@ class Map extends Component {
             key={i}
           />
         ))}
-      </MapView>
+      </MapView.Animated>
+      </View>
     );
   }
 };

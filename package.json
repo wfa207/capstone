@@ -9,7 +9,8 @@
   "dependencies": {
     "react": "15.1.0",
     "react-native": "0.28.0",
-    "react-native-maps": "^0.6.0"
+    "react-native-maps": "^0.6.0",
+    "undefined": "^0.1.0"
   },
   "devDependencies": {
     "babel-register": "^6.9.0",
