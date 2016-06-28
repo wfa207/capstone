@@ -26,6 +26,7 @@ class TabBar extends Component {
   }
 
   _setTab(tabName) {
+    console.log(this);
     this.setState({selectedTab: tabName});
   }
 
