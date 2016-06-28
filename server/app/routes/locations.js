@@ -6,7 +6,7 @@ var Auth = require('../configure/auth-middleware');
 
 //get all locations if route is api/locations
 //get all locations for specific user if route is api/users/:userId/locations
-router.get('/', function (req, res) {
+router.get('/', function (req, res, next) {
     let whereCondition = {};
     if (req.requestedUser) {
         whereCondition.where = {};
@@ -15,7 +15,8 @@ router.get('/', function (req, res) {
     Location.all(whereCondition)
     .then(locations => {
         res.json(locations);
-    });
+    })
+    .catch(next);
 });
 
 
