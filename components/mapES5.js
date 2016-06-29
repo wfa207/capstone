@@ -10,6 +10,7 @@ import {
 import MapView, { Marker } from 'react-native-maps';
 import styles from './styles';
 import { SERVER_ROUTE } from '../server/env/development';
+import { getCurrentLocation } from '../utils/geolocation';
 
 var centerIcon = require('../resources/target.png');
 
@@ -27,7 +28,7 @@ var Map = React.createClass({
   },
 
   componentDidMount: function() {
-    this.getCurrentLocation((position) => {
+    getCurrentLocation(position => {
       this.setState({region: {
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
@@ -59,19 +60,9 @@ var Map = React.createClass({
   },
 
   centerOnUser: function() {
-    this.getCurrentLocation((position) => {
+    getCurrentLocation(position => {
       this.refs.map.refs.node.animateToCoordinate(position.coords, 1000);
     });
-  },
-
-  getCurrentLocation: function(cb) {
-    return navigator.geolocation.getCurrentPosition(
-      position => {
-        cb(position);
-      },
-      error => alert(error.mesage),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
   },
 
   render: function() {
