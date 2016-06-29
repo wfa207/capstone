@@ -1,3 +1,5 @@
+'use strict'
+
 /*
 It uses the same file the server uses to establish
 the database connection:
@@ -151,7 +153,7 @@ db.sync({ force: true })
     function setUserLocations(user) {
         return locations.map(location => {
             return Location.create(location)
-            .then(location => {                 
+            .then(location => {
                 return location.setUser(user);
             });
         });

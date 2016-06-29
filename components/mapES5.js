@@ -27,12 +27,19 @@ var Map = React.createClass({
 
   onRegionChange: function(region) {
     this.setState({region: region});
-    console.log(this.state.region);
   },
 
   getCurrentLocation: function() {
-    
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        // object with timestamp property and coords object property
+        // coords has latitude, longitude, speed, heading, and altitude
+        return position
+      }
+    )
   },
+
+
 
   render: function() {
     return (
@@ -45,6 +52,7 @@ var Map = React.createClass({
         style={styles.map}
         region={this.state.region}
         onRegionChange={this.onRegionChange}
+        onPress={this.getCurrentLocation}
       >
         {this.state.markers.map((marker, i) => (
           <MapView.Marker
