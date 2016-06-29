@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import styles from './styles';
 import HomeButton from './homeButton';
-import Map from './map';
+import Map from './mapES5';
 
 function genNavBarMapper(title) {
   return {
@@ -21,7 +21,7 @@ function genNavBarMapper(title) {
           onPress={() => {if (index > 0) navigator.pop()}}>
           <Text style={styles.leftNavButtonText}>Back</Text>
           </TouchableHighlight>
-        )
+        );
       } else {
         return null;
       }
