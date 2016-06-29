@@ -7,8 +7,7 @@ import {
   View
 } from 'react-native'
 import styles from './styles';
-// import HomeButton from './homeButton';
-// import Map from './map';
+
 import {
   HomeRender,
   MapRender
@@ -23,6 +22,7 @@ class TabBar extends Component {
   constructor(props) {
     super(props);
     this.state = {selectedTab: 'Home'}
+    this.centerOnUser = this.centerOnUser.bind(this);
   }
 
   _setTab(tabName) {
