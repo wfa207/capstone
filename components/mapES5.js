@@ -39,6 +39,8 @@ var Map = React.createClass({
     )
   },
 
+
+
   render: function() {
     return (
       <View style={styles.banner}>
