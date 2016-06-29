@@ -2,6 +2,7 @@
 
 import React, {Component} from 'react';
 import {
+  AsyncStorage,
   TabBarIOS,
   Text,
   View
@@ -23,7 +24,6 @@ class TabBar extends Component {
   constructor(props) {
     super(props);
     this.state = {selectedTab: 'Home'}
-    // this.centerOnUser = this.centerOnUser.bind(this);
   }
 
   _setTab(tabName) {
@@ -37,16 +37,6 @@ class TabBar extends Component {
       </View>
     );
   }
-
-  // centerOnUser(){
-  //   navigator.geolocation.getCurrentPosition(
-  //     (position) => {
-  //       this.refs.map.refs.node.animateToCoordinate(position.coords)
-  //     },
-  //     (error) => alert(error.message),
-  //     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-  //   );
-  // }
 
   render() {
     return (
@@ -70,7 +60,6 @@ class TabBar extends Component {
           selected={this.state.selectedTab === 'Map'}
           onPress={() => {
             this._setTab('Map')
-            // this.centerOnUser();
           }}>
           <MapRender/>
         </TabBarIOS.Item>
