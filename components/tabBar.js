@@ -15,6 +15,7 @@ import {
 
 var homeIcon = require('../resources/home.png');
 var mapIcon = require('../resources/compass.png')
+var logIcon = require('../resources/diary.png');
 var chartIcon = require('../resources/pie-chart.png');
 var settingsIcon = require('../resources/spanner.png');
 
@@ -22,11 +23,10 @@ class TabBar extends Component {
   constructor(props) {
     super(props);
     this.state = {selectedTab: 'Home'}
-    this.centerOnUser = this.centerOnUser.bind(this);
+    // this.centerOnUser = this.centerOnUser.bind(this);
   }
 
   _setTab(tabName) {
-    console.log(this);
     this.setState({selectedTab: tabName});
   }
 
@@ -38,15 +38,15 @@ class TabBar extends Component {
     );
   }
 
-  centerOnUser(){
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        this.refs.map.refs.node.animateToCoordinate(position.coords)
-      },
-      (error) => alert(error.message),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
-  }
+  // centerOnUser(){
+  //   navigator.geolocation.getCurrentPosition(
+  //     (position) => {
+  //       this.refs.map.refs.node.animateToCoordinate(position.coords)
+  //     },
+  //     (error) => alert(error.message),
+  //     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+  //   );
+  // }
 
   render() {
     return (
@@ -70,9 +70,16 @@ class TabBar extends Component {
           selected={this.state.selectedTab === 'Map'}
           onPress={() => {
             this._setTab('Map')
-            this.centerOnUser();
+            // this.centerOnUser();
           }}>
           <MapRender/>
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
+          title="Logs"
+          icon={logIcon}
+          selected={this.state.selectedTab === 'Logs'}
+          onPress={() => this._setTab('Logs')}>
+          {this._renderContent('Logs Page')}
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Chart"
