@@ -7,6 +7,7 @@
     "server": "nodemon --watch server -e js,html server/start.js"
   },
   "dependencies": {
+    "lodash": "^4.13.1",
     "pg": "^6.0.1",
     "pg-hstore": "^2.3.2",
     "react": "15.1.0",

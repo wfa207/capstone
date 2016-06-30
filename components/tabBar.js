@@ -11,7 +11,8 @@ import styles from './styles';
 
 import {
   HomeRender,
-  MapRender
+  MapRender,
+  LogRender
 } from './compiledRender';
 
 var homeIcon = require('../resources/home.png');
@@ -68,7 +69,7 @@ class TabBar extends Component {
           icon={logIcon}
           selected={this.state.selectedTab === 'Logs'}
           onPress={() => this._setTab('Logs')}>
-          {this._renderContent('Logs Page')}
+          <LogRender/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title="Chart"
