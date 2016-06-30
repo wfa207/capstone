@@ -10,14 +10,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#232323'
   },
+  segmentControl: {
+    marginTop: 70,
+    marginHorizontal: 10
+  },
   navBar: {
     height: 60,
-    backgroundColor: '#E0E0E0',
-    borderBottomColor: '#404040',
+    backgroundColor: '#969494', // E0E0E0
+    borderBottomColor: '#232323', // 404040
     borderBottomWidth: 1,
-    shadowColor: '#1B998B',
-    shadowOpacity: 50,
-    shadowRadius: 20,
+    shadowColor: '#232323',
+    shadowRadius: 10,
+    shadowOpacity: 5,
+    shadowOffset: {
+      height: -3
+    }
   },
   leftNavButtonText: {
     color: '#000000',
@@ -37,7 +44,7 @@ const styles = StyleSheet.create({
     flex: 3,
     fontSize: 20,
     fontWeight: '700',
-    color: '#232323',
+    color: '#393A3A', //232323
     marginTop: 5
   },
   banner: {

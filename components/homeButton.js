@@ -23,13 +23,14 @@ class HomeButton extends Component {
   }
 
   saveLocation(position) {
+    var me = this;
     return AsyncStorage.getItem('locations')
     .then(locations => {
 
       function getLocationName(inputName) {
         locations = JSON.parse(locations);
         let latitude = position.coords.latitude, longitude = position.coords.longitude;
-        let id = locations.length + 1;
+        let id = (locations ? locations.length : 0) + 1;
         var name = inputName;
 
         if (!name) {
@@ -51,11 +52,14 @@ class HomeButton extends Component {
           coordinates: [latitude, longitude]
         });
         return AsyncStorage.setItem('locations', JSON.stringify(locations))
+        .then(function() {
+          me.setState({logging: !me.state.logging});
+        })
 // =============================================================================
 // =================== FOR DEBUGGING ONLY ======================================
-        // .then(function() {
-        //   AsyncStorage.getItem('locations', () => console.log(locations));
-        // })
+        .then(function() {
+          AsyncStorage.getItem('locations', () => console.log(locations));
+        })
 // =============================================================================
         .catch(console.error);
       }
@@ -76,14 +80,9 @@ class HomeButton extends Component {
 }
 
   startStopLog() {
-    var me = this;
     getCurrentLocation(position => {
       // Code goes before state switch
-      this.saveLocation(position)
-      .then(function() {
-        me.setState({logging: !me.state.logging});
-      })
-      .catch(console.error);
+      this.saveLocation(position);
     });
   }
 

@@ -31,9 +31,10 @@ class capstone extends Component {
     .then(res => {
       return res.json();
     })
-    .then(locations => {
-      AsyncStorage.setItem('locations', JSON.stringify(locations));
-    });
+    .then((locations) => {
+      return AsyncStorage.setItem('locations', JSON.stringify(locations));
+    })
+    .catch(console.error);
   }
 
   render() {
