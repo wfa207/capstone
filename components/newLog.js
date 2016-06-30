@@ -24,30 +24,26 @@ var Log = React.createClass({
   },
 
   componentDidMount() {
-    var value = this.state.value.toLowerCase();
-    this.fetchValueData(value);
-  },
-
-  _onChange(event) {
-    this.setState({
-      selectedIndex: event.nativeEvent.selectedSegmentIndex
-    });
+    this.fetchValueData(this.state.value);
   },
 
   _onValueChange(value) {
-    this.setState({
-      value: value,
-    });
+    this.fetchValueData(value)
+    .then(() => {
+      this.setState({
+        value: value
+      });
+    })
   },
 
   fetchValueData(value) {
-    AsyncStorage.getItem(value)
+    value = value.toLowerCase();
+    return AsyncStorage.getItem(value)
     .then((items) => {
       items = JSON.parse(items);
       return items;
     })
     .then((items) => {
-      console.log("ITEMS", items);
       this.setState({dataSource: ds.cloneWithRows(items)});
     });
   },
@@ -59,7 +55,6 @@ var Log = React.createClass({
           style={styles.segmentControl}
           values={this.state.values}
           selectedIndex={this.state.values.indexOf(this.state.value)}
-          onChange={this._onChange}
           onValueChange={this._onValueChange}
           tintColor='#48BBEC'
         />

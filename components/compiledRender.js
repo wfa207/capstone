@@ -96,6 +96,7 @@ class MapTitleBar extends Component {
   }
 }
 
+// Delete the following?:
 class LogTitleBar extends Component {
   constructor(props) {
     super(props);
@@ -115,6 +116,7 @@ class LogTitleBar extends Component {
     );
   }
 }
+//===========================================
 
 class ChartTitleBar extends Component {
   constructor(props) {
