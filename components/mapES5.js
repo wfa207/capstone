@@ -10,7 +10,7 @@ import {
 import MapView, { Marker } from 'react-native-maps';
 import styles from './styles';
 import { SERVER_ROUTE } from '../server/env/development';
-import { getCurrentLocation } from '../utils/geolocation';
+import { getCurrentLocation } from '../utils';
 
 var centerIcon = require('../resources/target.png');
 

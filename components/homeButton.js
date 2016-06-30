@@ -6,10 +6,11 @@ import {
   Text,
   Navigator,
   TouchableHighlight,
+  AlertIOS,
   View
 } from 'react-native';
 import styles from './styles';
-import {getCurrentLocation} from '../utils/geolocation';
+import {getCurrentLocation} from '../utils';
 import {SERVER_ROUTE} from '../server/env/development';
 
 class HomeButton extends Component {
@@ -24,64 +25,63 @@ class HomeButton extends Component {
   saveLocation(position) {
     return AsyncStorage.getItem('locations')
     .then(locations => {
-      locations = JSON.parse(locations);
 
-      let date = new Date(position.timestamp);
-      let hours = date.getHours();
-      let minutes = "0" + date.getMinutes();
-      let formattedTime = ((hours == 0) ? 12 : (hours % 12)) + ':' +
-                          minutes.substr(-2) + ((hours <= 12) ? "AM" : "PM");
+      function getLocationName(inputName) {
+        locations = JSON.parse(locations);
+        let latitude = position.coords.latitude, longitude = position.coords.longitude;
+        let id = locations.length + 1;
+        var name = inputName;
 
-      let latitude = position.coords.latitude, longitude = position.coords.longitude;
-      let lat = (latitude >= 0) ? (Math.floor(latitude*100)/100).toString() + "N" :
-                                 (Math.abs(Math.floor(latitude*100)/100)).toString() + "S";
-      let long = (longitude >= 0) ? (Math.floor(longitude*100)/100).toString() + "E" :
-                                 (Math.abs(Math.floor(longitude*100)/100)).toString() + "W";
+        if (!name) {
+          let date = new Date(position.timestamp);
+          let hours = date.getHours();
+          let minutes = "0" + date.getMinutes();
+          let formattedTime = ((hours == 0) ? 12 : (hours % 12)) + ':' +
+          minutes.substr(-2) + (hours <= 12 ? "AM" : "PM");
 
-      let name = formattedTime + " | " + lat + ", " + long;
-      let id = 1;
-      while (locations[id-1]) id++;
-      
-      locations.push({
-        id: id,
-        name: name,
-        coordinates: [latitude, longitude]
-      });
-      return AsyncStorage.setItem('locations', JSON.stringify(locations));
+          let lat = (Math.abs(Math.floor(latitude*100)/100)).toString() + (latitude >= 0 ? "N" : "S");
+          let long = (Math.abs(Math.floor(longitude*100)/100)).toString() + (longitude >= 0 ? "E" : "W");
+
+          name = formattedTime + " | " + lat + ", " + long;
+        }
+
+        locations.push({
+          id: id,
+          name: name,
+          coordinates: [latitude, longitude]
+        });
+        return AsyncStorage.setItem('locations', JSON.stringify(locations))
+// =============================================================================
+// =================== FOR DEBUGGING ONLY ======================================
+        // .then(function() {
+        //   AsyncStorage.getItem('locations', () => console.log(locations));
+        // })
+// =============================================================================
+        .catch(console.error);
+      }
+
+      AlertIOS.prompt('Activity Name', 'Please enter a name for this activity:', [
+        {
+          text: 'Not Now',
+          onPress: () => getLocationName(),
+          style: 'destructive'
+        }, {
+          text: 'Enter',
+          onPress: text => getLocationName(text),
+          style: 'default'
+        }
+      ]);
     })
-    .then(() => {
-      return AsyncStorage.getItem('locations')
-    })
-    .then(locations => {
-      locations = JSON.parse(locations);
-      console.log("All locations after adding the new position:")
-      locations.forEach(location => {
-        console.log(location)
-      });
-    })
-  }
+    .catch(console.error);
+}
 
-  startLogging() {
+  startStopLog() {
     var me = this;
     getCurrentLocation(position => {
       // Code goes before state switch
-      console.log("Position that will be saved:", position)
       this.saveLocation(position)
       .then(function() {
-        me.setState({logging: true});
-      })
-      .catch(console.error);
-    });
-  }
-
-  stopLogging() {
-    var me = this;
-    getCurrentLocation(position => {
-      // Code goes before state switch
-      console.log("Position that will be saved:", position)
-      this.saveLocation(position)
-      .then(function() {
-        me.setState({logging: false});
+        me.setState({logging: !me.state.logging});
       })
       .catch(console.error);
     });
@@ -93,10 +93,7 @@ class HomeButton extends Component {
         <TouchableHighlight
           navigator={navigator}
           style={this.state.logging ? styles.stopButton : styles.logButton}
-          onPress={() => {
-            if (!this.state.logging) this.startLogging();
-            else this.stopLogging();
-          }}
+          onPress={() => this.startStopLog()}
           underlayColor='#99d9f4'>
             <Text style={styles.buttonText}>
               {(this.state.logging ? 'Stop' : 'Start') + '\n'}logging

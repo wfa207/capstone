@@ -1,15 +1,16 @@
 'use strict'
 
-var geoUtils = {
+var utils = {
   getCurrentLocation(cb) {
     return navigator.geolocation.getCurrentPosition(
       position => {
         cb(position);
       },
-      error => alert(error.mesage),
+      error => alert(error.message),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
   }
+
 }
 
-module.exports = geoUtils;
+module.exports = utils;
