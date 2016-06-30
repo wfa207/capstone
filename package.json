@@ -7,13 +7,9 @@
     "server": "nodemon --watch server -e js,html server/start.js"
   },
   "dependencies": {
-    "lodash": "^4.13.1",
-    "pg": "^6.0.1",
-    "pg-hstore": "^2.3.2",
     "react": "15.1.0",
     "react-native": "0.28.0",
     "react-native-maps": "^0.6.0",
-    "sequelize": "^3.23.4",
     "undefined": "^0.1.0"
   },
   "devDependencies": {
@@ -31,6 +27,8 @@
     "passport-local": "^1.0.0",
     "passport-twitter": "^1.0.4",
     "path": "^0.12.7",
+    "pg": "^6.0.1",
+    "pg-hstore": "^2.3.2",
     "sequelize": "^3.23.4",
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.4.8",

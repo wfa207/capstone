@@ -28,7 +28,7 @@
 		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
-			<key>192.168.3.236</key>
+			<key>localhost</key>
 			<dict>
 				<key>NSIncludesSubdomains</key>
 				<true/>
