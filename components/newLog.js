@@ -6,22 +6,28 @@ import {
   ListView,
   Text,
   View,
+  AsyncStorage
 } from 'react-native';
 import styles from './styles';
 
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
 var Log = React.createClass({
+
   getInitialState() {
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     return {
       values: ['Activities', 'Locations'],
-      value: 'Activities',
-      selectedIndex: 0,
+      value: 'Locations',
       dataSource: ds.cloneWithRows(['row 1', 'row 2'])
     }
   },
 
+  componentDidMount() {
+    var value = this.state.value.toLowerCase();
+    this.fetchValueData(value);
+  },
+
   _onChange(event) {
-    console.log(this);
     this.setState({
       selectedIndex: event.nativeEvent.selectedSegmentIndex
     });
@@ -29,7 +35,19 @@ var Log = React.createClass({
 
   _onValueChange(value) {
     this.setState({
-      value: value
+      value: value,
+    });
+  },
+
+  fetchValueData(value) {
+    AsyncStorage.getItem(value)
+    .then((items) => {
+      items = JSON.parse(items);
+      return items;
+    })
+    .then((items) => {
+      console.log("ITEMS", items);
+      this.setState({dataSource: ds.cloneWithRows(items)});
     });
   },
 
@@ -39,13 +57,13 @@ var Log = React.createClass({
         <SegmentedControlIOS
           style={styles.segmentControl}
           values={this.state.values}
-          selectedIndex={this.state.selectedIndex}
+          selectedIndex={this.state.values.indexOf(this.state.value)}
           onChange={this._onChange}
           onValueChange={this._onValueChange}
         />
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={rowData=> <Text>{rowData}</Text>}
+          renderRow={rowData=> <Text>{rowData.name}</Text>}
         />
       </View>
     )
