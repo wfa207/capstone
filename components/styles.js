@@ -80,6 +80,40 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center'
   },
+  optionsText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: 'white',
+    alignSelf: 'center',
+    textAlign: 'center',
+    textShadowColor: '#999999',
+    textShadowOffset: {
+      width: 1,
+      height: 1
+    },
+    textShadowRadius: 3,
+    padding: 3
+  },
+  optionsButton: {
+    height: 50,
+    width: 325,
+    backgroundColor: '#FFD3A1',
+    borderRightColor: '#FFBB6F',
+    borderBottomColor: '#FFBB6F',
+    borderLeftColor: '#FFA745',
+    borderTopColor: '#FFA745',
+    borderWidth: 1,
+    shadowColor: '#FF8700',
+    shadowOpacity: 0,
+    shadowRadius: 0,
+    shadowOffset: {
+      height: 1
+    },
+    borderRadius: 25,
+    borderWidth: 10,
+    alignSelf: 'center',
+    justifyContent: 'center'
+  },
   stopButton: {
     height: 450,
     width: 325,
@@ -99,6 +133,12 @@ const styles = StyleSheet.create({
     borderWidth: 10,
     alignSelf: 'center',
     justifyContent: 'center'
+  },
+  logsOption: {
+    position: 'absolute',
+    top: 75,
+    left: 0,
+    right: 0,
   },
   map: {
     position: 'absolute',
