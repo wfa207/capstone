@@ -43,9 +43,6 @@ const styles = StyleSheet.create({
   banner: {
     flex: 1,
   },
-  tabBarPlaceholder: {
-    height: 49
-  },
   buttonText: {
     fontSize: 50,
     fontWeight: '700',
@@ -107,6 +104,20 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 48,
   },
+  mapButton: {
+    flex: 0.2,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    height: 40,
+    width: 40,
+    right: 7,
+    bottom: 57,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: 'transparent',
+    backgroundColor: 'rgba(35, 35, 35, 0.5)'
+  }
 });
 
 module.exports = styles;
