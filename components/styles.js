@@ -26,6 +26,13 @@ const styles = StyleSheet.create({
       height: -3
     }
   },
+  logContainer: {
+   flex: 1,
+   flexDirection: 'row',
+   justifyContent: 'center',
+   alignItems: 'center',
+   backgroundColor: '#F5FCFF',
+  },
   leftNavButtonText: {
     color: '#000000',
     fontSize: 16,
@@ -164,6 +171,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: 'transparent',
     backgroundColor: 'rgba(35, 35, 35, 0.5)'
+  },
+  rowStyle: {
+        paddingVertical: 20,
+        paddingLeft: 16,
+        borderTopColor: 'white',
+        borderLeftColor: 'white',
+        borderRightColor: 'white',
+        borderBottomColor: '#E0E0E0',
+        borderWidth: 1
   }
 });
 
