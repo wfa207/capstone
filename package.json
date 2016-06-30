@@ -9,6 +9,7 @@
   "dependencies": {
     "react": "15.1.0",
     "react-native": "0.28.0",
+    "react-native-chart": "^1.0.1-beta",
     "react-native-maps": "^0.6.0",
     "undefined": "^0.1.0"
   },

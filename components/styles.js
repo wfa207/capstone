@@ -5,7 +5,6 @@ import {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#232323'
@@ -16,7 +15,7 @@ const styles = StyleSheet.create({
   },
   navBar: {
     height: 60,
-    backgroundColor: '#969494', // E0E0E0
+    backgroundColor: '#969494', // 969494
     borderBottomColor: '#232323', // 404040
     borderBottomWidth: 1,
     shadowColor: '#232323',
@@ -27,14 +26,14 @@ const styles = StyleSheet.create({
     }
   },
   leftNavButtonText: {
-    color: '#000000',
+    color: '#393A3A',
     fontSize: 16,
     marginLeft: 10,
     marginTop: 8,
     fontWeight: '400'
   },
   rightNavButtonText: {
-    color: '#000000',
+    color: '#393A3A',
     fontSize: 16,
     marginRight: 10,
     marginTop: 8,
@@ -164,6 +163,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: 'transparent',
     backgroundColor: 'rgba(35, 35, 35, 0.5)'
+  },
+  pieChart: {
+    width: 300,
+    height: 300,
   }
 });
 
