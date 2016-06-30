@@ -10,7 +10,7 @@ import {
 import styles from './styles';
 import HomeButton from './homeButton';
 import Map from './mapES5';
-import LogOptions from './log';
+import LogOptions from './newLog';
 
 function genNavBarMapper(title) {
   return {
@@ -19,7 +19,7 @@ function genNavBarMapper(title) {
         return (
           <TouchableHighlight
           underlayColor="transparent"
-          onPress={() => {if (index > 0) navigator.pop()}}>
+          onPress={() => navigator.pop()}>
           <Text style={styles.leftNavButtonText}>Back</Text>
           </TouchableHighlight>
         );
