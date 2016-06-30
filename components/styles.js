@@ -171,9 +171,32 @@ const styles = StyleSheet.create({
     borderColor: 'transparent',
     backgroundColor: 'rgba(35, 35, 35, 0.5)'
   },
-  pieChart: {
-    width: 300,
-    height: 300,
+  bar: {
+    alignSelf: 'center',
+    borderRadius: 5,
+    height: 8,
+    position: 'absolute',
+    top: 150,
+    left: 20,
+    right: 0
+  },
+  chartText: {
+    fontSize: 30,
+    fontWeight: '700',
+    color: 'white',
+    alignSelf: 'center',
+    textAlign: 'center',
+    textShadowColor: '#999999',
+    textShadowOffset: {
+      width: 1,
+      height: 1
+    },
+    textShadowRadius: 3,
+    padding: 3,
+    position: 'absolute',
+    top: 75,
+    left: 0,
+    right: 0,
   },
   rowStyle: {
     paddingVertical: 20,

@@ -33,7 +33,6 @@ var utils = {
       return res.json();
     })
     .then((data) => {
-      console.log(data);
       chain = data;
       return AsyncStorage.setItem(storageName, JSON.stringify(data));
     })
@@ -41,8 +40,14 @@ var utils = {
       return chain;
     })
     .catch(console.error);
-  }
+  },
 
+  fetchAllLocations() {
+    return AsyncStorage.getItem('locations')
+    .then((locations) => {
+      return JSON.parse(locations);
+    });
+  }
 }
 
 module.exports = utils;

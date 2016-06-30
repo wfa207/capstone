@@ -65,7 +65,7 @@ var Log = React.createClass({
         />
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={rowData=>
+          renderRow={rowData =>
             <TouchableHighlight style={styles.rowStyle}>
               <Text>{rowData.name}</Text>
             </TouchableHighlight>}
@@ -76,3 +76,13 @@ var Log = React.createClass({
 });
 
 module.exports = Log;
+
+// <ListView
+//   dataSource={ds.cloneWithRows(this.state.listLocations)}
+//   renderRow={rowData => {
+//     <TouchableHighlight style={styles.rowStyle}>
+//       <Text>'Hello'</Text>
+//     </TouchableHighlight>
+//   }}
+// >
+// </ListView>
