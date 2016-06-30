@@ -10,7 +10,7 @@ import {
 import styles from './styles';
 import HomeButton from './homeButton';
 import Map from './mapES5';
-import LogOptions from './newLog';
+import Log from './newLog';
 import Chart from './chart'
 
 function genNavBarMapper(title) {
@@ -96,28 +96,6 @@ class MapTitleBar extends Component {
   }
 }
 
-// Delete the following?:
-class LogTitleBar extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <Navigator
-        initialRoute={{
-          name: 'Log',
-          component: LogOptions
-        }}
-        style={styles.banner}
-        renderScene={renderScene}
-        navigationBar={genNavBar('Log')}
-      />
-    );
-  }
-}
-//===========================================
-
 class ChartTitleBar extends Component {
   constructor(props) {
     super(props);
@@ -141,6 +119,6 @@ class ChartTitleBar extends Component {
 module.exports = {
   HomeRender: HomeTitleBar,
   MapRender: MapTitleBar,
-  LogRender: LogTitleBar,
+  LogRender: Log,
   ChartRender: ChartTitleBar
 }
