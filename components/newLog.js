@@ -42,6 +42,7 @@ var Log = React.createClass({
           selectedIndex={this.state.selectedIndex}
           onChange={this._onChange}
           onValueChange={this._onValueChange}
+          tintColor='#48BBEC'
         />
         <ListView
           dataSource={this.state.dataSource}

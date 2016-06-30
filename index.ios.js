@@ -9,13 +9,15 @@
 
 import React, { Component } from 'react';
 import {
-  AsyncStorage,
   AppRegistry,
   View
 } from 'react-native';
 import TabBar from './components/tabBar';
 import styles from './components/styles';
 import {SERVER_ROUTE} from './server/env/development';
+import {
+  initialFetchAndStoreData
+} from './utils';
 
 class capstone extends Component {
   constructor(props) {
@@ -23,18 +25,8 @@ class capstone extends Component {
   }
 
   componentDidMount() {
-    this.storeData();
-  }
-
-  storeData() {
-    fetch(SERVER_ROUTE + "/api/users/1/locations")
-    .then(res => {
-      return res.json();
-    })
-    .then((locations) => {
-      return AsyncStorage.setItem('locations', JSON.stringify(locations));
-    })
-    .catch(console.error);
+    initialFetchAndStoreData("/api/users/1/locations", 'locations');
+    initialFetchAndStoreData("/api/users/1/trips", 'activities');
   }
 
   render() {

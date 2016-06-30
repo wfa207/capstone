@@ -11,6 +11,7 @@ import styles from './styles';
 import HomeButton from './homeButton';
 import Map from './mapES5';
 import LogOptions from './newLog';
+import Chart from './chart'
 
 function genNavBarMapper(title) {
   return {
@@ -115,8 +116,29 @@ class LogTitleBar extends Component {
   }
 }
 
+class ChartTitleBar extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <Navigator
+        initialRoute={{
+          name: 'Chart',
+          component: Chart
+        }}
+        style={styles.banner}
+        renderScene={renderScene}
+        navigationBar={genNavBar('Chart')}
+      />
+    );
+  }
+}
+
 module.exports = {
   HomeRender: HomeTitleBar,
   MapRender: MapTitleBar,
-  LogRender: LogTitleBar
+  LogRender: LogTitleBar,
+  ChartRender: ChartTitleBar
 }
