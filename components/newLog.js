@@ -6,7 +6,8 @@ import {
   ListView,
   Text,
   View,
-  AsyncStorage
+  AsyncStorage,
+  TouchableHighlight
 } from 'react-native';
 import styles from './styles';
 
@@ -64,7 +65,10 @@ var Log = React.createClass({
         />
         <ListView
           dataSource={this.state.dataSource}
-          renderRow={rowData=> <Text>{rowData.name}</Text>}
+          renderRow={rowData=>
+            <TouchableHighlight style={styles.rowStyle}>
+              <Text>{rowData.name}</Text>
+            </TouchableHighlight>}
         />
       </View>
     )

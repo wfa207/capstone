@@ -25,6 +25,13 @@ const styles = StyleSheet.create({
       height: -3
     }
   },
+  logContainer: {
+   flex: 1,
+   flexDirection: 'row',
+   justifyContent: 'center',
+   alignItems: 'center',
+   backgroundColor: '#F5FCFF',
+  },
   leftNavButtonText: {
     color: '#393A3A',
     fontSize: 16,
@@ -167,6 +174,15 @@ const styles = StyleSheet.create({
   pieChart: {
     width: 300,
     height: 300,
+  },
+  rowStyle: {
+    paddingVertical: 20,
+    paddingLeft: 16,
+    borderTopColor: 'white',
+    borderLeftColor: 'white',
+    borderRightColor: 'white',
+    borderBottomColor: '#E0E0E0',
+    borderWidth: 1
   }
 });
 
