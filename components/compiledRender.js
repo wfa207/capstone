@@ -10,7 +10,7 @@ import {
 import styles from './styles';
 import HomeButton from './homeButton';
 import Map from './mapES5';
-import LogOptions from './newLog';
+import LogTitleBar from './log/logNav';
 import Chart from './chart'
 
 function genNavBarMapper(title) {
@@ -91,26 +91,6 @@ class MapTitleBar extends Component {
         style={styles.banner}
         renderScene={renderScene}
         navigationBar={genNavBar('Map')}
-      />
-    );
-  }
-}
-
-class LogTitleBar extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <Navigator
-        initialRoute={{
-          name: 'Log',
-          component: LogOptions
-        }}
-        style={styles.banner}
-        renderScene={renderScene}
-        navigationBar={genNavBar('Log')}
       />
     );
   }

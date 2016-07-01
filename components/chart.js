@@ -19,23 +19,33 @@ class Chart extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      start: new Animated.Value(40),
-      location1: new Animated.Value(0),
+      start: new Animated.Value(0),
+      location1: 300,
       isLoading: true
     }
   }
 
   componentWillMount () {
-    const locations = ['location1'];
-    const width = this.getWidth(this.state, locations);
-
+    const locationNames = ['location1'];
+    const width = this.getWidth(this.state, locationNames);
+    let colors = ['#7F4FE1', '#F1FF58', '#FF1600', '#007AFF', '#49FF56'];
     fetchAllLocations()
     .then(locations => {
-      var listLocations = locations.map(location => {
+      locations.forEach(location => {
+        console.log(location)
+        this.setState(
+          {
+            [location.id]: new Animated.Value(0)
+          }
+        );
+      });
+      var listLocations = locations.map((location, i) => {
+        console.log(this.state.start, this.state.location1)
         return (
-          <View>
-            <Text>{location.name}</Text>
-            <Animated.View style={[styles.bar, {backgroundColor: '#F55443'}, {width: this.state.location1}]}>
+          <View key={location.name} style={styles.chartRow}>
+            <Text style={styles.chartText}>{location.name}</Text>
+            <Animated.View style={[styles.bar, {backgroundColor: colors[i]}, {width: this.state[location.id]}]}>
+              <Text style={styles.barText}>{100}%</Text>
             </Animated.View>
           </View>
         );
@@ -44,10 +54,11 @@ class Chart extends Component {
         listLocations: listLocations,
         isLoading: false
       });
-      Animated.parallel(locations.map(item => {
-        return Animated.timing(this.state[item], {toValue: width[item]});
+      return Animated.parallel(locations.map(location => {
+        return Animated.timing(this.state[location.id], {toValue: this.state.location1, duration: 1000});
       })).start();
     })
+    .catch(console.error)
   }
 
   getWidth (data, locations) {
@@ -56,7 +67,9 @@ class Chart extends Component {
     let width = {};
     let widthCap;
     locations.forEach(item => {
-      widthCap = data[item] * 5
+      console.log(data[item])
+      widthCap = data[item];
+      console.log(widthCap)
       width[item] = widthCap <= (deviceWidth - 50) ? widthCap : (deviceWidth - 50);
     })
 
@@ -73,9 +86,10 @@ class Chart extends Component {
     }
     return (
       <View style={styles.container}>
-        <Text style={styles.chartText}>Breakdown of Today</Text>
+        <Text style={styles.chartTitle}>Breakdown of Today</Text>
+        {this.state.listLocations}
       </View>
-   )
+    )
   }
 }
 

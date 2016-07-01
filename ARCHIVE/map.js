@@ -9,9 +9,8 @@ import {
 import MapView, { Marker } from 'react-native-maps';
 import styles from './styles';
 
-class Map extends Component {
-  constructor(props) {
-    super(props);
+var Map = React.createClass({
+  getInitialState() {
     this.state = {
       region: {
         latitude: 40.7034,
@@ -25,13 +24,12 @@ class Map extends Component {
         description: "FullStack Academy",
       }]
     };
-    this.onRegionChange = this.onRegionChange.bind(this);
-  }
+  },
 
   onRegionChange(region) {
     this.setState({region});
     console.log(this.state);
-  }
+  },
 
   render() {
     return (
@@ -57,6 +55,6 @@ class Map extends Component {
       </View>
     );
   }
-};
+});
 
 module.exports = Map;

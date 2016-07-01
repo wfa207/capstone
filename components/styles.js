@@ -6,8 +6,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#232323'
+  },
+  detailContainer: {
+    flex: 1,
+    backgroundColor: '#232323',
+    marginTop: 60,
+    marginBottom: 48,
+    paddingVertical: 20,
+    paddingHorizontal: 10
   },
   segmentControl: {
     marginTop: 70,
@@ -173,39 +180,71 @@ const styles = StyleSheet.create({
   },
   bar: {
     alignSelf: 'center',
-    borderRadius: 5,
-    height: 8,
+    borderRadius: 3,
+    height: 15,
     position: 'absolute',
-    top: 150,
+    top: 40,
     left: 20,
     right: 0
   },
-  chartText: {
+  barText: {
+    fontSize: 10,
+    fontWeight: '700',
+    left: 5,
+    backgroundColor: 'transparent'
+  },
+  chartTitle: {
     fontSize: 30,
     fontWeight: '700',
-    color: 'white',
+    color: '#48BBEC',
     alignSelf: 'center',
     textAlign: 'center',
-    textShadowColor: '#999999',
-    textShadowOffset: {
-      width: 1,
-      height: 1
-    },
-    textShadowRadius: 3,
     padding: 3,
     position: 'absolute',
     top: 75,
     left: 0,
     right: 0,
   },
+  chartText: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: 'white',
+    left: 10
+  },
+  chartRow: {
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    marginHorizontal: 10,
+    borderRightColor: 'transparent',
+    borderLeftColor: 'transparent',
+    backgroundColor: 'transparent',
+  },
   rowStyle: {
     paddingVertical: 20,
-    paddingLeft: 16,
-    borderTopColor: 'white',
-    borderLeftColor: 'white',
-    borderRightColor: 'white',
-    borderBottomColor: '#E0E0E0',
+    paddingHorizontal: 10,
+    marginHorizontal: 10,
+    borderTopColor: '#929292',
+    borderRightColor: 'transparent',
+    borderLeftColor: 'transparent',
+    borderBottomColor: '#929292',
+    backgroundColor: 'transparent',
     borderWidth: 1
+  },
+  rowContent: {
+    color: 'white',
+    fontWeight: '700'
+  },
+  detailViewTitle: {
+    color: '#48BBEC',
+    fontSize: 30,
+    fontWeight: '800',
+    marginBottom: 30,
+  },
+  detailViewBody: {
+    color: 'white',
+    fontSize: 20,
+    marginVertical: 10,
+    borderBottomColor: '#929292'
   }
 });
 

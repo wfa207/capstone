@@ -15,7 +15,7 @@ import { getCurrentLocation } from '../utils';
 var centerIcon = require('../resources/target.png');
 
 var Map = React.createClass({
-  getInitialState: function() {
+  getInitialState() {
     return {
       region: {
         latitude: 0,
@@ -27,7 +27,7 @@ var Map = React.createClass({
     };
   },
 
-  componentDidMount: function() {
+  componentWillMount() {
     getCurrentLocation(position => {
       this.setState({region: {
         latitude: position.coords.latitude,
@@ -39,7 +39,7 @@ var Map = React.createClass({
     this.fetchAllLocations();
   },
 
-  fetchAllLocations: function() {
+  fetchAllLocations() {
     AsyncStorage.getItem('locations')
     .then((locations) => {
       locations = JSON.parse(locations);
@@ -55,17 +55,17 @@ var Map = React.createClass({
     })
   },
 
-  onRegionChange: function(region) {
+  onRegionChange(region) {
     this.setState({region: region});
   },
 
-  centerOnUser: function() {
+  centerOnUser() {
     getCurrentLocation(position => {
       this.refs.map.refs.node.animateToCoordinate(position.coords, 1000);
     });
   },
 
-  render: function() {
+  render() {
     return (
       <View style={styles.banner}>
       <MapView.Animated
