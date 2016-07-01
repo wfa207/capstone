@@ -21,7 +21,8 @@ class Chart extends Component {
     this.state = {
       start: new Animated.Value(0),
       location1: 300,
-      isLoading: true
+      isLoading: true,
+      fadeAnim: new Animated.Value(0)
     }
   }
 
@@ -32,7 +33,6 @@ class Chart extends Component {
     fetchAllLocations()
     .then(locations => {
       locations.forEach(location => {
-        console.log(location)
         this.setState(
           {
             [location.id]: new Animated.Value(0)
@@ -45,7 +45,7 @@ class Chart extends Component {
           <View key={location.name} style={styles.chartRow}>
             <Text style={styles.chartText}>{location.name}</Text>
             <Animated.View style={[styles.bar, {backgroundColor: colors[i]}, {width: this.state[location.id]}]}>
-              <Text style={styles.barText}>{100}%</Text>
+              <Animated.Text style={[styles.barText, {opacity: this.state.fadeAnim}]}>{100}%</Animated.Text>
             </Animated.View>
           </View>
         );
@@ -54,9 +54,10 @@ class Chart extends Component {
         listLocations: listLocations,
         isLoading: false
       });
-      return Animated.parallel(locations.map(location => {
+      Animated.parallel(locations.map(location => {
         return Animated.timing(this.state[location.id], {toValue: this.state.location1, duration: 1000});
       })).start();
+      Animated.timing(this.state.fadeAnim, {toValue: 1}).start();
     })
     .catch(console.error)
   }
