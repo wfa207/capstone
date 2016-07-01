@@ -4,29 +4,75 @@ import React, { Component } from 'react';
 import {
   Text,
   View,
-  TextInput
+  TextInput,
+  AsyncStorage
 } from 'react-native';
 import styles from '../styles';
 
 class LogEditView extends Component {
   constructor(props) {
     super(props);
+    this.state = this.props;
+  }
+
+  editLocationName(oldName, newName) {
+    AsyncStorage.getItem('locations')
+    .then((locations) => {
+      locations = JSON.parse(locations);
+      var index;
+      var location = locations.filter((location, idx) => {
+        var bool = location.name === oldName;
+        index = bool ? idx : index;
+        return bool;
+      })[0];
+      location.name = newName || oldName;
+      locations.splice(index, 1, location);
+      return locations;
+    })
+    .then(locations => {
+      locations = JSON.stringify(locations);
+      AsyncStorage.setItem('locations', locations)
+  // =====================================================
+      .then(() => {
+        AsyncStorage.getItem('locations')
+        .then(locations => {
+          locations = JSON.parse(locations);
+          console.log(locations);
+        });
+      });
+    });
   }
 
   locationOrActivityRender(isLocation) {
     if (!isLocation) {
       return (
-        <View style={styles.detailContainer}>
-          <TextInput style={[styles.detailViewBody, {height:50}]} defaultValue={this.props.description}/>
+        <View>
+        <View style={styles.inline}>
+          <Text>Label: </Text>
+          <TextInput style={[styles.detailViewBody, {height:30}]} defaultValue={this.props.description}/>
+        </View>
         </View>
       )
     } else {
       return (
-        <View style={styles.detailContainer}>
-          <TextInput style={[styles.detailViewBody, {height:50}]} defaultValue={this.props.city}/>
-          <TextInput style={[styles.detailViewBody, {height:50}]} defaultValue={this.props.state}/>
-          <TextInput style={[styles.detailViewBody, {height:50}]} defaultValue={this.props.country}/>
-          <TextInput style={[styles.detailViewBody, {height:50}]} defaultValue={this.props.description}/>
+        <View>
+          <Text style={styles.detailViewBody}>City: </Text>
+          <TextInput
+          style={[styles.editViewBody, {height:40}]}
+          ref={component => this._cityInput = component}
+          onEndEditing={() => {
+            console.log(this._cityInput._lastNativeText);
+          }}
+          defaultValue={this.props.city}/>
+          <Text style={styles.detailViewBody}>State: </Text>
+          <TextInput style={[styles.editViewBody, {height:40}]} defaultValue={this.props.state}/>
+          <Text style={styles.detailViewBody}>Country: </Text>
+          <TextInput style={[styles.editViewBody, {height:40}]} defaultValue={this.props.country}/>
+          <Text style={styles.detailViewBody}>Description: </Text>
+          <TextInput
+          style={[styles.editViewBody, {height:40}]}
+          multiline={true}
+          defaultValue={this.props.description}/>
         </View>
       )
     }
@@ -36,7 +82,14 @@ class LogEditView extends Component {
     var isLocation = this.props.type === 'Locations';
     return (
       <View style={styles.detailContainer}>
-        <TextInput style={styles.detailViewBody} defaultValue={this.props.name}/>
+        <TextInput style={[styles.detailViewTitle, {height: 30}]}
+        ref={component => this._nameInput = component}
+        onEndEditing={() => {
+          console.log('ROUTE', this)
+          this.editLocationName(this.props.name, this._nameInput._lastNativeText);
+        }
+        }
+        defaultValue={this.props.name}/>
         {this.locationOrActivityRender(isLocation)}
       </View>
     )

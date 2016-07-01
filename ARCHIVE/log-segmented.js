@@ -72,6 +72,12 @@ var Log = React.createClass({
     } else {
       return (
         <View style={styles.container}>
+          <SegmentedControlIOS
+          style={styles.segmentControl}
+          values={this.state.values}
+          selectedIndex={this.state.values.indexOf(this.state.value)}
+          onValueChange={this._onValueChange}
+          tintColor='#48BBEC'/>
           <ListView
           style={{marginTop: 10}}
           dataSource={this.state.dataSource}
