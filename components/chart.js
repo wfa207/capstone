@@ -1,30 +1,97 @@
 'use strict'
 
-import React, { Component } from 'react';
-import { View } from 'react-native';
-import Chart from 'react-native-chart';
+import React, { Component } from 'react'
+import {
+  Animated,
+  Text,
+  View,
+  Dimensions,
+  ListView,
+  TouchableHighlight,
+  ActivityIndicator
+} from 'react-native';
 import styles from './styles';
+import {fetchAllLocations} from '../utils';
 
-const data = [
-    [0, .2],
-    [2, .2],
-    [4, .2],
-    [6, .2],
-];
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-class SimpleChart extends Component {
-    render() {
-        return (
-            <View style={styles.container}>
-                <Chart
-                    style={styles.pieChart}
-                    data={data}
-                    type="pie"
-                    showAxis={false}
-                 />
-            </View>
-        );
+class Chart extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      start: new Animated.Value(0),
+      location1: 300,
+      isLoading: true
     }
+  }
+
+  componentWillMount () {
+    const locationNames = ['location1'];
+    const width = this.getWidth(this.state, locationNames);
+    let colors = ['#7F4FE1', '#F1FF58', '#FF1600', '#007AFF', '#49FF56'];
+    fetchAllLocations()
+    .then(locations => {
+      locations.forEach(location => {
+        console.log(location)
+        this.setState(
+          {
+            [location.id]: new Animated.Value(0)
+          }
+        );
+      });
+      var listLocations = locations.map((location, i) => {
+        console.log(this.state.start, this.state.location1)
+        return (
+          <View key={location.name} style={styles.chartRow}>
+            <Text style={styles.chartText}>{location.name}</Text>
+            <Animated.View style={[styles.bar, {backgroundColor: colors[i]}, {width: this.state[location.id]}]}>
+              <Text style={styles.barText}>{100}%</Text>
+            </Animated.View>
+          </View>
+        );
+      })
+      this.setState({
+        listLocations: listLocations,
+        isLoading: false
+      });
+      return Animated.parallel(locations.map(location => {
+        return Animated.timing(this.state[location.id], {toValue: this.state.location1, duration: 1000});
+      })).start();
+    })
+    .catch(console.error)
+  }
+
+  getWidth (data, locations) {
+    const deviceWidth = Dimensions.get('window').width;
+    const maxWidth = 350;
+    let width = {};
+    let widthCap;
+    locations.forEach(item => {
+      console.log(data[item])
+      widthCap = data[item];
+      console.log(widthCap)
+      width[item] = widthCap <= (deviceWidth - 50) ? widthCap : (deviceWidth - 50);
+    })
+
+    return width;
+  }
+
+  render () {
+    if (this.state.isLoading) {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator />
+        </View>
+      );
+    }
+    return (
+      <View style={styles.container}>
+        <Text style={styles.chartTitle}>Breakdown of Today</Text>
+        {this.state.listLocations}
+      </View>
+    )
+  }
 }
 
-module.exports = SimpleChart;
+
+module.exports = Chart;
