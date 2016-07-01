@@ -37,6 +37,7 @@ class Chart extends Component {
       return fetchAllLocations()
     })
     .then(locations => {
+      let locationPercentages = {}, greatestPercentage = 0;
       locations.forEach(location => {
         this.setState(
           {
@@ -54,13 +55,18 @@ class Chart extends Component {
         let timeArrived = time.arrived.getHours() * 60 + time.arrived.getMinutes();
         let timeLeft = time.left.getHours() * 60 + time.left.getMinutes();
         let percent = Math.floor((timeLeft-timeArrived)/(24*60)*10000)/100;
-        percent = (percent < 1) ? "< 1" : (Math.round(percent)).toString();
-
+        let percentDisplay = (percent < 1) ? "<1" : (Math.round(percent)).toString();
+        locationPercentages[location.id] = percent;
+        for (let key in locationPercentages) {
+          let percentage = locationPercentages[key];
+          if (percentage > greatestPercentage) greatestPercentage = percentage;
+        }
+        let percentageStyle = (percent < 1) ? styles.lessThan1 : styles.barText;
         return (
           <View key={location.name} style={styles.chartRow}>
             <Text style={styles.chartText}>{location.name}</Text>
             <Animated.View style={[styles.bar, {backgroundColor: colors[i]}, {width: this.state[location.id]}]}>
-               <Animated.Text style={[styles.barText, {opacity: this.state.fadeAnim}]}>{percent}%</Animated.Text>
+              <Animated.Text style={[percentageStyle, {opacity: this.state.fadeAnim}]}>{percentDisplay}%</Animated.Text>
             </Animated.View>
           </View>
         );
@@ -70,7 +76,7 @@ class Chart extends Component {
         isLoading: false
       });
       Animated.parallel(locations.map(location => {
-        return Animated.timing(this.state[location.id], {toValue: this.state.location1, duration: 1000});
+        return Animated.timing(this.state[location.id], {toValue: locationPercentages[location.id]/greatestPercentage * 300, duration: 1000});
       })).start();
       Animated.timing(this.state.fadeAnim, {toValue: 1}).start();
     })
