@@ -141,7 +141,7 @@ var seedTrips = function() {
 };
 
 
-var updatedUsers, updatedTrips, updatedLocations, t, l;
+var updatedUsers, updatedTrips, updatedLocations = [], t, l;
 
 db.sync({ force: true })
 .then(() => {
@@ -154,11 +154,9 @@ db.sync({ force: true })
         return locations.map(location => {
             return Location.create(location)
             .then(location => {
+                updatedLocations.push(location);
                 return location.setUser(user);
             })
-            .then(location => {
-                updatedLocations.push(location);
-            });
         });
     }
 
@@ -191,8 +189,43 @@ db.sync({ force: true })
         let time;
         let dateArrived = new Date();
         let dateLeft = new Date();
-        dateArrived.setHours(dateArrived.getHours() - 1);
-        dateLeft.setHours(dateLeft.getHours() + 1);
+        let hourArrived, hourLeft, minuteArrived, minuteLeft;
+        switch ((location.id - 1) % 5) {
+          case 0:
+            hourArrived = 9;
+            minuteArrived = 0;
+            hourLeft = 11;
+            minuteLeft = 27;
+            break;
+          case 1:
+            hourArrived = 11;
+            minuteArrived = 50;
+            hourLeft = 14;
+            minuteLeft = 12;
+            break;
+          case 2:
+            hourArrived = 15;
+            minuteArrived = 2;
+            hourLeft = 16;
+            minuteLeft = 40;
+            break;
+          case 3:
+            hourArrived = 17;
+            minuteArrived = 9;
+            hourLeft = 17;
+            minuteLeft = 20;
+            break;
+          case 4:
+            hourArrived = 17;
+            minuteArrived = 50;
+            hourLeft = 22;
+            minuteLeft = 55;
+            break;
+        }
+        dateArrived.setHours(hourArrived);
+        dateArrived.setMinutes(minuteArrived);
+        dateLeft.setHours(hourLeft);
+        dateLeft.setMinutes(minuteLeft);
         return Time.create({
             arrived: dateArrived,
             left: dateLeft
@@ -207,11 +240,11 @@ db.sync({ force: true })
     let times = [];
     days.forEach(day => {
         updatedLocations.forEach(location => {
-            times.push({day: day, location: location});
+            if (location.userId === day.userId)
+              times.push({day: day, location: location});
         });
     });
     let creatingTimes = times.map(time => {
-      console.log(time.location)
         return createTime(time.day, time.location);
     });
     return Promise.all(creatingTimes);
