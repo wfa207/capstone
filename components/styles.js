@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
+    // alignItems: 'center',
     backgroundColor: '#232323'
   },
   segmentControl: {
@@ -177,10 +177,9 @@ const styles = StyleSheet.create({
   },
   rowStyle: {
     paddingVertical: 20,
-    paddingLeft: 16,
+    paddingHorizontal: 10,
+    marginHorizontal: 5,
     borderTopColor: 'white',
-    borderLeftColor: 'white',
-    borderRightColor: 'white',
     borderBottomColor: '#E0E0E0',
     borderWidth: 1
   }
