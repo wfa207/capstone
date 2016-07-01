@@ -184,17 +184,23 @@ db.sync({ force: true })
 })
 .then(days => {
     function createTime(day) {
+        let time;
+        let dateArrived = new Date();
+        let dateLeft = new Date();
+        dateArrived.setHours(dateArrived.getHours() - 1);
+        dateLeft.setHours(dateLeft.getHours() + 1);
         return Time.create({
-            arrived: new Date(),
-            left: new Date()
+            arrived: dateArrived,
+            left: dateLeft
         })
-        .then(time => {
+        .then(_time => {
+            time = _time;
             return time.setDay(day);
         });
     }
     let creatingTimes = days.map(day => {
         return createTime(day);
-    })
+    });
     return Promise.all(creatingTimes);
 })
 .then(times => {
