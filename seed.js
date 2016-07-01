@@ -155,6 +155,9 @@ db.sync({ force: true })
             return Location.create(location)
             .then(location => {
                 return location.setUser(user);
+            })
+            .then(location => {
+                updatedLocations.push(location);
             });
         });
     }
@@ -165,7 +168,8 @@ db.sync({ force: true })
 
     return Promise.all(creatingListLocations);
 })
-.then(() => {
+.then(_updatedLocations => {
+    updatedLocations = _updatedLocations;
     function createDay(user) {
         let d, l, index = Math.floor(Math.random()*5);
         return Day.create({
@@ -183,7 +187,7 @@ db.sync({ force: true })
     return Promise.all(creatingDays);
 })
 .then(days => {
-    function createTime(day) {
+    function createTime(day, location) {
         let time;
         let dateArrived = new Date();
         let dateLeft = new Date();
@@ -193,13 +197,22 @@ db.sync({ force: true })
             arrived: dateArrived,
             left: dateLeft
         })
-        .then(_time => {
-            time = _time;
+        .then(time => {
             return time.setDay(day);
+        })
+        .then(time => {
+            return time.setLocation(location);
         });
     }
-    let creatingTimes = days.map(day => {
-        return createTime(day);
+    let times = [];
+    days.forEach(day => {
+        updatedLocations.forEach(location => {
+            times.push({day: day, location: location});
+        });
+    });
+    let creatingTimes = times.map(time => {
+      console.log(time.location)
+        return createTime(time.day, time.location);
     });
     return Promise.all(creatingTimes);
 })

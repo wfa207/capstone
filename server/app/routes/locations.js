@@ -40,7 +40,9 @@ router.param('locationId', function(req, res, next, userId) {
     .then(location => {
         if (!location) {
             res.status(404);
-            throw next(new Error('Location not found.'));
+            let error = new Error('Location not found.');
+            error.status = 404;
+            throw error;
         }
         else {
             req.location = location;

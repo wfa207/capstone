@@ -68,9 +68,7 @@ class Chart extends Component {
     let width = {};
     let widthCap;
     locations.forEach(item => {
-      console.log(data[item])
       widthCap = data[item];
-      console.log(widthCap)
       width[item] = widthCap <= (deviceWidth - 50) ? widthCap : (deviceWidth - 50);
     })
 
