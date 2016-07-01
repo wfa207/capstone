@@ -60,6 +60,7 @@ class Chart extends Component {
       Animated.timing(this.state.fadeAnim, {toValue: 1}).start();
     })
     .catch(console.error)
+    // 
   }
 
   getWidth (data, locations) {
