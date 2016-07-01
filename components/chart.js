@@ -11,7 +11,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 import styles from './styles';
-import {fetchAllLocations} from '../utils';
+import {fetchAllLocations, fetchTimes} from '../utils';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -30,7 +30,12 @@ class Chart extends Component {
     const locationNames = ['location1'];
     const width = this.getWidth(this.state, locationNames);
     let colors = ['#7F4FE1', '#F1FF58', '#FF1600', '#007AFF', '#49FF56'];
-    fetchAllLocations()
+    let times;
+    fetchTimes()
+    .then(_times => {
+      times = _times;
+      return fetchAllLocations()
+    })
     .then(locations => {
       locations.forEach(location => {
         this.setState(
@@ -40,12 +45,22 @@ class Chart extends Component {
         );
       });
       var listLocations = locations.map((location, i) => {
-        console.log(this.state.start, this.state.location1)
+        let time = times.find(time => {
+          return time.locationId === location.id;
+        });
+        time.arrived = new Date(time.arrived);
+        time.left = new Date(time.left);
+        console.log(time.arrived, time.left)
+        let timeArrived = time.arrived.getHours() * 60 + time.arrived.getMinutes();
+        let timeLeft = time.left.getHours() * 60 + time.left.getMinutes();
+        let percent = Math.floor((timeLeft-timeArrived)/(24*60)*10000)/100;
+        percent = (percent < 1) ? "< 1" : (Math.round(percent)).toString();
+
         return (
           <View key={location.name} style={styles.chartRow}>
             <Text style={styles.chartText}>{location.name}</Text>
             <Animated.View style={[styles.bar, {backgroundColor: colors[i]}, {width: this.state[location.id]}]}>
-               <Animated.Text style={[styles.barText, {opacity: this.state.fadeAnim}]}>{100}%</Animated.Text>
+               <Animated.Text style={[styles.barText, {opacity: this.state.fadeAnim}]}>{percent}%</Animated.Text>
             </Animated.View>
           </View>
         );
