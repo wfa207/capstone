@@ -59,7 +59,7 @@ class Chart extends Component {
       })).start();
       Animated.timing(this.state.fadeAnim, {toValue: 1}).start();
     })
-    .catch(console.error)
+    .catch(console.error) //
   }
 
   getWidth (data, locations) {
