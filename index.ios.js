@@ -24,7 +24,7 @@ class capstone extends Component {
     super(props);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     initialFetchAndStoreData("/api/users/1/locations", 'locations');
     initialFetchAndStoreData("/api/users/1/trips", 'activities');
   }

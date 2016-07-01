@@ -6,8 +6,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    // alignItems: 'center',
     backgroundColor: '#232323'
+  },
+  detailContainer: {
+    flex: 1,
+    backgroundColor: '#232323',
+    marginTop: 60,
+    marginBottom: 48,
+    paddingVertical: 20,
+    paddingHorizontal: 10
   },
   segmentControl: {
     marginTop: 70,
@@ -174,14 +181,34 @@ const styles = StyleSheet.create({
   pieChart: {
     width: 300,
     height: 300,
+    alignSelf: 'center'
   },
   rowStyle: {
     paddingVertical: 20,
     paddingHorizontal: 10,
-    marginHorizontal: 5,
-    borderTopColor: 'white',
-    borderBottomColor: '#E0E0E0',
+    marginHorizontal: 10,
+    borderTopColor: '#929292',
+    borderRightColor: 'transparent',
+    borderLeftColor: 'transparent',
+    borderBottomColor: '#929292',
+    backgroundColor: 'transparent',
     borderWidth: 1
+  },
+  rowContent: {
+    color: 'white',
+    fontWeight: '700'
+  },
+  detailViewTitle: {
+    color: '#48BBEC',
+    fontSize: 30,
+    fontWeight: '800',
+    marginBottom: 30,
+  },
+  detailViewBody: {
+    color: 'white',
+    fontSize: 20,
+    marginVertical: 10,
+    borderBottomColor: '#929292'
   }
 });
 

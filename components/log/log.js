@@ -6,10 +6,12 @@ import {
   ListView,
   Text,
   View,
+  ActivityIndicator,
   AsyncStorage,
   TouchableHighlight
 } from 'react-native';
 import styles from '../styles';
+import LogDetailView from './logDetailView';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -19,22 +21,31 @@ var Log = React.createClass({
     return {
       values: ['Activities', 'Locations'],
       value: 'Locations',
-      dataSource: ds.cloneWithRows(['row 1', 'row 2'])
+      dataSource: ds.cloneWithRows(['row 1', 'row 2']),
+      loading: true
     }
   },
 
-  componentDidMount() {
-    this.fetchValueData(this.state.value);
-    console.log(this);
+  componentWillMount() {
+    this.fetchValueData(this.state.value)
+    .then((items) => {
+      this.setState({
+        dataSource: ds.cloneWithRows(items),
+        loading: false
+      });
+    })
+    .catch(console.error);
   },
 
   _onValueChange(value) {
     this.fetchValueData(value)
-    .then(() => {
+    .then((items) => {
       this.setState({
+        dataSource: ds.cloneWithRows(items),
         value: value
       });
     })
+    .catch(console.error);
   },
 
   fetchValueData(value) {
@@ -43,42 +54,44 @@ var Log = React.createClass({
     .then((items) => {
       items = JSON.parse(items);
       return items;
-    })
-    .then((items) => {
-      this.setState({dataSource: ds.cloneWithRows(items)});
     });
   },
 
   _navigate(rowData) {
     rowData.type = this.state.value;
     this.props.navigator.push({
+      component: LogDetailView,
       passProps: rowData
     });
   },
 
   render() {
-    return (
-      <View style={styles.container}>
-        <SegmentedControlIOS
+    if (this.state.loading) {
+      return <ActivityIndicator/>
+    } else {
+      return (
+        <View style={styles.container}>
+          <SegmentedControlIOS
           style={styles.segmentControl}
           values={this.state.values}
           selectedIndex={this.state.values.indexOf(this.state.value)}
           onValueChange={this._onValueChange}
-          tintColor='#48BBEC'
-        />
-        <ListView
-          dataSource={this.state.dataSource}
+          tintColor='#48BBEC'/>
+          <ListView
+          style={{marginTop: 10}}
+          dataSource={this.state.dataSource}å
           renderRow={rowData=>
             <TouchableHighlight
             onPress={() => this._navigate(rowData)}
             style={styles.rowStyle}>
               <View>
-                <Text>{rowData.name}</Text>
+                <Text style={styles.rowContent}>{rowData.name}</Text>
               </View>
             </TouchableHighlight>}
-        />
-      </View>
-    )
+          />
+        </View>
+      )
+    }
   }
 });
 

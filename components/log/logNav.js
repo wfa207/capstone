@@ -9,8 +9,6 @@ import {
 } from 'react-native';
 import styles from '../styles';
 import Log from './log';
-import LogDetailView from './logDetailView';
-
 
 function genNavBarMapper(title) {
   return {
@@ -51,17 +49,14 @@ class LogNav extends Component {
     super(props);
   }
 
+  configureScene(route, routeStack) {
+    return Navigator.SceneConfigs.HorizontalSwipeJump;
+  }
+
   renderScene(route, navigator) {
-      if (route.name === 'Log Home') {
-        return <route.component
-        navigator={navigator}
-        {...route.passProps}
-        />
-      } else {
-        return <LogDetailView
-        navigator={navigator}
-        {...route.passProps}/>
-      }
+    return <route.component
+    navigator={navigator}
+    {...route.passProps}/>
   }
 
   render() {
@@ -72,6 +67,7 @@ class LogNav extends Component {
           component: Log
         }}
         style={styles.banner}
+        configureScene={this.configureScene}
         renderScene={this.renderScene}
         navigationBar={genNavBar('Log')}
       />

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   Text,
+  View
 } from 'react-native';
 import styles from '../styles';
 
@@ -10,28 +11,38 @@ class LogDetailView extends Component {
     super(props);
   }
 
-  render() {
-    var isLocation = this.props.type === 'Locations';
-    if (isLocation) {
+  locationOrActivityRender(isLocation) {
+    if (!isLocation) {
       return (
-        <Text style={{marginTop: 120}}>
-          {this.props.name}
-          {this.props.city}
-          {this.props.state}
-          {this.props.country}
-          {this.props.timeSpent}
-        </Text>
-      )
-    } else {
-      return (
-        <Text style={{marginTop: 120}}>
-          {this.props.name}
+        <Text style={styles.detailViewBody}>
           {this.props.description}
           {this.props.time_traveled}
         </Text>
       )
+    } else {
+      return (
+        <View>
+          <Text style={styles.detailViewBody}>
+          {this.props.city}, {this.props.state}, {this.props.country}
+          </Text>
+          <Text style={styles.detailViewBody}>
+            timeSpent: {this.props.timeSpent}
+          </Text>
+        </View>
+      )
     }
   }
+
+  render() {
+    var isLocation = this.props.type === 'Locations';
+    return (
+      <View style={styles.detailContainer}>
+        <Text style={styles.detailViewTitle}>
+          {this.props.name}
+        </Text>
+        {this.locationOrActivityRender(isLocation)}
+      </View>
+    )}
 }
 
 module.exports = LogDetailView;

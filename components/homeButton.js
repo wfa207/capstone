@@ -24,6 +24,7 @@ class HomeButton extends Component {
 
   saveLocation(position) {
     var me = this;
+    me.setState({logging: !me.state.logging});
     return AsyncStorage.getItem('locations')
     .then(locations => {
 
@@ -52,19 +53,10 @@ class HomeButton extends Component {
           coordinates: [latitude, longitude]
         });
         return AsyncStorage.setItem('locations', JSON.stringify(locations))
-        .then(function() {
-          me.setState({logging: !me.state.logging});
-        })
-// =============================================================================
-// =================== FOR DEBUGGING ONLY ======================================
-        .then(function() {
-          AsyncStorage.getItem('locations', () => console.log(locations));
-        })
-// =============================================================================
         .catch(console.error);
       }
 
-      AlertIOS.prompt('Activity Name', 'Please enter a name for this activity:', [
+      AlertIOS.prompt('Activity Name', 'Please enter a name for this activity', [
         {
           text: 'Not Now',
           onPress: () => getLocationName(),
