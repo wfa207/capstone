@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import styles from '../styles';
 import Log from './log';
+import LogEditView from './logEdit';
 
 function genNavBarMapper(title) {
   return {
@@ -27,11 +28,23 @@ function genNavBarMapper(title) {
     },
 
     RightButton(route, navigator, index, navState) {
-      return null;
+      if (route.title === 'Details') {
+        return (
+          <TouchableHighlight
+          underlayColor="transparent"
+          onPress={() => navigator.push({
+            title: "Edit",
+            component: LogEditView,
+            passProps: route.passProps
+          })}>
+          <Text style={styles.rightNavButtonText}>Edit</Text>
+          </TouchableHighlight>
+        );
+      };
     },
 
     Title(route, navigator, index, navState) {
-      return <Text style={styles.NavBarTitle}>{title}</Text>;
+      return <Text style={styles.NavBarTitle}>{route.title}</Text>;
     },
   }
 }
@@ -63,7 +76,7 @@ class LogNav extends Component {
     return (
       <Navigator
         initialRoute={{
-          name: 'Log Home',
+          title: 'Logs',
           component: Log
         }}
         style={styles.banner}

@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
   },
   detailViewBody: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 14,
     marginVertical: 10,
     borderBottomColor: '#929292'
   }

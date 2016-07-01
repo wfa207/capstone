@@ -28,7 +28,6 @@ var Map = React.createClass({
 
   onRegionChange(region) {
     this.setState({region});
-    console.log(this.state);
   },
 
   render() {

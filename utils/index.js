@@ -33,7 +33,6 @@ var utils = {
       return res.json();
     })
     .then((data) => {
-      console.log(data);
       chain = data;
       return AsyncStorage.setItem(storageName, JSON.stringify(data));
     })

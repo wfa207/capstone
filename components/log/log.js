@@ -60,6 +60,7 @@ var Log = React.createClass({
   _navigate(rowData) {
     rowData.type = this.state.value;
     this.props.navigator.push({
+      title: 'Details',
       component: LogDetailView,
       passProps: rowData
     });
@@ -79,7 +80,7 @@ var Log = React.createClass({
           tintColor='#48BBEC'/>
           <ListView
           style={{marginTop: 10}}
-          dataSource={this.state.dataSource}å
+          dataSource={this.state.dataSource}
           renderRow={rowData=>
             <TouchableHighlight
             onPress={() => this._navigate(rowData)}

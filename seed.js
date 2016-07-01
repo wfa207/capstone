@@ -227,7 +227,7 @@ db.sync({ force: true })
     return Promise.all(updatingTrips);
 })
 .then(() => {
-    console.log(chalk.green('Seed successful!'));
+    (chalk.green('Seed successful!'));
     process.exit(0);
 })
 .catch(err => {

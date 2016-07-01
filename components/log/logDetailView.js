@@ -22,6 +22,7 @@ class LogDetailView extends Component {
     } else {
       return (
         <View>
+          <Text style={styles.detailViewBody}>Location: </Text>
           <Text style={styles.detailViewBody}>
           {this.props.city}, {this.props.state}, {this.props.country}
           </Text>
