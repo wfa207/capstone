@@ -10,7 +10,7 @@ import {
 import styles from './styles';
 import HomeButton from './homeButton';
 import Map from './mapES5';
-import Log from './newLog';
+import LogTitleBar from './log/logNav';
 import Chart from './chart'
 
 function genNavBarMapper(title) {
@@ -119,6 +119,6 @@ class ChartTitleBar extends Component {
 module.exports = {
   HomeRender: HomeTitleBar,
   MapRender: MapTitleBar,
-  LogRender: Log,
+  LogRender: LogTitleBar,
   ChartRender: ChartTitleBar
 }
