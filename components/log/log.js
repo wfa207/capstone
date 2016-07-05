@@ -30,6 +30,10 @@ var Log = React.createClass({
 
   _onRefresh() {
     this.setState({refreshing: true});
+    this.refreshData();
+  },
+
+  refreshData() {
     this.fetchValueData(this.state.value)
     .then((items) => {
       var itemNames = {};
@@ -48,6 +52,7 @@ var Log = React.createClass({
       });
       this.setState({
         dataSource: ds.cloneWithRows(condensedItems),
+        loading: false,
         refreshing: false
       });
     })
@@ -55,14 +60,11 @@ var Log = React.createClass({
   },
 
   componentWillMount() {
-    this.fetchValueData(this.state.value)
-    .then((items) => {
-      this.setState({
-        dataSource: ds.cloneWithRows(items),
-        loading: false
-      });
-    })
-    .catch(console.error);
+    return this.refreshData();
+  },
+
+  componentWillReceiveProps() {
+    return this.refreshData();
   },
 
   _onValueChange(value) {
@@ -100,7 +102,6 @@ var Log = React.createClass({
     } else {
       return (
         <View style={styles.container}>
-          <Text style={styles.optionsText}>Pull down to refresh!</Text>
           <ListView
           refreshControl={
             <RefreshControl

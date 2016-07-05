@@ -52,7 +52,6 @@ class Chart extends Component {
         });
         time.arrived = new Date(time.arrived);
         time.left = new Date(time.left);
-        console.log(time.arrived, time.left)
         let timeArrived = time.arrived.getHours() * 60 + time.arrived.getMinutes();
         let timeLeft = time.left.getHours() * 60 + time.left.getMinutes();
         let percent = Math.floor((timeLeft-timeArrived)/(24*60)*10000)/100;

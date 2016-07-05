@@ -10,7 +10,7 @@ import {
 import MapView, { Marker } from 'react-native-maps';
 import styles from './styles';
 import { SERVER_ROUTE } from '../server/env/development';
-import { getCurrentLocation } from '../utils';
+import { getCurrentLocation, fetchValueData } from '../utils';
 
 var centerIcon = require('../resources/target.png');
 
@@ -39,18 +39,33 @@ var Map = React.createClass({
     this.fetchAllLocations();
   },
 
+  markerGenerator(locations) {
+    var markers = locations.map(function(location) {
+      var marker = {
+        latlng: { latitude: location.coordinates[0], longitude: location.coordinates[1]},
+        title: location.name,
+        description: location.description
+      };
+    });
+    return markers;
+  },
+
+  componentWillReceiveProps() {
+    return fetchValueData('locations')
+    .then(locations => {
+      var markers = this.markerGenerator(locations);
+      this.setState({
+        markers: markers
+      });
+    })
+    .catch(console.error);
+  },
+
   fetchAllLocations() {
     AsyncStorage.getItem('locations')
     .then((locations) => {
       locations = JSON.parse(locations);
-      var markers = locations.map(function(location) {
-        var marker = {
-          latlng: { latitude: location.coordinates[0], longitude: location.coordinates[1]},
-          title: location.name,
-          description: location.description
-        };
-        return marker;
-      });
+      var markers = this.markerGenerator(locations);
       this.setState({markers: markers});
     })
   },

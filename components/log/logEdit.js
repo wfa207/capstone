@@ -15,7 +15,8 @@ var LogEditView = React.createClass({
   },
 
   editLocationName(oldName, newName) {
-    AsyncStorage.getItem('locations')
+    var updatedLocation;
+    return AsyncStorage.getItem('locations')
     .then((locations) => {
       locations = JSON.parse(locations);
       var index;
@@ -25,14 +26,11 @@ var LogEditView = React.createClass({
         return bool;
       })[0];
       location.name = newName || oldName;
+      updatedLocation = location;
       locations.splice(index, 1, location);
-      return locations;
+      return AsyncStorage.setItem('locations', JSON.stringify(locations));
     })
-    .then(locations => {
-      locations = JSON.stringify(locations);
-      AsyncStorage.setItem('locations', locations)
-      .catch(console.error);
-    })
+    .then(() => updatedLocation)
     .catch(console.error);
   },
 
@@ -74,11 +72,6 @@ var LogEditView = React.createClass({
       style={styles.detailContainer}>
         <TextInput style={[styles.detailViewTitle, {height: 30}]}
         ref={component => this._nameInput = component}
-        onEndEditing={() => {
-          console.log(this);
-          this.editLocationName(this.props.name, this._nameInput._lastNativeText);
-        }
-        }
         defaultValue={this.props.name}/>
         {this.locationOrActivityRender(isLocation)}
       </View>

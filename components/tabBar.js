@@ -44,7 +44,7 @@ class TabBar extends Component {
       <TabBarIOS
         style={styles.banner}
         unselectedTintColor="#929292"
-        tintColor="#232323"
+        tintColor="#48BBEC"
         itemPositioning="fill"
         translucent={true}
         barTintColor="#56545C">
