@@ -5,26 +5,22 @@ import {
   Text,
   View,
   Navigator,
+  AsyncStorage,
   TouchableHighlight
 } from 'react-native';
 import styles from '../styles';
 import Log from './log';
 import LogEditView from './logEdit';
+import LogDetailView from './logDetailView';
 
 var LogNav = React.createClass({
   configureScene(route, routeStack) {
     return Navigator.SceneConfigs.HorizontalSwipeJump;
   },
 
-  // renderScene(route, navigator) {
-  //   return <route.component
-  //   ref='butts'
-  //   navigator={navigator}
-  //   {...route.passProps}/>
-  // },
-
   render() {
-    var navigationBar = (
+    let me = this;
+    const navigationBar = (
       <Navigator.NavigationBar
         style={styles.navBar}
         routeMapper={{LeftButton(route, navigator, index, navState) {
@@ -59,7 +55,20 @@ var LogNav = React.createClass({
             case 'Edit':
               return (
                 <TouchableHighlight
-                onPress={() => console.log(this)}
+                onPress={() => {
+                  var oldName = me._routeComponent.props.name;
+                  var newName = me._routeComponent._nameInput._lastNativeText;
+                  me._routeComponent.editLocationName(oldName, newName)
+                  .then((updatedLocation) => {
+                    updatedLocation.type = me._routeComponent.props.type;
+                    navigator.replacePreviousAndPop({
+                      title: 'Details',
+                      component: LogDetailView,
+                      passProps: updatedLocation
+                    });
+                  })
+                  .catch(console.error);
+                }}
                 underlayColor="transparent">
                 <Text style={styles.rightNavButtonText}>Done</Text>
                 </TouchableHighlight>
@@ -82,7 +91,7 @@ var LogNav = React.createClass({
         configureScene={this.configureScene}
         renderScene={(route, navigator) => {
           return <route.component
-          ref="test"
+          ref={component => this._routeComponent = component}
           navigator={navigator}
           {...route.passProps}/>
         }}

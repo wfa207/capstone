@@ -32,7 +32,6 @@ var Log = React.createClass({
     this.setState({refreshing: true});
     this.fetchValueData(this.state.value)
     .then((items) => {
-      console.log(items);
       this.setState({
         dataSource: ds.cloneWithRows(items),
         refreshing: false
