@@ -47,7 +47,6 @@ var Log = React.createClass({
       return items;
     })
     .then((items) => {
-      console.log("ITEMS", items);
       this.setState({dataSource: ds.cloneWithRows(items)});
     });
   },

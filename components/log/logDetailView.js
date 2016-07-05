@@ -38,7 +38,6 @@ class LogDetailView extends Component {
   }
 
   render() {
-    console.log(this.props);
     var isLocation = this.props.type === 'Locations';
     return (
       <View style={styles.detailContainer}>

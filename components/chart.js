@@ -32,7 +32,6 @@ class Chart extends Component {
     fetchAllLocations()
     .then(locations => {
       locations.forEach(location => {
-        console.log(location)
         this.setState(
           {
             [location.id]: new Animated.Value(0)
@@ -40,7 +39,6 @@ class Chart extends Component {
         );
       });
       var listLocations = locations.map((location, i) => {
-        console.log(this.state.start, this.state.location1)
         return (
           <View key={location.name} style={styles.chartRow}>
             <Text style={styles.chartText}>{location.name}</Text>
@@ -67,9 +65,7 @@ class Chart extends Component {
     let width = {};
     let widthCap;
     locations.forEach(item => {
-      console.log(data[item])
       widthCap = data[item];
-      console.log(widthCap)
       width[item] = widthCap <= (deviceWidth - 50) ? widthCap : (deviceWidth - 50);
     })
 

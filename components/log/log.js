@@ -7,6 +7,7 @@ import {
   Text,
   View,
   ActivityIndicator,
+  RefreshControl,
   AsyncStorage,
   TouchableHighlight
 } from 'react-native';
@@ -22,8 +23,22 @@ var Log = React.createClass({
       values: ['Activities', 'Locations'],
       value: 'Locations',
       dataSource: ds.cloneWithRows(['row 1', 'row 2']),
-      loading: true
+      loading: true,
+      refreshing: false
     }
+  },
+
+  _onRefresh() {
+    this.setState({refreshing: true});
+    this.fetchValueData(this.state.value)
+    .then((items) => {
+      console.log(items);
+      this.setState({
+        dataSource: ds.cloneWithRows(items),
+        refreshing: false
+      });
+    })
+    .catch(console.error);
   },
 
   componentWillMount() {
@@ -72,7 +87,13 @@ var Log = React.createClass({
     } else {
       return (
         <View style={styles.container}>
+          <Text style={styles.optionsText}>Pull up to refresh!</Text>
           <ListView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this._onRefresh}
+            />}
           style={{marginTop: 10}}
           dataSource={this.state.dataSource}
           renderRow={rowData=>
