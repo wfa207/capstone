@@ -43,7 +43,6 @@ Location.hasMany(Time, {
 });
 
 Day.belongsTo(User);
-Day.belongsToMany(Location, {as: 'location', through: 'location_day'});
 Day.hasMany(Time);
 // Day.addScope('defaultScope', {include: [{model: User}, {model: Location}, {model: Time}]}, {override: true});
 

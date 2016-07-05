@@ -40,7 +40,9 @@ router.param('timeId', function(req, res, next, userId) {
     .then(time => {
         if (!time) {
             res.status(404);
-            throw next(new Error('Time not found.'));
+            let error = new Error('Time not found.');
+            error.status = 404;
+            throw error;
         }
         else {
             req.time = time;

@@ -6,7 +6,7 @@ var Auth = require('../configure/auth-middleware');
 
 //get all days if route is api/days
 //get all days for specific user if route is api/users/:userId/days
-router.get('/', function (req, res) {
+router.get('/', function (req, res, next) {
     let whereCondition = {};
     if (req.requestedUser) {
         whereCondition.where = {};
@@ -15,7 +15,8 @@ router.get('/', function (req, res) {
     Day.all(whereCondition)
     .then(days => {
         res.json(days);
-    });
+    })
+    .catch(next);
 });
 
 
@@ -40,7 +41,9 @@ router.param('dayId', function(req, res, next, userId) {
     .then(day => {
         if (!day) {
             res.status(404);
-            throw next(new Error('Day not found.'));
+            let error = new Error('Day not found.');
+            error.status = 404;
+            throw error;
         }
         else {
             req.day = day;

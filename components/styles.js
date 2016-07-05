@@ -195,6 +195,12 @@ const styles = StyleSheet.create({
     left: 5,
     backgroundColor: 'transparent'
   },
+  lessThan1: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: 'white',
+    backgroundColor: 'transparent'
+  },
   chartTitle: {
     fontSize: 30,
     fontWeight: '700',

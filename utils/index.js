@@ -32,7 +32,7 @@ var utils = {
     .then(res => {
       return res.json();
     })
-    .then((data) => {
+    .then(data => {
       chain = data;
       return AsyncStorage.setItem(storageName, JSON.stringify(data));
     })
@@ -44,8 +44,36 @@ var utils = {
 
   fetchAllLocations() {
     return AsyncStorage.getItem('locations')
-    .then((locations) => {
+    .then(locations => {
       return JSON.parse(locations);
+    });
+  },
+
+  fetchTimes() {
+    let times;
+    return AsyncStorage.getItem('times')
+    .then(times => {
+      return JSON.parse(times);
+    })
+    .then(_times => {
+      times = _times;
+      return AsyncStorage.getItem('days')
+    })
+    .then(days => {
+      return JSON.parse(days);
+    })
+    .then(days => {
+      let today = days.find(day => {
+        let date = new Date(day.date);
+        return date.getDate() === (new Date()).getDate();
+      });
+      return today;
+    })
+    .then(today => {
+      let todayTimes = times.filter(time => {
+        return time.dayId === today.id;
+      });
+      return todayTimes;
     });
   }
 }

@@ -40,7 +40,9 @@ router.param('tripId', function(req, res, next, userId) {
     .then(trip => {
         if (!trip) {
             res.status(404);
-            throw next(new Error('Trip not found.'));
+            let error = new Error('Trip not found.');
+            error.status = 404;
+            throw error;
         }
         else {
             req.trip = trip;

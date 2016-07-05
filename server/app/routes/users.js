@@ -21,7 +21,9 @@ router.param('userId', function(req, res, next, userId) {
     .then(user => {
         if (!user) {
             res.status(404);
-            throw next(new Error('User not found.'));
+            let error = new Error('User not found.');
+            error.status = 404;
+            throw error;
         }
         else {
             req.requestedUser = user;

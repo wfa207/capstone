@@ -27,6 +27,8 @@ class capstone extends Component {
   componentWillMount() {
     initialFetchAndStoreData("/api/users/1/locations", 'locations');
     initialFetchAndStoreData("/api/users/1/trips", 'activities');
+    initialFetchAndStoreData("/api/users/1/times", 'times');
+    initialFetchAndStoreData("/api/users/1/days", 'days');
   }
 
   render() {

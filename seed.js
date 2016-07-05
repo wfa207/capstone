@@ -141,7 +141,7 @@ var seedTrips = function() {
 };
 
 
-var updatedUsers, updatedTrips, updatedLocations, t, l;
+var updatedUsers, updatedTrips, updatedLocations = [], t, l;
 
 db.sync({ force: true })
 .then(() => {
@@ -154,8 +154,9 @@ db.sync({ force: true })
         return locations.map(location => {
             return Location.create(location)
             .then(location => {
+                updatedLocations.push(location);
                 return location.setUser(user);
-            });
+            })
         });
     }
 
@@ -165,7 +166,8 @@ db.sync({ force: true })
 
     return Promise.all(creatingListLocations);
 })
-.then(() => {
+.then(_updatedLocations => {
+    updatedLocations = _updatedLocations;
     function createDay(user) {
         let d, l, index = Math.floor(Math.random()*5);
         return Day.create({
@@ -183,18 +185,68 @@ db.sync({ force: true })
     return Promise.all(creatingDays);
 })
 .then(days => {
-    function createTime(day) {
+    function createTime(day, location) {
+        let time;
+        let dateArrived = new Date();
+        let dateLeft = new Date();
+        let hourArrived, hourLeft, minuteArrived, minuteLeft;
+        switch ((location.id - 1) % 5) {
+          case 0:
+            hourArrived = 9;
+            minuteArrived = 0;
+            hourLeft = 11;
+            minuteLeft = 27;
+            break;
+          case 1:
+            hourArrived = 11;
+            minuteArrived = 50;
+            hourLeft = 14;
+            minuteLeft = 12;
+            break;
+          case 2:
+            hourArrived = 15;
+            minuteArrived = 2;
+            hourLeft = 16;
+            minuteLeft = 40;
+            break;
+          case 3:
+            hourArrived = 17;
+            minuteArrived = 9;
+            hourLeft = 17;
+            minuteLeft = 20;
+            break;
+          case 4:
+            hourArrived = 17;
+            minuteArrived = 50;
+            hourLeft = 22;
+            minuteLeft = 55;
+            break;
+        }
+        dateArrived.setHours(hourArrived);
+        dateArrived.setMinutes(minuteArrived);
+        dateLeft.setHours(hourLeft);
+        dateLeft.setMinutes(minuteLeft);
         return Time.create({
-            arrived: new Date(),
-            left: new Date()
+            arrived: dateArrived,
+            left: dateLeft
         })
         .then(time => {
             return time.setDay(day);
+        })
+        .then(time => {
+            return time.setLocation(location);
         });
     }
-    let creatingTimes = days.map(day => {
-        return createTime(day);
-    })
+    let times = [];
+    days.forEach(day => {
+        updatedLocations.forEach(location => {
+            if (location.userId === day.userId)
+              times.push({day: day, location: location});
+        });
+    });
+    let creatingTimes = times.map(time => {
+        return createTime(time.day, time.location);
+    });
     return Promise.all(creatingTimes);
 })
 .then(times => {
