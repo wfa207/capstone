@@ -32,9 +32,22 @@ var Log = React.createClass({
     this.setState({refreshing: true});
     this.fetchValueData(this.state.value)
     .then((items) => {
-      console.log(items);
+      var itemNames = {};
+      var condensedItems = [];
+      items.forEach((item) => {
+        var name = item.name;
+        if (!itemNames[name]) {
+          itemNames[name] = 1;
+          condensedItems.push(item);
+        } else {
+          itemNames[name] += 1;
+        }
+      });
+      condensedItems.forEach((item) => {
+        item.visits = itemNames[item.name];
+      });
       this.setState({
-        dataSource: ds.cloneWithRows(items),
+        dataSource: ds.cloneWithRows(condensedItems),
         refreshing: false
       });
     })
@@ -87,7 +100,7 @@ var Log = React.createClass({
     } else {
       return (
         <View style={styles.container}>
-          <Text style={styles.optionsText}>Pull up to refresh!</Text>
+          <Text style={styles.optionsText}>Pull down to refresh!</Text>
           <ListView
           refreshControl={
             <RefreshControl
