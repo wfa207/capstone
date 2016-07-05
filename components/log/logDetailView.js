@@ -22,12 +22,16 @@ class LogDetailView extends Component {
     } else {
       return (
         <View>
+        <View style={styles.inline}>
+          <Text style={styles.detailViewBodyHeader}>Location: </Text>
           <Text style={styles.detailViewBody}>
           {this.props.city}, {this.props.state}, {this.props.country}
           </Text>
-          <Text style={styles.detailViewBody}>
-            timeSpent: {this.props.timeSpent}
-          </Text>
+        </View>
+        <View style={styles.inline}>
+          <Text style={styles.detailViewBodyHeader}>Total time spent: </Text>
+          <Text style={styles.detailViewBody}>{this.props.timeSpent}</Text>
+        </View>
         </View>
       )
     }

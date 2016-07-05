@@ -6,7 +6,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: '#232323'
+    backgroundColor: '#232323',
+    marginTop: 60,
+    marginBottom: 49
   },
   detailContainer: {
     flex: 1,
@@ -17,7 +19,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   segmentControl: {
-    marginTop: 70,
+    marginTop: 10,
     marginHorizontal: 10
   },
   navBar: {
@@ -225,6 +227,10 @@ const styles = StyleSheet.create({
     borderLeftColor: 'transparent',
     backgroundColor: 'transparent',
   },
+  inline: {
+    flex: 1,
+    flexDirection: 'row'
+  },
   rowStyle: {
     paddingVertical: 20,
     paddingHorizontal: 10,
@@ -243,12 +249,26 @@ const styles = StyleSheet.create({
   detailViewTitle: {
     color: '#48BBEC',
     fontSize: 30,
+    paddingBottom: 10,
     fontWeight: '800',
     marginBottom: 30,
   },
+  detailViewBodyHeader: {
+    fontWeight: '800',
+    color: 'white',
+    fontSize: 14,
+    marginVertical: 10,
+    borderBottomColor: '#929292'
+  },
   detailViewBody: {
     color: 'white',
-    fontSize: 20,
+    fontSize: 14,
+    marginVertical: 10,
+    borderBottomColor: '#929292'
+  },
+  editViewBody: {
+    color: '#48BBEC',
+    fontSize: 14,
     marginVertical: 10,
     borderBottomColor: '#929292'
   }

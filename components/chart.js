@@ -46,6 +46,7 @@ class Chart extends Component {
         );
       });
       var listLocations = locations.map((location, i) => {
+
         let time = times.find(time => {
           return time.locationId === location.id;
         });
@@ -62,6 +63,7 @@ class Chart extends Component {
           if (percentage > greatestPercentage) greatestPercentage = percentage;
         }
         let percentageStyle = (percent < 1) ? styles.lessThan1 : styles.barText;
+
         return (
           <View key={location.name} style={styles.chartRow}>
             <Text style={styles.chartText}>{location.name}</Text>
