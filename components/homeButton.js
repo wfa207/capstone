@@ -56,19 +56,22 @@ class HomeButton extends Component {
         .catch(console.error);
       }
 
-      AlertIOS.prompt('Location Name', 'Please enter a name for this location', [
-        {
-          text: 'Not Now',
-          onPress: () => getLocationName(),
-          style: 'destructive'
-        }, {
-          text: 'Enter',
-          onPress: text => getLocationName(text),
-          style: 'default'
-        }
-      ]);
+      if (this.state.logging) {
+        AlertIOS.prompt('Location Name', 'Please enter a name for this location', [
+          {
+            text: 'Not Now',
+            onPress: () => getLocationName(),
+            style: 'destructive'
+          }, {
+            text: 'Enter',
+            onPress: text => getLocationName(text),
+            style: 'default'
+          }
+        ]);
+      }
     })
     .catch(console.error);
+
 }
 
   startStopLog() {
