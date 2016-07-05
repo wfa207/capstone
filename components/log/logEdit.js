@@ -9,11 +9,10 @@ import {
 } from 'react-native';
 import styles from '../styles';
 
-class LogEditView extends Component {
-  constructor(props) {
-    super(props);
-    this.state = this.props;
-  }
+var LogEditView = React.createClass({
+  getInitialState() {
+    return this.props;
+  },
 
   editLocationName(oldName, newName) {
     AsyncStorage.getItem('locations')
@@ -32,16 +31,10 @@ class LogEditView extends Component {
     .then(locations => {
       locations = JSON.stringify(locations);
       AsyncStorage.setItem('locations', locations)
-  // =====================================================
-      .then(() => {
-        AsyncStorage.getItem('locations')
-        .then(locations => {
-          locations = JSON.parse(locations);
-          console.log(locations);
-        });
-      });
-    });
-  }
+      .catch(console.error);
+    })
+    .catch(console.error);
+  },
 
   locationOrActivityRender(isLocation) {
     if (!isLocation) {
@@ -59,10 +52,6 @@ class LogEditView extends Component {
           <Text style={styles.detailViewBody}>City: </Text>
           <TextInput
           style={[styles.editViewBody, {height:40}]}
-          ref={component => this._cityInput = component}
-          onEndEditing={() => {
-            console.log(this._cityInput._lastNativeText);
-          }}
           defaultValue={this.props.city}/>
           <Text style={styles.detailViewBody}>State: </Text>
           <TextInput style={[styles.editViewBody, {height:40}]} defaultValue={this.props.state}/>
@@ -76,16 +65,17 @@ class LogEditView extends Component {
         </View>
       )
     }
-  }
+  },
 
   render() {
     var isLocation = this.props.type === 'Locations';
     return (
-      <View style={styles.detailContainer}>
+      <View
+      style={styles.detailContainer}>
         <TextInput style={[styles.detailViewTitle, {height: 30}]}
         ref={component => this._nameInput = component}
         onEndEditing={() => {
-          console.log('ROUTE', this)
+          console.log(this);
           this.editLocationName(this.props.name, this._nameInput._lastNativeText);
         }
         }
@@ -94,8 +84,6 @@ class LogEditView extends Component {
       </View>
     )
   }
-
-
-}
+});
 
 module.exports = LogEditView;
