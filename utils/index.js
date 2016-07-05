@@ -49,6 +49,15 @@ var utils = {
     });
   },
 
+  fetchValueData(value) {
+    value = value.toLowerCase();
+    return AsyncStorage.getItem(value)
+    .then((items) => {
+      items = JSON.parse(items);
+      return items;
+    });
+  },
+
   fetchTimes() {
     let times;
     return AsyncStorage.getItem('times')

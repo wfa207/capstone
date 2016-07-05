@@ -40,7 +40,7 @@ var Log = React.createClass({
     .catch(console.error);
   },
 
-  componentWillMount() {
+  refreshData() {
     this.fetchValueData(this.state.value)
     .then((items) => {
       this.setState({
@@ -49,6 +49,14 @@ var Log = React.createClass({
       });
     })
     .catch(console.error);
+  },
+
+  componentWillMount() {
+    return this.refreshData();
+  },
+
+  componentWillReceiveProps() {
+    return this.refreshData();
   },
 
   _onValueChange(value) {
@@ -86,7 +94,6 @@ var Log = React.createClass({
     } else {
       return (
         <View style={styles.container}>
-          <Text style={styles.optionsText}>Pull up to refresh!</Text>
           <ListView
           refreshControl={
             <RefreshControl
