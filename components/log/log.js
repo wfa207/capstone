@@ -30,22 +30,30 @@ var Log = React.createClass({
 
   _onRefresh() {
     this.setState({refreshing: true});
-    this.fetchValueData(this.state.value)
-    .then((items) => {
-      this.setState({
-        dataSource: ds.cloneWithRows(items),
-        refreshing: false
-      });
-    })
-    .catch(console.error);
+    this.refreshData();
   },
 
   refreshData() {
     this.fetchValueData(this.state.value)
     .then((items) => {
+      var itemNames = {};
+      var condensedItems = [];
+      items.forEach((item) => {
+        var name = item.name;
+        if (!itemNames[name]) {
+          itemNames[name] = 1;
+          condensedItems.push(item);
+        } else {
+          itemNames[name] += 1;
+        }
+      });
+      condensedItems.forEach((item) => {
+        item.visits = itemNames[item.name];
+      });
       this.setState({
-        dataSource: ds.cloneWithRows(items),
-        loading: false
+        dataSource: ds.cloneWithRows(condensedItems),
+        loading: false,
+        refreshing: false
       });
     })
     .catch(console.error);

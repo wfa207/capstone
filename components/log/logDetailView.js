@@ -32,6 +32,10 @@ class LogDetailView extends Component {
           <Text style={styles.detailViewBodyHeader}>Total time spent: </Text>
           <Text style={styles.detailViewBody}>{this.props.timeSpent}</Text>
         </View>
+        <View style={styles.inline}>
+          <Text style={styles.detailViewBodyHeader}>Total visits: </Text>
+          <Text style={styles.detailViewBody}>{this.props.visits}</Text>
+        </View>
         </View>
       )
     }
