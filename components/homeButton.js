@@ -56,7 +56,7 @@ class HomeButton extends Component {
         .catch(console.error);
       }
 
-      AlertIOS.prompt('Activity Name', 'Please enter a name for this activity', [
+      AlertIOS.prompt('Location Name', 'Please enter a name for this location', [
         {
           text: 'Not Now',
           onPress: () => getLocationName(),
