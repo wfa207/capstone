@@ -41,11 +41,13 @@ var Map = React.createClass({
 
   markerGenerator(locations) {
     var markers = locations.map(function(location) {
+      console.log(location);
       var marker = {
         latlng: { latitude: location.coordinates[0], longitude: location.coordinates[1]},
         title: location.name,
         description: location.description
       };
+      return marker;
     });
     return markers;
   },

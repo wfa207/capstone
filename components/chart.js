@@ -29,7 +29,7 @@ class Chart extends Component {
   componentWillMount () {
     const locationNames = ['location1'];
     const width = this.getWidth(this.state, locationNames);
-    let colors = ['#7F4FE1', '#F1FF58', '#FF1600', '#007AFF', '#49FF56'];
+    let colors = ['#7F4FE1', '#F1FF58', '#FF1600', '#007AFF', '#49FF56', '#FF6200', '#00FF98', '#1200FF', '#FF0DCF', '#FFFEFB'];
     let times;
     fetchTimes()
     .then(_times => {
@@ -66,7 +66,7 @@ class Chart extends Component {
         return (
           <View key={location.name} style={styles.chartRow}>
             <Text style={styles.chartText}>{location.name}</Text>
-            <Animated.View style={[styles.bar, {backgroundColor: colors[i]}, {width: this.state[location.id]}]}>
+            <Animated.View style={[styles.bar, {backgroundColor: colors[i % 10]}, {width: this.state[location.id]}]}>
               <Animated.Text style={[percentageStyle, {opacity: this.state.fadeAnim}]}>{percentDisplay}%</Animated.Text>
             </Animated.View>
           </View>
