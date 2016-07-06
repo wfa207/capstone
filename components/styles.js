@@ -271,6 +271,27 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginVertical: 10,
     borderBottomColor: '#929292'
+  },
+  modal: {
+    position: 'absolute',
+    top: 80,
+    left: 45,
+    bottom: 300,
+    right: 45,
+    borderRadius: 15,
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    opacity: 0.75,
+  },
+  autocomplete: {
+    height: 26,
+    borderWidth: 0.5,
+    borderColor: '#0f0f0f',
+    flex: 1,
+    fontSize: 13,
+    padding: 4,
+    borderRadius: 15
   }
 });
 
