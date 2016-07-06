@@ -43,6 +43,7 @@ class Chart extends Component {
     fetchTimes()
     .then(_times => {
       times = _times;
+      console.log(times)
       return fetchAllLocations()
     })
     .then(locations => {
@@ -54,24 +55,33 @@ class Chart extends Component {
           }
         );
       });
-      var listLocations = locations.map((location, i) => {
-
+      let totalTimeSpent = 0;
+      let locationTimes = locations.map(location => {
+        console.log(location)
         let time = times.find(time => {
           return time.locationId === location.id;
         });
+        console.log(time)
         time.arrived = new Date(time.arrived);
         time.left = new Date(time.left);
-        let timeArrived = time.arrived.getHours() * 60 + time.arrived.getMinutes();
-        let timeLeft = time.left.getHours() * 60 + time.left.getMinutes();
+        let timeArrived = time.arrived.getHours() * 3600 + time.arrived.getMinutes() * 60 + time.arrived.getSeconds();
+        let timeLeft = time.left.getHours() * 3600 + time.left.getMinutes() * 60 + time.left.getSeconds();
         let timeSpent = timeLeft-timeArrived;
-        let percent = Math.floor(timeSpent/(24*60)*10000)/100;
-        let percentDisplay = (percent < 1) ? "<1" : (Math.round(percent)).toString();
+        totalTimeSpent += timeSpent;
+        return timeSpent;
+      });
+      let listLocations = locations.map((location, i) => {
+        let timeSpent = locationTimes[i];
+        let percent = Math.floor(timeSpent/(totalTimeSpent)*1000000)/10000;
+        let percentDisplay, percentageStyle;
         locationPercentages[location.id] = percent;
         for (let key in locationPercentages) {
           let percentage = locationPercentages[key];
           if (percentage > greatestPercentage) greatestPercentage = percentage;
+          let ratio = percentage/greatestPercentage;
+          percentageStyle = (ratio < 0.2) ? styles.lessThan1 : styles.barText;
+          percentDisplay = (percent < 1 && ratio < 0.01) ? "<1" : (Math.floor(percent*100)/100).toString()
         }
-        let percentageStyle = (percent < 1) ? styles.lessThan1 : styles.barText;
 
         return {
           location: location,
@@ -122,13 +132,25 @@ class Chart extends Component {
           <ListView
           dataSource={this.state.dataSource}
           renderRow={rowData => {
+            let hours = Math.floor(rowData.timeSpent/3600);
+            let hourStr = (hours == 0) ? "" : (hours == 1) ? hours + " hr" : hours + " hrs";
+            let minutes = Math.floor(rowData.timeSpent/60);
+            let minStr = (minutes == 0) ? "" : (minutes == 1) ? minutes + " min" : minutes + " mins";
+            let seconds = Math.floor(rowData.timeSpent%3600)%60;
+            let secStr = (seconds == 0) ? "" : (seconds == 1) ? seconds + " sec" : seconds + " secs";
+            let arr = [hourStr, minStr, secStr];
+            let output = arr.filter(str => {
+              return (str.length > 0) ? true : false;
+            });
             return (
               <View key={rowData.location.name} style={styles.chartRow}>
                 <Text style={styles.chartText}>{rowData.location.name}</Text>
+                <Animated.Text style={[styles.timeText, {opacity: this.state.fadeAnim}]}>
+                  {output.join(', ')}
+                </Animated.Text>
                 <Animated.View style={[styles.bar, {backgroundColor: rowData.colors[rowData.i % 10]}, {width: this.state[rowData.location.id]}]}>
                   <Animated.Text style={[rowData.percentageStyle, {opacity: this.state.fadeAnim}]}>
-                    {rowData.percentDisplay}%, {Math.floor(rowData.timeSpent/60)} hrs, {Math.floor(rowData.timeSpent%60)} mins, 
-                    {Math.floor((rowData.timeSpent - Math.floor(rowData.timeSpent%60))*60)} secs
+                    {rowData.percentDisplay}%
                   </Animated.Text>
                 </Animated.View>
               </View>

@@ -10,22 +10,24 @@ import {
   View
 } from 'react-native';
 import styles from './styles';
-import {getCurrentLocation, fetchTimes, fetchAndStoreData} from '../utils';
+import {getCurrentLocation, fetchTimes, fetchAndStoreData, revGeocode} from '../utils';
 import {SERVER_ROUTE} from '../server/env/development';
+
+var time = {};
+var newLocation = {};
 
 class HomeButton extends Component {
   constructor(props) {
     super(props)
     this.state = {
       logging: false,
-      activities: []
+      activities: [],
     }
   }
 
   saveLocation(position) {
     var me = this;
     me.setState({logging: !me.state.logging});
-    let time = {};
     return AsyncStorage.getItem('locations')
     .then(locations => {
 
@@ -47,25 +49,47 @@ class HomeButton extends Component {
 
           name = formattedTime + " | " + lat + ", " + long;
         }
+        newLocation = {
+          id: id,
+          name: name,
+          coordinates: [latitude, longitude],
+          city: 'New York',
+          state: 'NY',
+          country: 'United States',
+          visits: 1,
+          timeSpent: 0,
+        };
+        locations.push(newLocation);
 
-        revGeocode(latitude, longitude)
-        .then(locData => {
-          locations.push({
-            id: id,
-            name: name,
-            coordinates: [latitude, longitude],
-            city: locData.city,
-            state: locData.state,
-            country: locData.country,
-            visits: 1,
-            timeSpent: 0,
-          });
-          return AsyncStorage.setItem('locations', JSON.stringify(locations))
+        time.left = (new Date()).toString();
+        time.locationId = newLocation.id;
+        let times;
+        return AsyncStorage.setItem('locations', JSON.stringify(locations))
+        .then(() => {
+          // store in database
+          // return fetchAndStoreData("/api/users/1/locations", JSON.stringify(locations));
+          return fetchTimes();
+        })
+        .then(times => {
+          time.id = times.length + 1;
+          time.dayId = 1;
+          time.userId = 1;
+          times.push(time);
+          return times;
+        })
+        .then(_times => {
+          times = _times;
+          console.log(times)
+          return AsyncStorage.setItem('times', JSON.stringify(times));
+        })
+        .then(() => {
+          return fetchAndStoreData("/api/users/1/times", JSON.stringify(times));
         })
         .catch(console.error);
       }
-
-      if (this.state.logging) {
+      if (this.state.logging)
+        time.arrived = (new Date()).toString();
+      else {
         AlertIOS.prompt('Location Name', 'Please enter a name for this location', [
           {
             text: 'Not Now',
@@ -77,19 +101,6 @@ class HomeButton extends Component {
             style: 'default'
           }
         ]);
-        time.arrived = new Date();
-      }
-      else {
-        time.left = new Date();
-        fetchTimes()
-        .then(times => {
-          times.push(time);
-          return times;
-        })
-        .then(times => {
-          return fetchAndStoreData("/api/users/1/times", 'times');
-        })
-        .catch(console.error);
       }
     })
     .catch(console.error);
