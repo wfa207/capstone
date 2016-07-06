@@ -37,29 +37,28 @@ var LogEditView = React.createClass({
   locationOrActivityRender(isLocation) {
     if (!isLocation) {
       return (
-        <View>
-        <View style={styles.inline}>
-          <Text>Label: </Text>
-          <TextInput style={[styles.detailViewBody, {height:30}]} defaultValue={this.props.description}/>
-        </View>
-        </View>
+        <Text style={styles.detailViewBody}>
+          {this.props.description}
+          {this.props.time_traveled}
+        </Text>
       )
     } else {
       return (
         <View>
-          <Text style={styles.detailViewBody}>City: </Text>
-          <TextInput
-          style={[styles.editViewBody, {height:40}]}
-          defaultValue={this.props.city}/>
-          <Text style={styles.detailViewBody}>State: </Text>
-          <TextInput style={[styles.editViewBody, {height:40}]} defaultValue={this.props.state}/>
-          <Text style={styles.detailViewBody}>Country: </Text>
-          <TextInput style={[styles.editViewBody, {height:40}]} defaultValue={this.props.country}/>
-          <Text style={styles.detailViewBody}>Description: </Text>
-          <TextInput
-          style={[styles.editViewBody, {height:40}]}
-          multiline={true}
-          defaultValue={this.props.description}/>
+        <View style={styles.inline}>
+          <Text style={styles.detailViewBodyHeader}>Location: </Text>
+          <Text style={styles.detailViewBody}>
+          {this.props.city}, {this.props.state}, {this.props.country}
+          </Text>
+        </View>
+        <View style={styles.inline}>
+          <Text style={styles.detailViewBodyHeader}>Total time spent: </Text>
+          <Text style={styles.detailViewBody}>{this.props.timeSpent}</Text>
+        </View>
+        <View style={styles.inline}>
+          <Text style={styles.detailViewBodyHeader}>Total visits: </Text>
+          <Text style={styles.detailViewBody}>{this.props.visits}</Text>
+        </View>
         </View>
       )
     }
@@ -70,7 +69,7 @@ var LogEditView = React.createClass({
     return (
       <View
       style={styles.detailContainer}>
-        <TextInput style={[styles.detailViewTitle, {height: 30}]}
+        <TextInput style={[styles.detailViewTitle, {height: 40}]}
         ref={component => this._nameInput = component}
         defaultValue={this.props.name}/>
         {this.locationOrActivityRender(isLocation)}

@@ -59,9 +59,23 @@ var utils = {
   },
 
   revGeocode(lat, long) {
-    var iOS_API_key = GOOGLE.iOS_API_key;
-    var APIurl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
-
+    var valid = lat && long;
+    var iOS_API_key = valid ? GOOGLE.iOS_API_key : undefined;
+    var searchParams = valid ? ('?latlng=' + lat + ',' + long + '&key=' + iOS_API_key) : undefined;
+    var APIurl = valid ? ('https://maps.googleapis.com/maps/api/geocode/json' + searchParams) : undefined;
+    return fetch(APIurl)
+    .then(response => {
+      console.log(response);
+      var data = response['address_components'];
+      var obj = {
+        city: data[3].short_name,
+        state: data[5].short_name,
+        country: data[6].long_name,
+        zip: data[7].short_name
+      }
+      console.log(obj);
+      return obj;
+    })
   },
 
   fetchTimes() {

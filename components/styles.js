@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     height: 15,
     position: 'absolute',
-    top: 40,
+    top: 60,
     left: 20,
     right: 20
   },
@@ -195,11 +195,19 @@ const styles = StyleSheet.create({
     left: 5,
     backgroundColor: 'transparent'
   },
+  timeText: {
+    color: 'white',
+    fontSize: 10,
+    fontWeight: '700',
+    left: 10,
+    backgroundColor: 'transparent'
+  },
   lessThan1: {
     fontSize: 10,
     fontWeight: '700',
     color: 'white',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    position: 'absolute',
   },
   chartContainer: {
     flex: 1,

@@ -44,7 +44,7 @@ var LogNav = React.createClass({
                 <TouchableHighlight
                 underlaycolor="transparent"
                 onPress={() => navigator.push({
-                  title: "Edit",
+                  title: "Edit Name",
                   component: LogEditView,
                   passProps: route.passProps,
                 })}>
@@ -52,7 +52,7 @@ var LogNav = React.createClass({
                 </TouchableHighlight>
               );
             break;
-            case 'Edit':
+            case 'Edit Name':
               return (
                 <TouchableHighlight
                 onPress={() => {
