@@ -27,7 +27,15 @@ class Chart extends Component {
     }
   }
 
-  componentWillMount () {
+  componentWillMount() {
+    this.getCharts();
+  }
+
+  componentWillReceiveProps() {
+    this.getCharts();
+  }
+
+  getCharts() {
     const locationNames = ['location1'];
     const width = this.getWidth(this.state, locationNames);
     let colors = ['#7F4FE1', '#F1FF58', '#FF1600', '#007AFF', '#49FF56', '#FF6200', '#00FF98', '#1200FF', '#FF0DCF', '#FFFEFB'];
