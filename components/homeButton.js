@@ -10,7 +10,7 @@ import {
   View
 } from 'react-native';
 import styles from './styles';
-import {getCurrentLocation} from '../utils';
+import {getCurrentLocation, fetchTimes, fetchAndStoreData} from '../utils';
 import {SERVER_ROUTE} from '../server/env/development';
 
 class HomeButton extends Component {
@@ -25,6 +25,7 @@ class HomeButton extends Component {
   saveLocation(position) {
     var me = this;
     me.setState({logging: !me.state.logging});
+    let time = {};
     return AsyncStorage.getItem('locations')
     .then(locations => {
 
@@ -68,6 +69,19 @@ class HomeButton extends Component {
             style: 'default'
           }
         ]);
+        time.arrived = new Date();
+      }
+      else {
+        time.left = new Date();
+        fetchTimes()
+        .then(times => {
+          times.push(time);
+          return times;
+        })
+        .then(times => {
+          return fetchAndStoreData("/api/users/1/times", 'times');
+        })
+        .catch(console.error);
       }
     })
     .catch(console.error);
