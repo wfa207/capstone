@@ -4,7 +4,7 @@ import {
   AsyncStorage
 } from 'react-native';
 
-import {SERVER_ROUTE} from '../server/env/development';
+import {SERVER_ROUTE, GOOGLE} from '../server/env/development';
 
 var utils = {
   getCurrentLocation(cb) {
@@ -56,6 +56,12 @@ var utils = {
       items = JSON.parse(items);
       return items;
     });
+  },
+
+  revGeocode(lat, long) {
+    var iOS_API_key = GOOGLE.iOS_API_key;
+    var APIurl = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=';
+
   },
 
   fetchTimes() {
