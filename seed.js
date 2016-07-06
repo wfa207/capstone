@@ -82,8 +82,8 @@ var seedUsers = function () {
 
 var locations = [
     {
-        name: 'Fullstack Academy',
-        coordinates: [40.7050614, -74.00915429999998],
+        name: 'Rockefeller Center',
+        coordinates: [40.7586101, -73.9782093],
         city: 'New York',
         state: 'NY',
         country: 'United States'
@@ -189,43 +189,55 @@ db.sync({ force: true })
         let time;
         let dateArrived = new Date();
         let dateLeft = new Date();
-        let hourArrived, hourLeft, minuteArrived, minuteLeft;
+        let hourArrived, hourLeft, minuteArrived, minuteLeft, secondArrived, secondLeft;
         switch ((location.id - 1) % 5) {
           case 0:
             hourArrived = 9;
             minuteArrived = 0;
-            hourLeft = 11;
-            minuteLeft = 27;
+            secondArrived = 0;
+            hourLeft = 9;
+            minuteLeft = 0;
+            secondLeft = 30;
             break;
           case 1:
             hourArrived = 11;
-            minuteArrived = 50;
-            hourLeft = 14;
-            minuteLeft = 12;
+            minuteArrived = 8;
+            secondArrived = 0;
+            hourLeft = 11;
+            minuteLeft = 9;
+            secondLeft = 10;
             break;
           case 2:
             hourArrived = 15;
             minuteArrived = 2;
-            hourLeft = 16;
-            minuteLeft = 40;
+            secondArrived = 10;
+            hourLeft = 15;
+            minuteLeft = 2;
+            secondLeft = 20;
             break;
           case 3:
             hourArrived = 17;
             minuteArrived = 9;
+            secondArrived = 10;
             hourLeft = 17;
-            minuteLeft = 20;
+            minuteLeft = 9;
+            secondLeft = 55;
             break;
           case 4:
             hourArrived = 17;
             minuteArrived = 50;
-            hourLeft = 22;
-            minuteLeft = 55;
+            secondArrived = 5;
+            hourLeft = 17;
+            minuteLeft = 50;
+            secondLeft = 7;
             break;
         }
         dateArrived.setHours(hourArrived);
         dateArrived.setMinutes(minuteArrived);
+        dateArrived.setSeconds(secondArrived);
         dateLeft.setHours(hourLeft);
         dateLeft.setMinutes(minuteLeft);
+        dateLeft.setSeconds(secondLeft);
         return Time.create({
             arrived: dateArrived,
             left: dateLeft
@@ -279,10 +291,10 @@ db.sync({ force: true })
     return Promise.all(updatingTrips);
 })
 .then(() => {
-    (chalk.green('Seed successful!'));
+    console.log(chalk.green('Seed successful!'));
     process.exit(0);
 })
 .catch(err => {
-    console.error(err);
+    console.error(chalk.red(err));
     process.exit(1);
 });

@@ -63,7 +63,8 @@ class Chart extends Component {
         time.left = new Date(time.left);
         let timeArrived = time.arrived.getHours() * 60 + time.arrived.getMinutes();
         let timeLeft = time.left.getHours() * 60 + time.left.getMinutes();
-        let percent = Math.floor((timeLeft-timeArrived)/(24*60)*10000)/100;
+        let timeSpent = timeLeft-timeArrived;
+        let percent = Math.floor(timeSpent/(24*60)*10000)/100;
         let percentDisplay = (percent < 1) ? "<1" : (Math.round(percent)).toString();
         locationPercentages[location.id] = percent;
         for (let key in locationPercentages) {
@@ -77,7 +78,8 @@ class Chart extends Component {
           percentageStyle: percentageStyle,
           percentDisplay: percentDisplay,
           colors: colors,
-          i: i
+          i: i,
+          timeSpent: timeSpent
         };
       })
       this.setState({
@@ -120,12 +122,14 @@ class Chart extends Component {
           <ListView
           dataSource={this.state.dataSource}
           renderRow={rowData => {
-            console.log(rowData)
             return (
               <View key={rowData.location.name} style={styles.chartRow}>
                 <Text style={styles.chartText}>{rowData.location.name}</Text>
                 <Animated.View style={[styles.bar, {backgroundColor: rowData.colors[rowData.i % 10]}, {width: this.state[rowData.location.id]}]}>
-                  <Animated.Text style={[rowData.percentageStyle, {opacity: this.state.fadeAnim}]}>{rowData.percentDisplay}%</Animated.Text>
+                  <Animated.Text style={[rowData.percentageStyle, {opacity: this.state.fadeAnim}]}>
+                    {rowData.percentDisplay}%, {Math.floor(rowData.timeSpent/60)} hrs, {Math.floor(rowData.timeSpent%60)} mins, 
+                    {Math.floor((rowData.timeSpent - Math.floor(rowData.timeSpent%60))*60)} secs
+                  </Animated.Text>
                 </Animated.View>
               </View>
             )}}
