@@ -10,7 +10,7 @@ import {
   View
 } from 'react-native';
 import styles from './styles';
-import {getCurrentLocation} from '../utils';
+import {getCurrentLocation, revGeocode} from '../utils';
 import {SERVER_ROUTE} from '../server/env/development';
 
 class HomeButton extends Component {
@@ -28,7 +28,7 @@ class HomeButton extends Component {
     return AsyncStorage.getItem('locations')
     .then(locations => {
 
-      function getLocationName(inputName) {
+      function getLocation(inputName) {
         locations = JSON.parse(locations);
         let latitude = position.coords.latitude, longitude = position.coords.longitude;
         let id = (locations ? locations.length : 0) + 1;
@@ -47,12 +47,20 @@ class HomeButton extends Component {
           name = formattedTime + " | " + lat + ", " + long;
         }
 
-        locations.push({
-          id: id,
-          name: name,
-          coordinates: [latitude, longitude]
-        });
-        return AsyncStorage.setItem('locations', JSON.stringify(locations))
+        revGeocode(latitude, longitude)
+        .then(locData => {
+          locations.push({
+            id: id,
+            name: name,
+            coordinates: [latitude, longitude],
+            city: locData.city,
+            state: locData.state,
+            country: locData.country,
+            visits: 1,
+            timeSpent: 0,
+          });
+          return AsyncStorage.setItem('locations', JSON.stringify(locations))
+        })
         .catch(console.error);
       }
 
@@ -60,11 +68,11 @@ class HomeButton extends Component {
         AlertIOS.prompt('Location Name', 'Please enter a name for this location', [
           {
             text: 'Not Now',
-            onPress: () => getLocationName(),
+            onPress: () => getLocation(),
             style: 'destructive'
           }, {
             text: 'Enter',
-            onPress: text => getLocationName(text),
+            onPress: text => getLocation(text),
             style: 'default'
           }
         ]);
