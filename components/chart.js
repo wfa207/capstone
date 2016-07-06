@@ -43,7 +43,6 @@ class Chart extends Component {
     fetchTimes()
     .then(_times => {
       times = _times;
-      console.log(times)
       return fetchAllLocations()
     })
     .then(locations => {
@@ -57,11 +56,9 @@ class Chart extends Component {
       });
       let totalTimeSpent = 0;
       let locationTimes = locations.map(location => {
-        console.log(location)
         let time = times.find(time => {
           return time.locationId === location.id;
         });
-        console.log(time)
         time.arrived = new Date(time.arrived);
         time.left = new Date(time.left);
         let timeArrived = time.arrived.getHours() * 3600 + time.arrived.getMinutes() * 60 + time.arrived.getSeconds();
@@ -73,25 +70,30 @@ class Chart extends Component {
       let listLocations = locations.map((location, i) => {
         let timeSpent = locationTimes[i];
         let percent = Math.floor(timeSpent/(totalTimeSpent)*1000000)/10000;
-        let percentDisplay, percentageStyle;
+        let percentDisplay, percentageStyle, ratio;
         locationPercentages[location.id] = percent;
         for (let key in locationPercentages) {
           let percentage = locationPercentages[key];
           if (percentage > greatestPercentage) greatestPercentage = percentage;
-          let ratio = percentage/greatestPercentage;
-          percentageStyle = (ratio < 0.2) ? styles.lessThan1 : styles.barText;
+          ratio = percentage/greatestPercentage;
+          percentageStyle = (ratio < 0.1) ? styles.lessThan1 : styles.barText;
           percentDisplay = (percent < 1 && ratio < 0.01) ? "<1" : (Math.floor(percent*100)/100).toString()
         }
 
         return {
           location: location,
+          percent: percent,
+          ratio: ratio,
           percentageStyle: percentageStyle,
           percentDisplay: percentDisplay,
           colors: colors,
           i: i,
           timeSpent: timeSpent
         };
-      })
+      });
+      listLocations.sort((a,b) => {
+        return b.percent - a.percent;
+      });
       this.setState({
         listLocations: listLocations,
         dataSource: ds.cloneWithRows(listLocations),
@@ -142,6 +144,12 @@ class Chart extends Component {
             let output = arr.filter(str => {
               return (str.length > 0) ? true : false;
             });
+            let smallPercentage = rowData.ratio < 0.1;
+            let barStyles = [rowData.percentageStyle, {opacity: this.state.fadeAnim, position: 'absolute',
+                                                        top: 60, left: 25}];
+            if (smallPercentage) {
+              barStyles[1].left = 20 + 12*Math.floor(rowData.percent);
+            }
             return (
               <View key={rowData.location.name} style={styles.chartRow}>
                 <Text style={styles.chartText}>{rowData.location.name}</Text>
@@ -149,10 +157,10 @@ class Chart extends Component {
                   {output.join(', ')}
                 </Animated.Text>
                 <Animated.View style={[styles.bar, {backgroundColor: rowData.colors[rowData.i % 10]}, {width: this.state[rowData.location.id]}]}>
-                  <Animated.Text style={[rowData.percentageStyle, {opacity: this.state.fadeAnim}]}>
-                    {rowData.percentDisplay}%
-                  </Animated.Text>
                 </Animated.View>
+                <Animated.Text style={barStyles}>
+                  {rowData.percentDisplay}%
+                </Animated.Text>
               </View>
             )}}
           />
