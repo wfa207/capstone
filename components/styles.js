@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 40,
     left: 20,
-    right: 0
+    right: 20
   },
   barText: {
     fontSize: 10,
@@ -201,6 +201,12 @@ const styles = StyleSheet.create({
     color: 'white',
     backgroundColor: 'transparent'
   },
+  chartContainer: {
+    flex: 1,
+    backgroundColor: '#232323',
+    marginTop: 60,
+    marginBottom: 49
+  },
   chartTitle: {
     fontSize: 30,
     fontWeight: '700',
@@ -208,8 +214,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     padding: 3,
-    position: 'absolute',
-    top: 75,
+    top: 10,
     left: 0,
     right: 0,
   },

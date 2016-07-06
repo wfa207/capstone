@@ -22,7 +22,8 @@ class Chart extends Component {
       start: new Animated.Value(0),
       location1: 300,
       isLoading: true,
-      fadeAnim: new Animated.Value(0)
+      fadeAnim: new Animated.Value(0),
+      dataSource: ds.cloneWithRows(['row 1', 'row 2'])
     }
   }
 
@@ -63,17 +64,17 @@ class Chart extends Component {
         }
         let percentageStyle = (percent < 1) ? styles.lessThan1 : styles.barText;
 
-        return (
-          <View key={location.name} style={styles.chartRow}>
-            <Text style={styles.chartText}>{location.name}</Text>
-            <Animated.View style={[styles.bar, {backgroundColor: colors[i % 10]}, {width: this.state[location.id]}]}>
-              <Animated.Text style={[percentageStyle, {opacity: this.state.fadeAnim}]}>{percentDisplay}%</Animated.Text>
-            </Animated.View>
-          </View>
-        );
+        return {
+          location: location,
+          percentageStyle: percentageStyle,
+          percentDisplay: percentDisplay,
+          colors: colors,
+          i: i
+        };
       })
       this.setState({
         listLocations: listLocations,
+        dataSource: ds.cloneWithRows(listLocations),
         isLoading: false
       });
       Animated.parallel(locations.map(location => {
@@ -104,13 +105,26 @@ class Chart extends Component {
           <ActivityIndicator />
         </View>
       );
+    } else {
+      return (
+        <View style={styles.chartContainer}>
+          <Text style={styles.chartTitle}>Breakdown of Today</Text>
+          <ListView
+          dataSource={this.state.dataSource}
+          renderRow={rowData => {
+            console.log(rowData)
+            return (
+              <View key={rowData.location.name} style={styles.chartRow}>
+                <Text style={styles.chartText}>{rowData.location.name}</Text>
+                <Animated.View style={[styles.bar, {backgroundColor: rowData.colors[rowData.i % 10]}, {width: this.state[rowData.location.id]}]}>
+                  <Animated.Text style={[rowData.percentageStyle, {opacity: this.state.fadeAnim}]}>{rowData.percentDisplay}%</Animated.Text>
+                </Animated.View>
+              </View>
+            )}}
+          />
+        </View>
+      )
     }
-    return (
-      <View style={styles.container}>
-        <Text style={styles.chartTitle}>Breakdown of Today</Text>
-        {this.state.listLocations}
-      </View>
-    )
   }
 }
 
