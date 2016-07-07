@@ -9,6 +9,7 @@
 
 import React, { Component } from 'react';
 import {
+  AsyncStorage,
   AppRegistry,
   View
 } from 'react-native';
@@ -25,6 +26,7 @@ class capstone extends Component {
   }
 
   componentWillMount() {
+    AsyncStorage.clear();
     initialFetchAndStoreData("/api/users/1/locations", 'locations');
     initialFetchAndStoreData("/api/users/1/trips", 'activities');
     initialFetchAndStoreData("/api/users/1/times", 'times');

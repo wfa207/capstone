@@ -14,6 +14,7 @@ import styles from './styles';
 import {fetchAllLocations, fetchTimes} from '../utils';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+var greatestPercentage = 0;
 
 class Chart extends Component {
   constructor (props) {
@@ -32,6 +33,7 @@ class Chart extends Component {
   }
 
   componentWillReceiveProps() {
+    this.setState({fadeAnim: new Animated.Value(0)});
     this.getCharts();
   }
 
@@ -46,7 +48,9 @@ class Chart extends Component {
       return fetchAllLocations()
     })
     .then(locations => {
-      let locationPercentages = {}, greatestPercentage = 0;
+      // locationPercentages is an array-like object that uses location.id as 
+      //   its key values
+      let locationPercentages = {};
       locations.forEach(location => {
         this.setState(
           {
@@ -55,6 +59,9 @@ class Chart extends Component {
         );
       });
       let totalTimeSpent = 0;
+      // locationTimes is an array that stores the times (arrived and left)
+      //   of a specific location
+      // its indices are the same as locations' indices
       let locationTimes = locations.map(location => {
         let time = times.find(time => {
           return time.locationId === location.id;
@@ -67,18 +74,33 @@ class Chart extends Component {
         totalTimeSpent += timeSpent;
         return timeSpent;
       });
+
+      // fill up the locationPercentages object that will be used to store
+      //   the 'percentage' information about each location
+      // the key is the location ids
+      locations.forEach((location, i) => {
+        let timeSpent = locationTimes[i];
+        let percent = Math.floor(timeSpent/(totalTimeSpent)*1000000)/10000;
+        locationPercentages[location.id] = percent;
+      });
+
+      // Get the greatest percentage out of all the locations
+      for (let key in locationPercentages) {
+        let percentage = locationPercentages[key];
+        if (percentage > greatestPercentage) greatestPercentage = percentage;
+      }
+
+      // start setting up listLocations, which is an array of objects,
+      //   each of which store information about styling and values that will be
+      //   displayed on the view
       let listLocations = locations.map((location, i) => {
         let timeSpent = locationTimes[i];
         let percent = Math.floor(timeSpent/(totalTimeSpent)*1000000)/10000;
         let percentDisplay, percentageStyle, ratio;
-        locationPercentages[location.id] = percent;
-        for (let key in locationPercentages) {
-          let percentage = locationPercentages[key];
-          if (percentage > greatestPercentage) greatestPercentage = percentage;
-          ratio = percentage/greatestPercentage;
-          percentageStyle = (ratio < 0.1) ? styles.lessThan1 : styles.barText;
-          percentDisplay = (percent < 1 && ratio < 0.01) ? "<1" : (Math.floor(percent*100)/100).toString()
-        }
+        let percentage = locationPercentages[location.id];
+        ratio = percentage/greatestPercentage;
+        percentageStyle = (ratio < 0.1) ? styles.lessThan1 : styles.barText;
+        percentDisplay = (percent < 1 && ratio < 0.01) ? "<1" : (Math.floor(percent*100)/100).toString();
 
         return {
           location: location,
@@ -153,7 +175,7 @@ class Chart extends Component {
             return (
               <View key={rowData.location.name} style={styles.chartRow}>
                 <Text style={styles.chartText}>{rowData.location.name}</Text>
-                <Animated.Text style={[styles.timeText, {opacity: this.state.fadeAnim}]}>
+                <Animated.Text style={[styles.timeText]}>
                   {output.join(', ')}
                 </Animated.Text>
                 <Animated.View style={[styles.bar, {backgroundColor: rowData.colors[rowData.i % 10]}, {width: this.state[rowData.location.id]}]}>
