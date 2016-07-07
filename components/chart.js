@@ -76,7 +76,7 @@ class Chart extends Component {
           let percentage = locationPercentages[key];
           if (percentage > greatestPercentage) greatestPercentage = percentage;
           ratio = percentage/greatestPercentage;
-          percentageStyle = (ratio < 0.1) ? styles.lessThan1 : styles.barText;
+          percentageStyle = (ratio < 0.14) ? styles.lessThan1 : styles.barText;
           percentDisplay = (percent < 1 && ratio < 0.01) ? "<1" : (Math.floor(percent*100)/100).toString()
         }
 
@@ -144,11 +144,11 @@ class Chart extends Component {
             let output = arr.filter(str => {
               return (str.length > 0) ? true : false;
             });
-            let smallPercentage = rowData.ratio < 0.1;
+            let smallPercentage = rowData.ratio < 0.14;
             let barStyles = [rowData.percentageStyle, {opacity: this.state.fadeAnim, position: 'absolute',
                                                         top: 60, left: 25}];
             if (smallPercentage) {
-              barStyles[1].left = 20 + 12*Math.floor(rowData.percent);
+              barStyles[1].left = 22 + Math.floor(8*rowData.percent);
             }
             return (
               <View key={rowData.location.name} style={styles.chartRow}>

@@ -49,6 +49,9 @@ class HomeButton extends Component {
 
           name = formattedTime + " | " + lat + ", " + long;
         }
+
+        // console.log('latitude: ', latitude, 'longitude: ', longitude);
+        // revGeocode(latitude, longitude);
         newLocation = {
           id: id,
           name: name,
