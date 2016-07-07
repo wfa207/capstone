@@ -1,7 +1,5 @@
 'use strict'
 
-var AutoComplete = require('react-native-autocomplete');
-
 import React, { Component } from 'react';
 import {
   TextInput,
@@ -11,32 +9,19 @@ import {
   TouchableHighlight,
   AlertIOS,
   View,
-  ListView
+  TouchableOpacity
 } from 'react-native';
 import styles from './styles';
 import {getCurrentLocation} from '../utils';
 import {SERVER_ROUTE} from '../server/env/development';
 
-var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
 class HomeButton extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      logging: false
+      logging: false,
+      collection: null
     }
-  }
-
-  onTyping(text) {
-    var locations = this.state.locations.filter(function (location) {
-      return location.name.toLowerCase().startsWith(text.toLowerCase())
-    }).map(function (location) {
-      return location.name;
-    });
-
-    this.setState({
-      data: locations
-    });
   }
 
   componentWillMount() {
@@ -47,7 +32,13 @@ class HomeButton extends Component {
         locations: locations
       });
     });
-    console.log('STATE', this.state);
+  }
+
+  _type(str) {
+    this.setState({
+      searchString: str,
+      collection: this.state.locationNamesArray.filter(c => c.substr(0, str.length) === str)
+    });
   }
 
   saveLocation(locations, position, inputName) {
@@ -85,15 +76,10 @@ class HomeButton extends Component {
     getCurrentLocation(position => {
       this.setState({ position: position });
     });
-    console.log('STATE2', this.state);
-  }
-
-  _renderLocation = (location) => {
-    return (
-      <View>
-        <Text>{location.name}</Text>
-      </View>
-    );
+    var locationNamesArray = this.state.locations.map((location) => {return location.name });
+    this.setState({
+      locationNamesArray: locationNamesArray,
+    })
   }
 
   setLocationNameState(text) {
@@ -116,18 +102,19 @@ class HomeButton extends Component {
           <View style={styles.modal}>
             <Text>Enter location name</Text>
             <TextInput
-              onTyping={(value) => this.onTyping(value)}
+              ref="input"
               style={styles.autocomplete}
-              onTyping={this.onTyping}
-              onChangeText={(value) => this.setLocationNameState(value)}
+              onChangeText={(value) => { this.setLocationNameState(value); this._type(value); }}
               onSubmitEditing={() => this.saveLocation(this.state.locations, this.state.position, this.state.locationName)}
 
               placeholder='Enter Location Here'
             />
-            <ListView
-              dataSource={ds.cloneWithRows(this.state.data)}
-              renderRow={this.renderLocation}
-            />
+            {this.state.collection && this.state.collection.length && this.state.collection.map(value => (
+                <TouchableOpacity onPress={() => this.refs.input.setNativeProps({ text: value })}>
+                  <Text>{value}</Text>
+                </TouchableOpacity>
+            )
+          )}
           </View>
         )}
       </View>
