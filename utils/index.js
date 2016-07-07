@@ -65,16 +65,16 @@ var utils = {
     var APIurl = valid ? ('https://maps.googleapis.com/maps/api/geocode/json' + searchParams) : undefined;
     return fetch(APIurl)
     .then(response => {
-      console.log(response);
-      var data = response['address_components'];
-      var obj = {
-        city: data[3].short_name,
-        state: data[5].short_name,
-        country: data[6].long_name,
-        zip: data[7].short_name
-      }
-      console.log(obj);
-      return obj;
+      console.log('response: ', response);
+      // var data = response['address_components'];
+      // var obj = {
+      //   city: data[3].short_name,
+      //   state: data[5].short_name,
+      //   country: data[6].long_name,
+      //   zip: data[7].short_name
+      // }
+      // console.log(obj);
+      // return obj;
     })
   },
 
