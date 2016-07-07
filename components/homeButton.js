@@ -35,7 +35,16 @@ class HomeButton extends Component {
       function getLocation(inputName) {
         locations = JSON.parse(locations);
         let latitude = position.coords.latitude, longitude = position.coords.longitude;
-        let id = (locations ? locations.length : 0) + 1;
+        let id = 1;
+        let locationWithIdExists = locations.find(location => {
+          return location.id === id; 
+        });
+        while (locationWithIdExists) {
+          id++;
+          locationWithIdExists = locations.find(location => {
+            return location.id === id; 
+          });
+        }
         var name = inputName;
         var queryName = inputName;
 
@@ -55,18 +64,18 @@ class HomeButton extends Component {
 
         let photoURL;
         nearbySearch(latitude, longitude, queryName)
-        .then(locations => {
-          return getPhotoURL(locations);
-        })
-        .then(_photoURL => {
-          photoURL = _photoURL;
-          return localFetch('photos')
-        })
-        .then(photos => {
-          if (!photos) photos = [];
-          photos.push({id: id, url: photoURL});
-          return localStore('photos', photos);
-        })
+        // .then(locations => {
+        //   return getPhotoURL(locations);
+        // })
+        // .then(_photoURL => {
+        //   photoURL = _photoURL;
+        //   return localFetch('photos')
+        // })
+        // .then(photos => {
+        //   if (!photos) photos = [];
+        //   photos.push({id: id, url: photoURL});
+        //   return localStore('photos', photos);
+        // })
         .catch(console.error);
 
 

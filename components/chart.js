@@ -82,6 +82,7 @@ class Chart extends Component {
         let timeSpent = locationTimes[i];
         let percent = Math.floor(timeSpent/(totalTimeSpent)*1000000)/10000;
         locationPercentages[location.id] = percent;
+        console.log(location.id, percent)
       });
 
       // Get the greatest percentage out of all the locations
@@ -170,7 +171,7 @@ class Chart extends Component {
             let barStyles = [rowData.percentageStyle, {opacity: this.state.fadeAnim, position: 'absolute',
                                                         top: 60, left: 25}];
             if (smallPercentage) {
-              barStyles[1].left = 20 + 12*Math.floor(rowData.percent);
+              barStyles[1].left = 26 + 7*Math.floor(rowData.percent);
             }
             return (
               <View key={rowData.location.name} style={styles.chartRow}>
