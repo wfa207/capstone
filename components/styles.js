@@ -285,13 +285,11 @@ const styles = StyleSheet.create({
     opacity: 0.75,
   },
   autocomplete: {
-    height: 26,
-    borderWidth: 0.5,
-    borderColor: '#0f0f0f',
-    flex: 1,
-    fontSize: 13,
-    padding: 4,
-    borderRadius: 15
+    alignSelf: 'stretch',
+    height: 50,
+    backgroundColor: '#FFF',
+    borderColor: 'lightblue',
+    borderWidth: 1
   }
 });
 
