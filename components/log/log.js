@@ -5,6 +5,7 @@ import {
   SegmentedControlIOS,
   ListView,
   Text,
+  Image,
   View,
   ActivityIndicator,
   RefreshControl,
@@ -12,6 +13,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 import styles from '../styles';
+import { localFetch } from '../../utils';
 import LogDetailView from './logDetailView';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -23,6 +25,7 @@ var Log = React.createClass({
       values: ['Activities', 'Locations'],
       value: 'Locations',
       dataSource: ds.cloneWithRows(['row 1', 'row 2']),
+      photos: [],
       loading: true,
       refreshing: false
     }
@@ -34,7 +37,14 @@ var Log = React.createClass({
   },
 
   refreshData() {
-    this.fetchValueData(this.state.value)
+    localFetch('photos')
+    .then(photos => {
+      if (!photos) return;
+      this.setState({photos: photos});
+    })
+    .then(() => {
+      return this.fetchValueData(this.state.value)
+    })
     .then((items) => {
       var itemNames = {};
       var condensedItems = [];
@@ -47,9 +57,17 @@ var Log = React.createClass({
           itemNames[name] += 1;
         }
       });
-      condensedItems.forEach((item) => {
+      condensedItems = condensedItems.map((item) => {
         item.visits = itemNames[item.name];
+        let photo = this.state.photos.find(photo => {
+          return photo.id === item.id;
+        });
+        if (photo) {
+          item.url = photo.url;
+        }
+        return item;
       });
+      console.log(condensedItems)
       this.setState({
         dataSource: ds.cloneWithRows(condensedItems),
         loading: false,
@@ -110,14 +128,15 @@ var Log = React.createClass({
             />}
           style={{marginTop: 10}}
           dataSource={this.state.dataSource}
-          renderRow={rowData=>
-            <TouchableHighlight
+          renderRow={rowData  => {
+            console.log(rowData)
+            return <TouchableHighlight
             onPress={() => this._navigate(rowData)}
             style={styles.rowStyle}>
               <View>
                 <Text style={styles.rowContent}>{rowData.name}</Text>
               </View>
-            </TouchableHighlight>}
+            </TouchableHighlight>}}
           />
         </View>
       )

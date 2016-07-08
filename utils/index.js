@@ -28,13 +28,10 @@ var utils = {
 
   fetchAndStoreData(route, storageName) {
     let chain;
-    return fetch(SERVER_ROUTE + route)
-    .then(res => {
-      return res.json();
-    })
+    return utils.serverFetch(SERVER_ROUTE + route)
     .then(data => {
       chain = data;
-      return AsyncStorage.setItem(storageName, JSON.stringify(data));
+      return utils.localStore(storageName, data);
     })
     .then(() => {
       return chain;
@@ -43,53 +40,80 @@ var utils = {
   },
 
   fetchAllLocations() {
-    return AsyncStorage.getItem('locations')
-    .then(locations => {
-      return JSON.parse(locations);
-    });
+    return utils.localFetch('locations');
   },
 
   fetchValueData(value) {
     value = value.toLowerCase();
-    return AsyncStorage.getItem(value)
-    .then((items) => {
-      items = JSON.parse(items);
-      return items;
+    return utils.localFetch(value);
+  },
+
+  serverFetch(url) {
+    return fetch(url)
+    .then(res => res.json());
+  },
+
+  localFetch(keyName) {
+    return AsyncStorage.getItem(keyName)
+    .then(data => {
+      return JSON.parse(data);
+    })
+  },
+
+  localStore(keyName, data) {
+    return AsyncStorage.setItem(keyName, JSON.stringify(data));
+  },
+
+  listFormatter() {
+    var args = [].slice.call(arguments);
+    var output = [];
+    for (var i = 0; i < args.length; i++) {
+      if (args[i]) output.push(args[i])
+    }
+    return output;
+  },
+
+  nearbySearch(lat, long, queryName) {
+    var searchURL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
+    var serverKey = 'key=' + GOOGLE.serverKey;
+    var location = 'location=' + lat + ',' + long;
+    var radius = 'radius=50';
+    var name = queryName || undefined;
+    name ? name.split(' ').join('|') : undefined;
+    var fullURL = searchURL + utils.listFormatter(location, radius, serverKey).join('&');
+    return utils.serverFetch(fullURL)
+    .then(data => {
+      return data.results;
     });
   },
 
-  revGeocode(lat, long) {
-    var valid = lat && long;
-    var iOS_API_key = valid ? GOOGLE.iOS_API_key : undefined;
-    var searchParams = valid ? ('?latlng=' + lat + ',' + long + '&key=' + iOS_API_key) : undefined;
-    var APIurl = valid ? ('https://maps.googleapis.com/maps/api/geocode/json' + searchParams) : undefined;
-    return fetch(APIurl)
+  getPhotoURL(locations) {
+    let photo;
+    for (let i = 0; i < locations.length; i++) {
+      if (locations[i].photos) {
+        photo = locations[i].photos[0];
+        break;
+      }
+    }
+    if (!photo) return;
+    let searchURL = 'https://maps.googleapis.com/maps/api/place/photo?';
+    let serverKey = 'key=' + GOOGLE.serverKey;
+    let photoReference = 'photoreference=' + photo.photo_reference;
+    let maxwidth = 'maxwidth=' + 300;
+    let maxheight = 'maxheight=' + 300;
+    let fullURL = searchURL + utils.listFormatter(serverKey, photoReference, maxwidth, maxheight).join('&');
+    return fetch(fullURL)
     .then(response => {
-      console.log('response: ', response);
-      // var data = response['address_components'];
-      // var obj = {
-      //   city: data[3].short_name,
-      //   state: data[5].short_name,
-      //   country: data[6].long_name,
-      //   zip: data[7].short_name
-      // }
-      // console.log(obj);
-      // return obj;
+      return response.url;
     })
   },
 
   fetchTimes() {
     let times;
-    return AsyncStorage.getItem('times')
-    .then(times => {
-      return JSON.parse(times);
-    })
+    return utils.localFetch('times')
     .then(_times => {
       times = _times;
-      return AsyncStorage.getItem('days')
-    })
-    .then(days => {
-      return JSON.parse(days);
+      return utils.localFetch('days')
     })
     .then(days => {
       let today = days.find(day => {

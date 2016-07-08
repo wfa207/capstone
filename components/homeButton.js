@@ -4,13 +4,14 @@ import React, { Component } from 'react';
 import {
   AsyncStorage,
   Text,
+  Image,
   Navigator,
   TouchableHighlight,
   AlertIOS,
   View
 } from 'react-native';
 import styles from './styles';
-import {getCurrentLocation, fetchTimes, fetchAndStoreData, revGeocode} from '../utils';
+import {getCurrentLocation, fetchTimes, fetchAndStoreData, revGeocode, nearbySearch, getPhotoURL, localFetch, localStore} from '../utils';
 import {SERVER_ROUTE} from '../server/env/development';
 
 var time = {};
@@ -34,8 +35,18 @@ class HomeButton extends Component {
       function getLocation(inputName) {
         locations = JSON.parse(locations);
         let latitude = position.coords.latitude, longitude = position.coords.longitude;
-        let id = (locations ? locations.length : 0) + 1;
+        let id = 1;
+        let locationWithIdExists = locations.find(location => {
+          return location.id === id; 
+        });
+        while (locationWithIdExists) {
+          id++;
+          locationWithIdExists = locations.find(location => {
+            return location.id === id; 
+          });
+        }
         var name = inputName;
+        var queryName = inputName;
 
         if (!name) {
           let date = new Date(position.timestamp);
@@ -48,10 +59,25 @@ class HomeButton extends Component {
           let long = (Math.abs(Math.floor(longitude*100)/100)).toString() + (longitude >= 0 ? "E" : "W");
 
           name = formattedTime + " | " + lat + ", " + long;
+          queryName = undefined;
         }
 
-        // console.log('latitude: ', latitude, 'longitude: ', longitude);
-        // revGeocode(latitude, longitude);
+        let photoURL;
+        nearbySearch(latitude, longitude, queryName)
+        // .then(locations => {
+        //   return getPhotoURL(locations);
+        // })
+        // .then(_photoURL => {
+        //   photoURL = _photoURL;
+        //   return localFetch('photos')
+        // })
+        // .then(photos => {
+        //   if (!photos) photos = [];
+        //   photos.push({id: id, url: photoURL});
+        //   return localStore('photos', photos);
+        // })
+        .catch(console.error);
+
         newLocation = {
           id: id,
           name: name,
@@ -82,7 +108,6 @@ class HomeButton extends Component {
         })
         .then(_times => {
           times = _times;
-          console.log(times)
           return AsyncStorage.setItem('times', JSON.stringify(times));
         })
         .then(() => {
