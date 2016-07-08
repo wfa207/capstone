@@ -67,7 +67,6 @@ var Log = React.createClass({
         }
         return item;
       });
-      console.log(condensedItems)
       this.setState({
         dataSource: ds.cloneWithRows(condensedItems),
         loading: false,
@@ -129,11 +128,12 @@ var Log = React.createClass({
           style={{marginTop: 10}}
           dataSource={this.state.dataSource}
           renderRow={rowData  => {
-            console.log(rowData)
             return <TouchableHighlight
             onPress={() => this._navigate(rowData)}
             style={styles.rowStyle}>
-              <View>
+              <View style={styles.inline}>
+                <Image source={{uri: rowData.url}}
+                style={{ resizeMode: 'contain', height: 50, width: 50}} />
                 <Text style={styles.rowContent}>{rowData.name}</Text>
               </View>
             </TouchableHighlight>}}

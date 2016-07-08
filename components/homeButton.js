@@ -11,7 +11,7 @@ import {
   View
 } from 'react-native';
 import styles from './styles';
-import {getCurrentLocation, fetchTimes, fetchAndStoreData, revGeocode, nearbySearch, getPhotoURL, localFetch, localStore} from '../utils';
+import {getCurrentLocation, fetchTimes, fetchAndStoreData, revGeocode, nearbySearch, getPhotoURL, fetchAllLocations, localFetch, localStore} from '../utils';
 import {SERVER_ROUTE} from '../server/env/development';
 
 var time = {};
@@ -61,21 +61,21 @@ class HomeButton extends Component {
           name = formattedTime + " | " + lat + ", " + long;
           queryName = undefined;
         }
-
-        let photoURL;
+        console.disableYellowBox = true;
+        let photoURL, currLocations;
         nearbySearch(latitude, longitude, queryName)
-        // .then(locations => {
-        //   return getPhotoURL(locations);
-        // })
-        // .then(_photoURL => {
-        //   photoURL = _photoURL;
-        //   return localFetch('photos')
-        // })
-        // .then(photos => {
-        //   if (!photos) photos = [];
-        //   photos.push({id: id, url: photoURL});
-        //   return localStore('photos', photos);
-        // })
+        .then(nearbyLocations => {
+          return getPhotoURL(nearbyLocations);
+        })
+        .then(_photoURL => {
+          photoURL = _photoURL;
+          return localFetch('photos')
+        })
+        .then(photos => {
+          if (!photos) photos = [];
+          photos.push({id: id, url: photoURL});
+          return localStore('photos', photos);
+        })
         .catch(console.error);
 
         newLocation = {

@@ -17,7 +17,7 @@ import TabBar from './components/tabBar';
 import styles from './components/styles';
 import {SERVER_ROUTE} from './server/env/development';
 import {
-  initialFetchAndStoreData
+  initialFetchAndStoreData, initialStorePhotos
 } from './utils';
 
 class capstone extends Component {
@@ -27,7 +27,10 @@ class capstone extends Component {
 
   componentWillMount() {
     AsyncStorage.clear();
-    initialFetchAndStoreData("/api/users/1/locations", 'locations');
+    initialFetchAndStoreData("/api/users/1/locations", 'locations')
+    .then(() => {
+      return initialStorePhotos();
+    });
     initialFetchAndStoreData("/api/users/1/trips", 'activities');
     initialFetchAndStoreData("/api/users/1/times", 'times');
     initialFetchAndStoreData("/api/users/1/days", 'days');
