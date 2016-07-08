@@ -278,7 +278,6 @@ const styles = StyleSheet.create({
     left: 45,
     bottom: 300,
     right: 45,
-    borderRadius: 15,
     flex: 1,
     justifyContent: 'center',
     backgroundColor: 'white',
@@ -286,7 +285,7 @@ const styles = StyleSheet.create({
   },
   autocomplete: {
     alignSelf: 'stretch',
-    height: 50,
+    height: 25,
     backgroundColor: '#FFF',
     borderColor: 'lightblue',
     borderWidth: 1

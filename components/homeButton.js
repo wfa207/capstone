@@ -105,7 +105,7 @@ class HomeButton extends Component {
         </TouchableHighlight>
         {this.state.inputShow && (
           <View style={styles.modal}>
-            <Text>Enter location name</Text>
+            <Text style={{textAlign: 'center', fontSize: 18}}>Location Name</Text>
             <TextInput
               ref="input"
               style={styles.autocomplete}
@@ -115,7 +115,10 @@ class HomeButton extends Component {
               placeholder='Enter Location Here'
             />
             {this.state.collection && !!this.state.collection.length && this.state.collection.map((value, idx) => (
-                <TouchableOpacity key={idx+1} onPress={() => { this.refs.input.setNativeProps({ text: value ? value : '' }); this.setLocationNameState(value); }}>
+                <TouchableOpacity
+                  style={styles.autocomplete} 
+                  key={idx+1} 
+                  onPress={() => { this.refs.input.setNativeProps({ text: value ? value : '' }); this.setLocationNameState(value); }}>
                   <Text>{value}</Text>
                 </TouchableOpacity>
               )
