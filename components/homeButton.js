@@ -2,36 +2,51 @@
 
 import React, { Component } from 'react';
 import {
+  TextInput,
   AsyncStorage,
   Text,
   Image,
   Navigator,
   TouchableHighlight,
   AlertIOS,
-  View
+  View,
+  TouchableOpacity
 } from 'react-native';
 import styles from './styles';
 import {getCurrentLocation, fetchTimes, fetchAndStoreData, revGeocode, nearbySearch, getPhotoURL, localFetch, localStore} from '../utils';
 import {SERVER_ROUTE} from '../server/env/development';
 
+<<<<<<< HEAD
 var time = {};
 var newLocation = {};
+=======
+console.disableYellowBox = true;
+>>>>>>> 7828643519ce98fbb82217e3ab2826dd81c033e6
 
 class HomeButton extends Component {
   constructor(props) {
     super(props)
     this.state = {
       logging: false,
+<<<<<<< HEAD
       activities: [],
+=======
+      collection: null
+>>>>>>> 7828643519ce98fbb82217e3ab2826dd81c033e6
     }
   }
 
-  saveLocation(position) {
-    var me = this;
-    me.setState({logging: !me.state.logging});
-    return AsyncStorage.getItem('locations')
+  componentWillMount() {
+    AsyncStorage.getItem('locations')
     .then(locations => {
+      locations = JSON.parse(locations);
+      this.setState({
+        locations: locations
+      });
+    });
+  }
 
+<<<<<<< HEAD
       function getLocation(inputName) {
         locations = JSON.parse(locations);
         let latitude = position.coords.latitude, longitude = position.coords.longitude;
@@ -129,17 +144,63 @@ class HomeButton extends Component {
             style: 'default'
           }
         ]);
-      }
-    })
-    .catch(console.error);
+=======
+  _type(str) {
+    this.setState({
+      searchString: str,
+      collection: this.state.locationNamesArray.filter(c => c.substr(0, str.length) === str).slice(0,5)
+    });
+  }
 
-}
+  saveLocation(locations, position, inputName) {
+      this.setState({ inputShow: false });
+      let latitude = position.coords.latitude, longitude = position.coords.longitude;
+      let id = (locations ? locations.length : 0) + 1;
+      var name = inputName;
+
+      if (!name) {
+        let date = new Date(position.timestamp);
+        let hours = date.getHours();
+        let minutes = "0" + date.getMinutes();
+        let formattedTime = ((hours == 0) ? 12 : (hours % 12)) + ':' +
+        minutes.substr(-2) + (hours <= 12 ? "AM" : "PM");
+
+        let lat = (Math.abs(Math.floor(latitude*100)/100)).toString() + (latitude >= 0 ? "N" : "S");
+        let long = (Math.abs(Math.floor(longitude*100)/100)).toString() + (longitude >= 0 ? "E" : "W");
+
+        name = formattedTime + " | " + lat + ", " + long;
+>>>>>>> 7828643519ce98fbb82217e3ab2826dd81c033e6
+      }
+
+      locations.push({
+        id: id,
+        name: name,
+        coordinates: [latitude, longitude]
+      });
+
+      return AsyncStorage.setItem('locations', JSON.stringify(locations))
+      .catch(console.error);
+  }
 
   startStopLog() {
+    this.setState({logging: !this.state.logging});
+    if (this.state.logging) this.setState({ inputShow: true });
     getCurrentLocation(position => {
-      // Code goes before state switch
-      this.saveLocation(position);
+      this.setState({ position: position });
     });
+    var arr = this.state.locations.map((location) => {return location.name });
+    var locationNamesArray = [];
+    for (var i = 0; i < arr.length; i++) {
+      var current = arr[i];
+      if (locationNamesArray.indexOf(current) < 0) locationNamesArray.push(current);
+    }
+    this.setState({
+      locationNamesArray: locationNamesArray,
+    })
+  }
+
+  setLocationNameState(text) {
+    this.setState({locationName: text});
   }
 
   render() {
@@ -154,9 +215,32 @@ class HomeButton extends Component {
               {(this.state.logging ? 'Stop' : 'Start') + '\n'}logging
             </Text>
         </TouchableHighlight>
+        {this.state.inputShow && (
+          <View style={styles.modal}>
+            <Text style={[styles.locationInputHeader, {fontWeight: '600'}]}>Location Name</Text>
+            <TextInput
+              ref="input"
+              style={styles.autocomplete}
+              onChangeText={(value) => { this.setLocationNameState(value); this._type(value); }}
+              onSubmitEditing={() => this.saveLocation(this.state.locations, this.state.position, this.state.locationName)}
+
+              placeholder='Enter Location Here'
+            />
+            {this.state.collection && !!this.state.collection.length && this.state.collection.map((value, idx) => (
+                <TouchableOpacity
+                  style={styles.autocompleteList} 
+                  key={idx+1} 
+                  onPress={() => { this.refs.input.setNativeProps({ text: value ? value : '' }); this.setLocationNameState(value); }}>
+                  <Text style={styles.autocompleteText}>{value}</Text>
+                </TouchableOpacity>
+              )
+            )}
+          </View>
+        )}
       </View>
     )
   }
 }
 
 module.exports = HomeButton;
+
