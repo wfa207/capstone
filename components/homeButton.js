@@ -16,23 +16,16 @@ import styles from './styles';
 import {getCurrentLocation, fetchTimes, fetchAndStoreData, revGeocode, nearbySearch, getPhotoURL, localFetch, localStore} from '../utils';
 import {SERVER_ROUTE} from '../server/env/development';
 
-<<<<<<< HEAD
 var time = {};
 var newLocation = {};
-=======
 console.disableYellowBox = true;
->>>>>>> 7828643519ce98fbb82217e3ab2826dd81c033e6
 
 class HomeButton extends Component {
   constructor(props) {
     super(props)
     this.state = {
       logging: false,
-<<<<<<< HEAD
-      activities: [],
-=======
       collection: null
->>>>>>> 7828643519ce98fbb82217e3ab2826dd81c033e6
     }
   }
 
@@ -46,39 +39,34 @@ class HomeButton extends Component {
     });
   }
 
-<<<<<<< HEAD
-      function getLocation(inputName) {
-        locations = JSON.parse(locations);
-        let latitude = position.coords.latitude, longitude = position.coords.longitude;
-        let id = 1;
-        let locationWithIdExists = locations.find(location => {
-          return location.id === id; 
-        });
-        while (locationWithIdExists) {
-          id++;
-          locationWithIdExists = locations.find(location => {
-            return location.id === id; 
-          });
-        }
-        var name = inputName;
-        var queryName = inputName;
+  _type(str) {
+    this.setState({
+      searchString: str,
+      collection: this.state.locationNamesArray.filter(c => c.substr(0, str.length) === str).slice(0,5)
+    });
+  }
 
-        if (!name) {
-          let date = new Date(position.timestamp);
-          let hours = date.getHours();
-          let minutes = "0" + date.getMinutes();
-          let formattedTime = ((hours == 0) ? 12 : (hours % 12)) + ':' +
-          minutes.substr(-2) + (hours <= 12 ? "AM" : "PM");
+  saveLocation(locations, position, inputName) {
+      this.setState({ inputShow: false });
+      let latitude = position.coords.latitude, longitude = position.coords.longitude;
+      let id = (locations ? locations.length : 0) + 1;
+      var name = inputName;
 
-          let lat = (Math.abs(Math.floor(latitude*100)/100)).toString() + (latitude >= 0 ? "N" : "S");
-          let long = (Math.abs(Math.floor(longitude*100)/100)).toString() + (longitude >= 0 ? "E" : "W");
+      if (!name) {
+        let date = new Date(position.timestamp);
+        let hours = date.getHours();
+        let minutes = "0" + date.getMinutes();
+        let formattedTime = ((hours == 0) ? 12 : (hours % 12)) + ':' +
+        minutes.substr(-2) + (hours <= 12 ? "AM" : "PM");
 
-          name = formattedTime + " | " + lat + ", " + long;
-          queryName = undefined;
-        }
+        let lat = (Math.abs(Math.floor(latitude*100)/100)).toString() + (latitude >= 0 ? "N" : "S");
+        let long = (Math.abs(Math.floor(longitude*100)/100)).toString() + (longitude >= 0 ? "E" : "W");
 
-        let photoURL;
-        nearbySearch(latitude, longitude, queryName)
+        name = formattedTime + " | " + lat + ", " + long;
+      }
+
+      // let photoURL;
+      //   nearbySearch(latitude, longitude, queryName)
         // .then(locations => {
         //   return getPhotoURL(locations);
         // })
@@ -91,7 +79,7 @@ class HomeButton extends Component {
         //   photos.push({id: id, url: photoURL});
         //   return localStore('photos', photos);
         // })
-        .catch(console.error);
+        // .catch(console.error);
 
         newLocation = {
           id: id,
@@ -129,57 +117,15 @@ class HomeButton extends Component {
           return fetchAndStoreData("/api/users/1/times", JSON.stringify(times));
         })
         .catch(console.error);
-      }
-      if (this.state.logging)
-        time.arrived = (new Date()).toString();
-      else {
-        AlertIOS.prompt('Location Name', 'Please enter a name for this location', [
-          {
-            text: 'Not Now',
-            onPress: () => getLocation(),
-            style: 'destructive'
-          }, {
-            text: 'Enter',
-            onPress: text => getLocation(text),
-            style: 'default'
-          }
-        ]);
-=======
-  _type(str) {
-    this.setState({
-      searchString: str,
-      collection: this.state.locationNamesArray.filter(c => c.substr(0, str.length) === str).slice(0,5)
-    });
-  }
 
-  saveLocation(locations, position, inputName) {
-      this.setState({ inputShow: false });
-      let latitude = position.coords.latitude, longitude = position.coords.longitude;
-      let id = (locations ? locations.length : 0) + 1;
-      var name = inputName;
+      // locations.push({
+      //   id: id,
+      //   name: name,
+      //   coordinates: [latitude, longitude],
+      // });
 
-      if (!name) {
-        let date = new Date(position.timestamp);
-        let hours = date.getHours();
-        let minutes = "0" + date.getMinutes();
-        let formattedTime = ((hours == 0) ? 12 : (hours % 12)) + ':' +
-        minutes.substr(-2) + (hours <= 12 ? "AM" : "PM");
-
-        let lat = (Math.abs(Math.floor(latitude*100)/100)).toString() + (latitude >= 0 ? "N" : "S");
-        let long = (Math.abs(Math.floor(longitude*100)/100)).toString() + (longitude >= 0 ? "E" : "W");
-
-        name = formattedTime + " | " + lat + ", " + long;
->>>>>>> 7828643519ce98fbb82217e3ab2826dd81c033e6
-      }
-
-      locations.push({
-        id: id,
-        name: name,
-        coordinates: [latitude, longitude]
-      });
-
-      return AsyncStorage.setItem('locations', JSON.stringify(locations))
-      .catch(console.error);
+      // return AsyncStorage.setItem('locations', JSON.stringify(locations))
+      // .catch(console.error);
   }
 
   startStopLog() {
@@ -188,7 +134,8 @@ class HomeButton extends Component {
     getCurrentLocation(position => {
       this.setState({ position: position });
     });
-    var arr = this.state.locations.map((location) => {return location.name });
+    var locations = this.state.locations;
+    var arr = locations ? locations.map((location) => {return location.name }) : [''];
     var locationNamesArray = [];
     for (var i = 0; i < arr.length; i++) {
       var current = arr[i];

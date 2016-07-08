@@ -90,7 +90,7 @@ var locations = [
     },
     {
         name: 'Central Park Zoo',
-        coordinates: [40.767778, 73.9718335],
+        coordinates: [40.767778, -73.9718335],
         city: 'New York',
         state: 'NY',
         country: 'United States'

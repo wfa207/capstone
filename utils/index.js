@@ -20,7 +20,7 @@ var utils = {
   initialFetchAndStoreData(route, storageName) {
     return AsyncStorage.getItem(storageName, (data) => {
       if (!JSON.parse(data)) {
-        return utils.fetchAndStoreData(route, storageName);
+        return utils.fetchAndStoreData(route, storageName)
       }
     })
     .catch(console.error);
