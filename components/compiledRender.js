@@ -70,7 +70,7 @@ class HomeTitleBar extends Component {
         }}
         style={styles.banner}
         renderScene={renderScene}
-        navigationBar={genNavBar('Down Time')}
+        navigationBar={genNavBar('DownTime')}
       />
     );
   }
