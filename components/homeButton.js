@@ -52,8 +52,8 @@ class HomeButton extends Component {
           let date = new Date(position.timestamp);
           let hours = date.getHours();
           let minutes = "0" + date.getMinutes();
-          let formattedTime = ((hours == 0) ? 12 : (hours % 12)) + ':' +
-          minutes.substr(-2) + (hours <= 12 ? "AM" : "PM");
+          let formattedTime = ((hours == 0 || hours == 12) ? 12 : (hours % 12)) + ':' +
+          minutes.substr(-2) + (hours < 12 ? "AM" : "PM");
 
           let lat = (Math.abs(Math.floor(latitude*100)/100)).toString() + (latitude >= 0 ? "N" : "S");
           let long = (Math.abs(Math.floor(longitude*100)/100)).toString() + (longitude >= 0 ? "E" : "W");
@@ -64,18 +64,18 @@ class HomeButton extends Component {
 
         let photoURL;
         nearbySearch(latitude, longitude, queryName)
-        // .then(locations => {
-        //   return getPhotoURL(locations);
-        // })
-        // .then(_photoURL => {
-        //   photoURL = _photoURL;
-        //   return localFetch('photos')
-        // })
-        // .then(photos => {
-        //   if (!photos) photos = [];
-        //   photos.push({id: id, url: photoURL});
-        //   return localStore('photos', photos);
-        // })
+        .then(locations => {
+          return getPhotoURL(locations);
+        })
+        .then(_photoURL => {
+          photoURL = _photoURL;
+          return localFetch('photos')
+        })
+        .then(photos => {
+          if (!photos) photos = [];
+          photos.push({id: id, url: photoURL});
+          return localStore('photos', photos);
+        })
         .catch(console.error);
 
         newLocation = {

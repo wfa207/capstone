@@ -67,7 +67,6 @@ var Log = React.createClass({
         }
         return item;
       });
-      console.log(condensedItems)
       this.setState({
         dataSource: ds.cloneWithRows(condensedItems),
         loading: false,
@@ -135,6 +134,7 @@ var Log = React.createClass({
             style={styles.rowStyle}>
               <View>
                 <Text style={styles.rowContent}>{rowData.name}</Text>
+                <Image source={{uri: rowData.url ? rowData.url.substr(0, -1) + '.png' : ''}}/>
               </View>
             </TouchableHighlight>}}
           />
