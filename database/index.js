@@ -7,6 +7,12 @@ const db = {
 	'images': Store.model('images')
 }
 
+var today = new Date();
+
+var days = ['Sunday' 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+var months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
 var locations = [{
 		name: 'Freedom Tower',
 		coords: {
@@ -58,6 +64,14 @@ var locations = [{
 		country: 'United States',
 		timeSpent: 0
 	}];
+
+var day = {
+	dateObj: today,
+	startTime: today.getTime(),
+	dayOfWk: days[today.getDay()],
+	month: months[today.getMonth()],
+	year: 1900 + today.getYear()
+}
 
 db.locations.destroy()
 .then(() => db.days.destroy())
