@@ -78,7 +78,6 @@ class HomeButton extends Component {
         // })
         .catch(console.error);
 
-
         newLocation = {
           id: id,
           name: name,
