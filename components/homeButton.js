@@ -76,7 +76,12 @@ class HomeButton extends Component {
     getCurrentLocation(position => {
       this.setState({ position: position });
     });
-    var locationNamesArray = this.state.locations.map((location) => {return location.name });
+    var arr = this.state.locations.map((location) => {return location.name });
+    var locationNamesArray = [];
+    for (var i = 0; i < arr.length; i++) {
+      var current = arr[i];
+      if (locationNamesArray.indexOf(current) < 0) locationNamesArray.push(current);
+    }
     this.setState({
       locationNamesArray: locationNamesArray,
     })
@@ -110,7 +115,7 @@ class HomeButton extends Component {
               placeholder='Enter Location Here'
             />
             {this.state.collection && !!this.state.collection.length && this.state.collection.map((value, idx) => (
-                <TouchableOpacity key={idx+1} onPress={() => this.refs.input.setNativeProps({ text: value ? value : '' })}>
+                <TouchableOpacity key={idx+1} onPress={() => { this.refs.input.setNativeProps({ text: value ? value : '' }); this.setLocationNameState(value); }}>
                   <Text>{value}</Text>
                 </TouchableOpacity>
               )
