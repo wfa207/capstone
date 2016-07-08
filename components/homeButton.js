@@ -15,6 +15,8 @@ import styles from './styles';
 import {getCurrentLocation} from '../utils';
 import {SERVER_ROUTE} from '../server/env/development';
 
+console.disableYellowBox = true;
+
 class HomeButton extends Component {
   constructor(props) {
     super(props)
@@ -37,7 +39,7 @@ class HomeButton extends Component {
   _type(str) {
     this.setState({
       searchString: str,
-      collection: this.state.locationNamesArray.filter(c => c.substr(0, str.length) === str)
+      collection: this.state.locationNamesArray.filter(c => c.substr(0, str.length) === str).slice(0,5)
     });
   }
 
@@ -105,7 +107,7 @@ class HomeButton extends Component {
         </TouchableHighlight>
         {this.state.inputShow && (
           <View style={styles.modal}>
-            <Text style={{textAlign: 'center', fontSize: 18}}>Location Name</Text>
+            <Text style={[styles.locationInputHeader, {fontWeight: '600'}]}>Location Name</Text>
             <TextInput
               ref="input"
               style={styles.autocomplete}
@@ -116,10 +118,10 @@ class HomeButton extends Component {
             />
             {this.state.collection && !!this.state.collection.length && this.state.collection.map((value, idx) => (
                 <TouchableOpacity
-                  style={styles.autocomplete} 
+                  style={styles.autocompleteList} 
                   key={idx+1} 
                   onPress={() => { this.refs.input.setNativeProps({ text: value ? value : '' }); this.setLocationNameState(value); }}>
-                  <Text>{value}</Text>
+                  <Text style={styles.autocompleteText}>{value}</Text>
                 </TouchableOpacity>
               )
             )}

@@ -276,20 +276,67 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 80,
     left: 45,
-    bottom: 300,
+    bottom: 275,
     right: 45,
     flex: 1,
-    justifyContent: 'center',
     backgroundColor: 'white',
     opacity: 0.75,
+    borderWidth: 0.5,
+    borderColor: '#636363',
+    borderRadius: 15,
   },
   autocomplete: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    flexDirection: 'row',
+    alignSelf: 'stretch',
+    height: 25,
+    marginHorizontal: 15,
+    backgroundColor: '#FFF',
+    borderWidth: 0.5,
+    borderColor: '#636363',
+    borderRadius: 15,
+    margin: 1,
+  },
+  autocompleteList: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    flexDirection: 'row',
     alignSelf: 'stretch',
     height: 25,
     backgroundColor: '#FFF',
-    borderColor: 'lightblue',
-    borderWidth: 1
+    borderWidth: 0.5,
+    borderTopColor: 'transparent',
+    borderBottomColor: '#636363',
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    marginHorizontal: 35,
+    borderColor: '#636363',
+    margin: 1,
+  },
+  locationInputHeader: {
+    textAlign: 'center',
+    fontSize: 18,
+    marginTop: 8,
+    marginBottom: 8
+  },
+  autocompleteText: {
+    color: '#48AAEC',
+    fontWeight: '600',
+    marginTop: 2.5,
+    fontSize: 14
   }
+
+  // confirm: {
+  //   flexDirection: 'row',
+  //   flex: 1
+  // },
+  // done: {
+
+  // },
+  // notNow: {
+
+  // },
 });
 
 module.exports = styles;
