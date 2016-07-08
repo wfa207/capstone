@@ -11,6 +11,7 @@
     "react-native": "0.28.0",
     "react-native-ios-charts": "^0.2.5",
     "react-native-maps": "^0.6.0",
+    "react-native-store": "^0.4.1",
     "undefined": "^0.1.0"
   },
   "devDependencies": {
