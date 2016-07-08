@@ -109,12 +109,12 @@ class HomeButton extends Component {
 
               placeholder='Enter Location Here'
             />
-            {this.state.collection && this.state.collection.length && this.state.collection.map(value => (
-                <TouchableOpacity onPress={() => this.refs.input.setNativeProps({ text: value })}>
+            {this.state.collection && !!this.state.collection.length && this.state.collection.map((value, idx) => (
+                <TouchableOpacity key={idx+1} onPress={() => this.refs.input.setNativeProps({ text: value ? value : '' })}>
                   <Text>{value}</Text>
                 </TouchableOpacity>
-            )
-          )}
+              )
+            )}
           </View>
         )}
       </View>
