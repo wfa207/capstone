@@ -1,10 +1,22 @@
 'use strict'
 
+import Promise from 'bluebird';
+
 import {
   AsyncStorage
 } from 'react-native';
 
+import db from '../database';
 import {SERVER_ROUTE, GOOGLE} from '../server/env/development';
+
+// var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+// var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+
+// startTime: startDate.getTime(),
+// dayOfWk: days[startDate.getDay()],
+// month: months[startDate.getMonth()],
+// year: 1900 + startDate.getYear()
 
 var utils = {
   getCurrentLocation(cb) {
@@ -17,6 +29,21 @@ var utils = {
     );
   },
 
+  getDbData() {
+    let gettingData = [
+      db.locations.get(),
+      db.times.get()
+    ];
+
+    Promise.each(gettingData, res => res)
+    .spread((locations, times) => {
+      let outputData = locations.map(location => {
+        times.filter()
+      })
+    })
+  }
+
+  // DELETE?
   initialFetchAndStoreData(route, storageName) {
     return AsyncStorage.getItem(storageName, (data) => {
       if (!JSON.parse(data)) {

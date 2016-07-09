@@ -22,13 +22,13 @@ class HomeButton extends Component {
     super(props)
     this.state = {
       logging: false,
-      activities: [],
     }
   }
 
   saveLocation(position) {
     var me = this;
     me.setState({logging: !me.state.logging});
+
     return AsyncStorage.getItem('locations')
     .then(locations => {
 
