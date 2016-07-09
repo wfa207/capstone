@@ -11,7 +11,16 @@ import {
   View
 } from 'react-native';
 import styles from './styles';
-import {getCurrentLocation, fetchTimes, fetchAndStoreData, revGeocode, nearbySearch, getPhotoURL, localFetch, localStore} from '../utils';
+import {
+  getCurrentLocation,
+  getDbData,
+  fetchTimes,
+  fetchAndStoreData,
+  revGeocode,
+  nearbySearch,
+  getPhotoURL,
+  localFetch,
+  localStore} from '../utils';
 import {SERVER_ROUTE} from '../server/env/development';
 
 var time = {};
@@ -28,6 +37,8 @@ class HomeButton extends Component {
   saveLocation(position) {
     var me = this;
     me.setState({logging: !me.state.logging});
+
+    getDbData();
 
     return AsyncStorage.getItem('locations')
     .then(locations => {

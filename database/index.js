@@ -6,12 +6,12 @@ const db = {
 	'times': Store.model('times')
 }
 
-var second = 1000;
-var minute = second * 60;
-var hour = minute * 60;
+var secondMS = 1000;
+var minuteMS = secondMS * 60;
+var hourMS = minuteMS * 60;
 
 var today = new Date();
-var todayYear = today.getYear();
+var todayYear = today.getYear() + 1900;
 var todayMonth = today.getMonth();
 var todayDay = today.getDay();
 var startDate = new Date(todayYear, todayMonth, todayDay, 10, 2, 5);
@@ -25,7 +25,7 @@ var locations = [{
 		city: 'New York',
 		state: 'NY',
 		country: 'United States',
-		timeSpentMS: (1 * hour) + (12 * minute)
+		timeSpentMS: (1 * hourMS) + (12 * minuteMS)
 	}, {
 		name: 'Little Italy Pizza',
 		coords: {
@@ -35,7 +35,7 @@ var locations = [{
 		city: 'New York',
 		state: 'NY',
 		country: 'United States',
-		timeSpentMS: 47 * minute
+		timeSpentMS: 47 * minuteMS
 	}, {
 		name: 'Empire State Building',
 		coords: {
@@ -45,7 +45,7 @@ var locations = [{
 		city: 'New York',
 		state: 'NY',
 		country: 'United States',
-		timeSpentMS: 56 * minute
+		timeSpentMS: 56 * minuteMS
 	}, {
 		name: 'Rockefeller Center',
 		coords: {
@@ -55,7 +55,7 @@ var locations = [{
 		city: 'New York',
 		state: 'NY',
 		country: 'United States',
-		timeSpentMS: hour + (18 * minute)
+		timeSpentMS: hourMS + (18 * minuteMS)
 	}, {
 		name: 'Central Park Zoo',
 		coords: {
@@ -65,37 +65,47 @@ var locations = [{
 		city: 'New York',
 		state: 'NY',
 		country: 'United States',
-		timeSpentMS: (2 * hour) + (12 * minute)
+		timeSpentMS: (2 * hourMS) + (12 * minuteMS)
 	}];
 
 
-var time1 = timeGen(0, startDate);
-var time2 = timeGen(1, startTimeGen(time1, 22 * minute));
-var time3 = timeGen(2, startTimeGen(time2, 28 * minute));
-var time4 = timeGen(3, startTimeGen(time3, 17 * minute));
-var time5 = timeGen(4, startTimeGen(time4, 26 * minute));
+var time1 = timeGen(0, startDate.getTime());
+var time2 = timeGen(1, time1.endTime.value + 22 * minuteMS);
+var time3 = timeGen(2, time2.endTime.value + 28 * minuteMS);
+var time4 = timeGen(3, time3.endTime.value + 17 * minuteMS);
+var time5 = timeGen(4, time4.endTime.value + 26 * minuteMS);
 
 var times = [time1, time2, time3, time4, time5];
+
+function msToDateObj(timeInMS) {
+    var date = new Date(timeInMS);
+    return {
+      value: timeInMS,
+      seconds: date.getSeconds(),
+      minutes: date.getMinutes(),
+      hours: date.getHours(),
+      date: date.getDate(),
+      dayOfWk: date.getDay(),
+      month: date.getMonth(),
+      year: date.getYear() + 1900
+    }
+}
 
 function timeGen(locationIdx, startTime) {
 	return {
 		locationId: locationIdx + 1,
-		startDateObj: startTime,
-		endDateObj: new Date(startTime.getTime() + locations[locationIdx].timeSpentMS)
+		startTime: msToDateObj(startTime),
+		endTime: msToDateObj(startTime + locations[locationIdx].timeSpentMS)
 	}
-}
-
-function startTimeGen(timeObj, timeElapsed) {
-	return (
-		new Date(timeObj.endDateObj.getTime() + timeElapsed)
-	)
 }
 
 db.locations.destroy()
 .then(() => db.times.destroy())
-.then(() => db.images.destroy())
 .then(() => Promise.each(locations, location => db.locations.add(location)))
 .then(() => Promise.each(times, time => db.times.add(time)))
 .catch(console.error);
 
-module.exports = db;
+module.exports = {
+	db: db,
+	msToDateObj: msToDateObj
+};
