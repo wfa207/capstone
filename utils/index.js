@@ -26,25 +26,28 @@ var utils = {
 
   msToDateObj: msToDateObj,
 
+  formatElapTime(elapTime) {
+    
+  },
+
   getDbData() {
     let gettingData = [
       db.locations.find(),
       db.times.find()
     ];
 
-    Promise.each(gettingData, res => res)
+    return Promise.each(gettingData, res => res)
     .spread((locations, times) => {
-      times = times.map(time => {
-        // console.log(time.startDateObj.getDate());
-        // console.log(time.endDateObj);
-        // time.startDateObj = time.startDateObj.toDateString();
-        // time.endDateObj = time.endDateObj.toDateString();
-        return time
+      var assocLocations = locations.map(location => {
+        location.times = times.filter(time => {
+          return time.locationId === location._id;
+        });
+        var elapsedTimes = location.times.map(time => time.elapsedTime);
+        location.timeSpentMS = elapsedTimes.reduce((a, b) => a + b);
+        return location;
       });
-      console.log('locations: ', locations);
-      console.log('times: ', times);
-    })
-    .catch(console.error);
+      return assocLocations;
+    });
   },
 
   // DELETE?

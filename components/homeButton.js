@@ -38,7 +38,20 @@ class HomeButton extends Component {
     var me = this;
     me.setState({logging: !me.state.logging});
 
-    getDbData();
+    getDbData()
+    .then(locations => {
+      function getLocation(inputName) {
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+        var nearbyLoc = locations.filter(location => {
+          return (Math.abs(latitude - location.coords.latitude) <= 0.0001 && 
+            Math.abs(longitude - location.coords.longitude) <= 0.0001
+          )
+        });
+        var locExists = nearbyLoc.length > 0;
+      }
+    })
+    .catch(console.error);
 
     return AsyncStorage.getItem('locations')
     .then(locations => {

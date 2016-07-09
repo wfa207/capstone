@@ -95,7 +95,8 @@ function timeGen(locationIdx, startTime) {
 	return {
 		locationId: locationIdx + 1,
 		startTime: msToDateObj(startTime),
-		endTime: msToDateObj(startTime + locations[locationIdx].timeSpentMS)
+		endTime: msToDateObj(startTime + locations[locationIdx].timeSpentMS),
+		elapsedTime: locations[locationIdx].timeSpentMS
 	}
 }
 
