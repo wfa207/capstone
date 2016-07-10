@@ -56,18 +56,19 @@ var LogNav = React.createClass({
               return (
                 <TouchableHighlight
                 onPress={() => {
-                  var oldName = me._routeComponent.props.name;
-                  var newName = me._routeComponent._nameInput._lastNativeText;
-                  me._routeComponent.editLocationName(oldName, newName)
-                  .then((updatedLocation) => {
-                    updatedLocation.type = me._routeComponent.props.type;
-                    navigator.replacePreviousAndPop({
-                      title: 'Details',
-                      component: LogDetailView,
-                      passProps: updatedLocation
-                    });
-                  })
-                  .catch(console.error);
+                  console.log(me);
+                  // var oldName = me._routeComponent.props.name;
+                  // var newName = me._routeComponent._nameInput._lastNativeText;
+                  // me._routeComponent.editLocationName(oldName, newName)
+                  // .then((updatedLocation) => {
+                  //   updatedLocation.type = me._routeComponent.props.type;
+                  //   navigator.replacePreviousAndPop({
+                  //     title: 'Details',
+                  //     component: LogDetailView,
+                  //     passProps: updatedLocation
+                  //   });
+                  // })
+                  // .catch(console.error);
                 }}
                 underlayColor="transparent">
                 <Text style={styles.rightNavButtonText}>Done</Text>

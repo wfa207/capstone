@@ -10,14 +10,6 @@ const styles = StyleSheet.create({
     marginTop: 60,
     marginBottom: 49
   },
-  detailContainer: {
-    flex: 1,
-    backgroundColor: '#232323',
-    marginTop: 60,
-    marginBottom: 48,
-    paddingVertical: 20,
-    paddingHorizontal: 10
-  },
   segmentControl: {
     marginTop: 10,
     marginHorizontal: 10
@@ -259,6 +251,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700'
   },
+  detailContainer: {
+    flex: 1,
+    backgroundColor: '#232323',
+    marginTop: 60,
+    marginBottom: 48,
+    paddingVertical: 20,
+    paddingHorizontal: 10
+  },
   detailViewTitle: {
     color: '#48BBEC',
     fontSize: 30,
@@ -266,17 +266,23 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     marginBottom: 30,
   },
+  detailHeaderContainer: {
+    borderColor: 'transparent',
+    borderBottomColor: '#929292',
+    borderWidth: 2,
+    marginBottom: 5
+  },
   detailViewBodyHeader: {
     fontWeight: '800',
     color: 'white',
     fontSize: 14,
-    marginVertical: 10,
-    borderBottomColor: '#929292'
+    marginTop: 10,
+    marginBottom: 5
   },
   detailViewBody: {
     color: 'white',
     fontSize: 14,
-    marginVertical: 10,
+    marginBottom: 10,
     borderBottomColor: '#929292'
   },
   editViewBody: {

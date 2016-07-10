@@ -31,56 +31,28 @@ var Log = React.createClass({
 
   _onRefresh() {
     this.setState({refreshing: true});
-    this.refreshData();
+    this.getData();
   },
 
-  refreshData() {
-    localFetch('photos')
-    .then(photos => {
-      if (!photos) return;
-      this.setState({photos: photos});
-    })
-    .then(() => {
-      return this.fetchValueData(this.state.value)
-    })
-    .then((items) => {
-      var itemNames = {};
-      var condensedItems = [];
-      items.forEach((item) => {
-        var name = item.name;
-        if (!itemNames[name]) {
-          itemNames[name] = 1;
-          condensedItems.push(item);
-        } else {
-          itemNames[name] += 1;
-        }
-      });
-      condensedItems = condensedItems.map((item) => {
-        item.visits = itemNames[item.name];
-        let photo = this.state.photos.find(photo => {
-          return photo.id === item.id;
-        });
-        if (photo) {
-          item.url = photo.url;
-        }
-        return item;
-      });
-      console.log(condensedItems)
+  getData() {
+    getDbData()
+    .then(locations => {
+      console.log(locations);
       this.setState({
-        dataSource: ds.cloneWithRows(condensedItems),
+        dataSource: ds.cloneWithRows(locations),
         loading: false,
         refreshing: false
-      });
+      })
     })
     .catch(console.error);
   },
 
   componentWillMount() {
-    return this.refreshData();
+    return this.getData();
   },
 
   componentWillReceiveProps() {
-    return this.refreshData();
+    return this.getData();
   },
 
   fetchValueData(value) {

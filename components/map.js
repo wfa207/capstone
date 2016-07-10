@@ -51,16 +51,17 @@ var Map = React.createClass({
   },
 
   componentWillReceiveProps() {
-    this.mapAllLocations()
-    .catch(console.error);
+    this.mapAllLocations();
   },
 
   mapAllLocations() {
-    getDbData()
+    return getDbData()
     .then((locations) => {
       var markers = this.markerGenerator(locations);
       this.setState({markers: markers});
+      return locations;
     })
+    .catch(alert);
   },
 
   onRegionChange(region) {

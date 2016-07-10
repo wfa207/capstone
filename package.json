@@ -9,6 +9,7 @@
   "dependencies": {
     "react": "15.1.0",
     "react-native": "0.28.0",
+    "react-native-fs": "^1.5.1",
     "react-native-ios-charts": "^0.2.5",
     "react-native-maps": "^0.6.0",
     "react-native-store": "^0.4.1",

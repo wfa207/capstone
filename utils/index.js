@@ -29,7 +29,29 @@ var utils = {
   msToDateObj: msToDateObj,
 
   formatElapTime(elapTime) {
+    let units = {
+      year: 1000 * 60 * 60 * 24 * 365,
+      month: 1000 * 60 * 60 * 24 * 30,
+      week: 1000 * 60 * 60 * 24 * 7,
+      day: 1000 * 60 * 60 * 24,
+      hour: 1000 * 60 * 60,
+      minute: 1000 * 60,
+      second: 1000
+    }
 
+    let res = [];
+
+    if (elapTime === 0) return 'No time spent at this location yet';
+
+    for (var key in units) {
+      if (elapTime >= units[key]) {
+        let val = Math.floor(elapTime / units[key]);
+        res.push(val += ' ' + (val > 1 ? key + 's' : key));
+        elapTime = elapTime % units[key];
+      }
+    }
+
+    return res.length > 1 ? res.join(', ').replace(/,([^,]*)$/,' and'+'$1') : res[0];
   },
 
   getDbData() {

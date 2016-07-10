@@ -34,45 +34,42 @@ var LogEditView = React.createClass({
     .catch(console.error);
   },
 
-  locationOrActivityRender(isLocation) {
-    if (!isLocation) {
-      return (
-        <Text style={styles.detailViewBody}>
-          {this.props.description}
-          {this.props.time_traveled}
-        </Text>
-      )
-    } else {
-      return (
-        <View>
-        <View style={styles.inline}>
-          <Text style={styles.detailViewBodyHeader}>Location: </Text>
-          <Text style={styles.detailViewBody}>
-          {this.props.city}, {this.props.state}, {this.props.country}
-          </Text>
-        </View>
-        <View style={styles.inline}>
-          <Text style={styles.detailViewBodyHeader}>Total time spent: </Text>
-          <Text style={styles.detailViewBody}>{this.props.timeSpent}</Text>
-        </View>
-        <View style={styles.inline}>
-          <Text style={styles.detailViewBodyHeader}>Total visits: </Text>
-          <Text style={styles.detailViewBody}>{this.props.visits}</Text>
-        </View>
-        </View>
-      )
-    }
-  },
-
   render() {
-    var isLocation = this.props.type === 'Locations';
     return (
-      <View
-      style={styles.detailContainer}>
+      <View style={styles.detailContainer}>
         <TextInput style={[styles.detailViewTitle, {height: 40}]}
-        ref={component => this._nameInput = component}
-        defaultValue={this.props.name}/>
-        {this.locationOrActivityRender(isLocation)}
+          ref={component => this._name = component}
+          defaultValue={this.props.name}/>
+        <View style={styles.detailHeaderContainer}>
+          <Text style={styles.detailViewBodyHeader}>Street Address</Text>
+        </View>
+          <TextInput style={[styles.detailViewBody, {height: 30}]}
+          ref={component => this._streetInput = component}
+          defaultValue={this.props.street}/>
+        <View style={styles.detailHeaderContainer}>
+          <Text style={styles.detailViewBodyHeader}>City</Text>
+        </View>
+          <TextInput style={[styles.detailViewBody, {height: 30}]}
+          ref={component => this._city = component}
+          defaultValue={this.props.city}/>
+        <View style={styles.detailHeaderContainer}>
+          <Text style={styles.detailViewBodyHeader}>State</Text>
+        </View>
+          <TextInput style={[styles.detailViewBody, {height: 30}]}
+          ref={component => this._state = component}
+          defaultValue={this.props.state}/>
+        <View style={styles.detailHeaderContainer}>
+          <Text style={styles.detailViewBodyHeader}>Zip Code</Text>
+        </View>
+          <TextInput style={[styles.detailViewBody, {height: 30}]}
+          ref={component => this._ZIP = component}
+          defaultValue={this.props.ZIP.toString()}/>
+        <View style={styles.detailHeaderContainer}>
+          <Text style={styles.detailViewBodyHeader}>Country</Text>
+        </View>
+          <TextInput style={[styles.detailViewBody, {height: 30}]}
+          ref={component => this._country = component}
+          defaultValue={this.props.country}/>
       </View>
     )
   }
