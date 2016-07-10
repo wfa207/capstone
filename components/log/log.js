@@ -37,7 +37,6 @@ var Log = React.createClass({
   getData() {
     getDbData()
     .then(locations => {
-      console.log(locations);
       this.setState({
         dataSource: ds.cloneWithRows(locations),
         loading: false,
@@ -53,15 +52,6 @@ var Log = React.createClass({
 
   componentWillReceiveProps() {
     return this.getData();
-  },
-
-  fetchValueData(value) {
-    value = value.toLowerCase();
-    return AsyncStorage.getItem(value)
-    .then((items) => {
-      items = JSON.parse(items);
-      return items;
-    });
   },
 
   _navigate(rowData) {

@@ -36,39 +36,36 @@ var LogEditView = React.createClass({
 
   render() {
     return (
-      <View style={styles.detailContainer}>
+      <View ref={component => this._routeComponent = component}
+      style={styles.detailContainer}>
         <TextInput style={[styles.detailViewTitle, {height: 40}]}
-          ref={component => this._name = component}
+          onSubmitEditing={arg => {console.log(this); console.log(arg)} }
           defaultValue={this.props.name}/>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>Street Address</Text>
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
-          ref={component => this._streetInput = component}
           defaultValue={this.props.street}/>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>City</Text>
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
-          ref={component => this._city = component}
           defaultValue={this.props.city}/>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>State</Text>
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
-          ref={component => this._state = component}
           defaultValue={this.props.state}/>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>Zip Code</Text>
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
-          ref={component => this._ZIP = component}
+          keyboardType={'number-pad'}
           defaultValue={this.props.ZIP.toString()}/>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>Country</Text>
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
-          ref={component => this._country = component}
           defaultValue={this.props.country}/>
       </View>
     )
