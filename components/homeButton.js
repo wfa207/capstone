@@ -13,18 +13,13 @@ import {
 import styles from './styles';
 import {
   getCurrentLocation,
+  getAddress,
   getDbData,
-  fetchTimes,
-  fetchAndStoreData,
-  revGeocode,
+  addLocation,
+  addUpdateTime,
   nearbySearch,
-  getPhotoURL,
-  localFetch,
-  localStore} from '../utils';
+} from '../utils';
 import {SERVER_ROUTE} from '../server/env/development';
-
-var time = {};
-var newLocation = {};
 
 class HomeButton extends Component {
   constructor(props) {
@@ -34,137 +29,106 @@ class HomeButton extends Component {
     }
   }
 
-  saveLocation(position) {
-    var me = this;
-    me.setState({logging: !me.state.logging});
-
+  componentWillMount() {
     getDbData()
     .then(locations => {
-      function getLocation(inputName) {
-        let latitude = position.coords.latitude;
-        let longitude = position.coords.longitude;
-        var nearbyLoc = locations.filter(location => {
-          return (Math.abs(latitude - location.coords.latitude) <= 0.0001 && 
-            Math.abs(longitude - location.coords.longitude) <= 0.0001
-          )
-        });
-        var locExists = nearbyLoc.length > 0;
-      }
+      this.setState({
+        locations: locations
+      });
     })
     .catch(console.error);
+  }
 
-    return AsyncStorage.getItem('locations')
-    .then(locations => {
+  findExistingNearbyLoc = (currPosition, locations) => {
+    return locations.filter(location => {
+      return (Math.abs(location.coords.latitude - currPosition.coords.latitude) <= 0.0003 && 
+        Math.abs(location.coords.longitude - currPosition.coords.longitude) <= 0.0003
+      )
+    });
+  }
 
-      function getLocation(inputName) {
-        locations = JSON.parse(locations);
-        let latitude = position.coords.latitude, longitude = position.coords.longitude;
-        let id = 1;
-        let locationWithIdExists = locations.find(location => {
-          return location.id === id; 
-        });
-        while (locationWithIdExists) {
-          id++;
-          locationWithIdExists = locations.find(location => {
-            return location.id === id; 
-          });
-        }
-        var name = inputName;
-        var queryName = inputName;
+  loggingToggle = () => {
+    this.setState({logging: !this.state.logging});
+  }
+
+  processLocationInput = (position, inputName) => {
+    let logTime = new Date(position.timestamp);
+    let existNearbyLoc = this.findExistingNearbyLoc(position, this.state.locations)
+    let name = inputName;
+
+    if (!existNearbyLoc.length) {
+      getAddress(position)
+      .then(results => {
+        let addressObj = results[0];
+        let addressArr = addressObj.formatted_address.split(', ');
+        let [street, city, stateZip, country] = addressArr;
+        let stateZipArr = stateZip.split(' ');
+        let state = stateZipArr[0];
+        let ZIP = stateZipArr[1];
 
         if (!name) {
-          let date = new Date(position.timestamp);
-          let hours = date.getHours();
-          let minutes = "0" + date.getMinutes();
-          let formattedTime = ((hours == 0) ? 12 : (hours % 12)) + ':' +
+          let hours = logTime.getHours();
+          let minutes = "0" + logTime.getMinutes();
+          let formattedTime = ((!hours) ? 12 : (hours % 12)) + ':' +
           minutes.substr(-2) + (hours <= 12 ? "AM" : "PM");
-
-          let lat = (Math.abs(Math.floor(latitude*100)/100)).toString() + (latitude >= 0 ? "N" : "S");
-          let long = (Math.abs(Math.floor(longitude*100)/100)).toString() + (longitude >= 0 ? "E" : "W");
-
-          name = formattedTime + " | " + lat + ", " + long;
-          queryName = undefined;
+          name = formattedTime + ': ' + street;
         }
 
-        let photoURL;
-        nearbySearch(latitude, longitude, queryName)
-        // .then(locations => {
-        //   return getPhotoURL(locations);
-        // })
-        // .then(_photoURL => {
-        //   photoURL = _photoURL;
-        //   return localFetch('photos')
-        // })
-        // .then(photos => {
-        //   if (!photos) photos = [];
-        //   photos.push({id: id, url: photoURL});
-        //   return localStore('photos', photos);
-        // })
-        .catch(console.error);
-
-
-        newLocation = {
-          id: id,
+        addLocation({
           name: name,
-          coordinates: [latitude, longitude],
-          city: 'New York',
-          state: 'NY',
-          country: 'United States',
-          visits: 1,
-          timeSpent: 0,
-        };
-        locations.push(newLocation);
+          coords: position.coords,
+          street: street,
+          city: city,
+          state: state,
+          ZIP: ZIP,
+          country: country
+        })
+        .then(location => {
+          addUpdateTime(location, true, position.timestamp)
+          .then(this.loggingToggle)
+        });
+      })
+      .catch(console.error);
 
-        time.left = (new Date()).toString();
-        time.locationId = newLocation.id;
-        let times;
-        return AsyncStorage.setItem('locations', JSON.stringify(locations))
-        .then(() => {
-          // store in database
-          // return fetchAndStoreData("/api/users/1/locations", JSON.stringify(locations));
-          return fetchTimes();
-        })
-        .then(times => {
-          time.id = times.length + 1;
-          time.dayId = 1;
-          time.userId = 1;
-          times.push(time);
-          return times;
-        })
-        .then(_times => {
-          times = _times;
-          return AsyncStorage.setItem('times', JSON.stringify(times));
-        })
-        .then(() => {
-          return fetchAndStoreData("/api/users/1/times", JSON.stringify(times));
-        })
-        .catch(console.error);
-      }
-      if (this.state.logging)
-        time.arrived = (new Date()).toString();
-      else {
-        AlertIOS.prompt('Location Name', 'Please enter a name for this location', [
-          {
-            text: 'Not Now',
-            onPress: () => getLocation(),
-            style: 'destructive'
-          }, {
-            text: 'Enter',
-            onPress: text => getLocation(text),
-            style: 'default'
-          }
-        ]);
-      }
-    })
-    .catch(console.error);
+    } else {
+      addUpdateTime(existNearbyLoc[0], true, position.timestamp)
+      .then(this.loggingToggle)
+      .catch(console.error);
+    }
 
-}
+  }
+
+  saveLocation = position => {
+
+    if (!this.state.logging) {
+      AlertIOS.prompt('Location Name', 'Please enter a name for this location', [{
+          text: 'Not Now',
+          onPress: () => this.processLocationInput(position),
+          style: 'destructive'
+        }, {
+          text: 'Enter',
+          onPress: text => this.processLocationInput(position, text),
+          style: 'default'
+        }]);
+    } else {
+      addUpdateTime(null, false, position.timestamp)
+      .then(() => {
+        getDbData()
+        .then(locations => {
+          this.setState({
+            logging: !this.state.logging,
+            locations: locations
+          });
+        });
+      })
+      .catch(console.error);
+    }
+  }
 
   startStopLog() {
     getCurrentLocation(position => {
-      // Code goes before state switch
       this.saveLocation(position);
-    });
+    })
   }
 
   render() {

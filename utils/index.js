@@ -13,6 +13,8 @@ var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'
 
 var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
+var googKey = GOOGLE.serverKey;
+
 var utils = {
   getCurrentLocation(cb) {
     return navigator.geolocation.getCurrentPosition(
@@ -27,7 +29,7 @@ var utils = {
   msToDateObj: msToDateObj,
 
   formatElapTime(elapTime) {
-    
+
   },
 
   getDbData() {
@@ -48,54 +50,34 @@ var utils = {
       });
       return assocLocations;
     });
+  },  
+
+  addUpdateTime(location, start, timeValue) {
+    if (start) {
+      return db.times.add({
+        locationId: location._id,
+        startTime: timeValue,
+      });
+    } else {
+      return db.times.find()
+      .then(times => {
+        var lastTime = times[times.length-1];
+        var startTime = lastTime.startTime;
+        return db.times.updateById({
+          endTime: timeValue,
+          elapsedTime: timeValue - startTime
+        }, lastTime._id);
+      })
+    }
   },
 
-  // DELETE?
-  initialFetchAndStoreData(route, storageName) {
-    return AsyncStorage.getItem(storageName, (data) => {
-      if (!JSON.parse(data)) {
-        return utils.fetchAndStoreData(route, storageName);
-      }
-    })
-    .catch(console.error);
-  },
-
-  fetchAndStoreData(route, storageName) {
-    let chain;
-    return utils.serverFetch(SERVER_ROUTE + route)
-    .then(data => {
-      chain = data;
-      return utils.localStore(storageName, data);
-    })
-    .then(() => {
-      return chain;
-    })
-    .catch(console.error);
-  },
-
-  fetchAllLocations() {
-    return utils.localFetch('locations');
-  },
-
-  fetchValueData(value) {
-    value = value.toLowerCase();
-    return utils.localFetch(value);
+  addLocation(location) {
+    return db.locations.add(location);
   },
 
   serverFetch(url) {
     return fetch(url)
     .then(res => res.json());
-  },
-
-  localFetch(keyName) {
-    return AsyncStorage.getItem(keyName)
-    .then(data => {
-      return JSON.parse(data);
-    })
-  },
-
-  localStore(keyName, data) {
-    return AsyncStorage.setItem(keyName, JSON.stringify(data));
   },
 
   listFormatter() {
@@ -107,18 +89,32 @@ var utils = {
     return output;
   },
 
-  nearbySearch(lat, long, queryName) {
+  nearbySearch(position, queryName) {
     var searchURL = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?'
-    var serverKey = 'key=' + GOOGLE.serverKey;
-    var location = 'location=' + lat + ',' + long;
-    var radius = 'radius=50';
-    var name = queryName || undefined;
-    name ? name.split(' ').join('|') : undefined;
-    var fullURL = searchURL + utils.listFormatter(location, radius, serverKey).join('&');
+    var serverKey = 'key=' + googKey;
+    var location = 'location=' + position.coords.latitude + ',' + position.coords.longitude;
+    var radius = 'radius=5';
+    queryName = queryName ? 'name=' + queryName.split(' ').join('|') : undefined;
+    var fullURL = searchURL + utils.listFormatter(location, radius, serverKey, queryName).join('&');
+
     return utils.serverFetch(fullURL)
     .then(data => {
       return data.results;
     });
+  },
+
+  getAddress(position) {
+    var lat = position.coords.latitude;
+    var long = position.coords.longitude;
+    var searchURL = 'https://maps.googleapis.com/maps/api/geocode/json?'
+    var serverKey = 'key=' + googKey;
+    var latlng = 'latlng=' + lat + ',' + long;
+    var fullURL = searchURL + utils.listFormatter(latlng, serverKey).join('&');
+
+    return utils.serverFetch(fullURL)
+    .then(data => {
+      return data.results;
+    })
   },
 
   getPhotoURL(locations) {
@@ -142,27 +138,6 @@ var utils = {
     })
   },
 
-  fetchTimes() {
-    let times;
-    return utils.localFetch('times')
-    .then(_times => {
-      times = _times;
-      return utils.localFetch('days')
-    })
-    .then(days => {
-      let today = days.find(day => {
-        let date = new Date(day.date);
-        return date.getDate() === (new Date()).getDate();
-      });
-      return today;
-    })
-    .then(today => {
-      let todayTimes = times.filter(time => {
-        return time.dayId === today.id;
-      });
-      return todayTimes;
-    });
-  }
 }
 
 module.exports = utils;

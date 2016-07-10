@@ -22,8 +22,10 @@ var locations = [{
 			latitude: 40.71323,
 			longitude: -74.0133669
 		},
+		street: '285 Fulton St',
 		city: 'New York',
 		state: 'NY',
+		ZIP: 10007,
 		country: 'United States',
 		timeSpentMS: (1 * hourMS) + (12 * minuteMS)
 	}, {
@@ -32,8 +34,10 @@ var locations = [{
 			latitude: 40.7564807,
 			longitude: -73.9814849
 		},
+		street: '11 Park Pl',
 		city: 'New York',
 		state: 'NY',
+		ZIP: 10007,
 		country: 'United States',
 		timeSpentMS: 47 * minuteMS
 	}, {
@@ -42,8 +46,10 @@ var locations = [{
 			latitude: 40.7484404,
 			longitude: -73.9856554
 		},
+		street: '350 5th Ave',
 		city: 'New York',
 		state: 'NY',
+		ZIP: 10118,
 		country: 'United States',
 		timeSpentMS: 56 * minuteMS
 	}, {
@@ -52,8 +58,10 @@ var locations = [{
 			latitude: 40.7586101,
 			longitude: -73.9782093
 		},
+		street: '45 Rockefeller Plaza',
 		city: 'New York',
 		state: 'NY',
+		ZIP: 10111,
 		country: 'United States',
 		timeSpentMS: hourMS + (18 * minuteMS)
 	}, {
@@ -62,8 +70,10 @@ var locations = [{
 			latitude: 40.767778,
 			longitude: -73.9718335
 		},
+		street: '64th St and 5th Ave',
 		city: 'New York',
 		state: 'NY',
+		ZIP: 10021,
 		country: 'United States',
 		timeSpentMS: (2 * hourMS) + (12 * minuteMS)
 	}];

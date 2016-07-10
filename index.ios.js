@@ -26,14 +26,6 @@ class capstone extends Component {
     super(props);
   }
 
-  componentWillMount() {
-    // AsyncStorage.clear();
-    // initialFetchAndStoreData("/api/users/1/locations", 'locations');
-    // initialFetchAndStoreData("/api/users/1/trips", 'activities');
-    // initialFetchAndStoreData("/api/users/1/times", 'times');
-    // initialFetchAndStoreData("/api/users/1/days", 'days');
-  }
-
   render() {
     return (
       <TabBar/>

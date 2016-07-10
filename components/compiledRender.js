@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import styles from './styles';
 import HomeButton from './homeButton';
-import Map from './mapES5';
+import Map from './map';
 import LogTitleBar from './log/logNav';
 import Chart from './chart'
 

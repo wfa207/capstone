@@ -13,7 +13,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 import styles from '../styles';
-import { localFetch } from '../../utils';
+import { getDbData } from '../../utils';
 import LogDetailView from './logDetailView';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -22,8 +22,6 @@ var Log = React.createClass({
 
   getInitialState() {
     return {
-      values: ['Activities', 'Locations'],
-      value: 'Locations',
       dataSource: ds.cloneWithRows(['row 1', 'row 2']),
       photos: [],
       loading: true,
@@ -85,17 +83,6 @@ var Log = React.createClass({
     return this.refreshData();
   },
 
-  _onValueChange(value) {
-    this.fetchValueData(value)
-    .then((items) => {
-      this.setState({
-        dataSource: ds.cloneWithRows(items),
-        value: value
-      });
-    })
-    .catch(console.error);
-  },
-
   fetchValueData(value) {
     value = value.toLowerCase();
     return AsyncStorage.getItem(value)
@@ -129,7 +116,6 @@ var Log = React.createClass({
           style={{marginTop: 10}}
           dataSource={this.state.dataSource}
           renderRow={rowData  => {
-            console.log(rowData)
             return <TouchableHighlight
             onPress={() => this._navigate(rowData)}
             style={styles.rowStyle}>
