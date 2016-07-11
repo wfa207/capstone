@@ -75,14 +75,13 @@ class HomeButton extends Component {
   stateToggle = () => {
     this.setState({
       logging: !this.state.logging,
-      inputShow: !this.state.inputShow
+      inputShow: false
     });
   }
 
-  processLocationInput = (inputName) => {
+  processLocationInput = (existNearbyLoc, inputName) => {
     let position = this.state.position;
     let logTime = new Date(position.timestamp);
-    let existNearbyLoc = this.findExistingNearbyLoc(position, this.state.locations)
     let name = inputName;
 
     if (!existNearbyLoc.length) {
@@ -121,22 +120,26 @@ class HomeButton extends Component {
       .catch(alert);
 
     } else {
-      AlertIOS.alert('Location already exists', 'Location will be logged as ' + existNearbyLoc[0].name + '.', () => {
         addUpdateTime(existNearbyLoc[0], true, position.timestamp)
         .then(this.stateToggle)
         .catch(alert);
-      });
     }
-
   }
 
   startStopLog() {
     if (!this.state.logging) {
       getCurrentLocation(position => {
-        this.setState({
-          inputShow: !this.state.inputShow,
-          position: position,
-        });
+        let existNearbyLoc = this.findExistingNearbyLoc(position, this.state.locations);
+        if (existNearbyLoc.length) {
+           AlertIOS.alert('Location already exists', 'Location will be logged as ' + existNearbyLoc[0].name + '.', () => {
+              this.processLocationInput(existNearbyLoc);
+           })
+        } else {
+          this.setState({
+            inputShow: true,
+            position: position,
+          });
+        }
       });
     } else {
       if (!this.state.inputShow) {
@@ -176,7 +179,7 @@ class HomeButton extends Component {
               ref="input"
               style={styles.autocomplete}
               onChangeText={(value) => { this.setLocationNameState(value); this._type(value); }}
-              onSubmitEditing={() => this.processLocationInput(this.state.locationName)}
+              onSubmitEditing={() => this.processLocationInput([], this.state.locationName)}
               placeholder='Enter Location Name Here'
             />
             {this.state.collection && !!this.state.collection.length && this.state.collection.map((value, idx) => (
