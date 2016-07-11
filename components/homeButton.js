@@ -132,9 +132,10 @@ class HomeButton extends Component {
         this.setState({position: position});
         let existNearbyLoc = this.findExistingNearbyLoc(position, this.state.locations);
         if (existNearbyLoc.length) {
-           AlertIOS.alert('Location already exists', 'Location will be logged as ' + existNearbyLoc[0].name + '.', () => {
-              this.processLocationInput(existNearbyLoc);
-           })
+          AlertIOS.alert('Location already exists', 'This location exists as ' + existNearbyLoc[0].name + '\n Would you like to use this name?', [
+            {text: 'Yes', onPress: () => this.processLocationInput(existNearbyLoc)},
+            {text: 'Enter new name', onPress: () => this.setState({inputShow: true})}
+          ])
         } else {
           this.setState({
             inputShow: true,
@@ -179,8 +180,9 @@ class HomeButton extends Component {
             <TextInput
               ref="input"
               style={styles.autocomplete}
-              onChangeText={(value) => { this.setLocationNameState(value); this._type(value); }}
-              onSubmitEditing={() => this.processLocationInput([], this.state.locationName)}
+              onFocus={() => this.setLocationNameState('')}
+              onChangeText={(value) => {this.setLocationNameState(value); this._type(value);}}
+              onSubmitEditing={input => this.processLocationInput([], this.state.locationName)}
               placeholder='Enter Location Name Here'
             />
             {this.state.collection && !!this.state.collection.length && this.state.collection.map((value, idx) => (
