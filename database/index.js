@@ -110,13 +110,16 @@ function timeGen(locationIdx, startTime) {
 	}
 }
 
-db.locations.destroy()
-.then(() => db.times.destroy())
-.then(() => Promise.each(locations, location => db.locations.add(location)))
-.then(() => Promise.each(times, time => db.times.add(time)))
-.catch(alert);
+function seed() {
+	return db.locations.destroy()
+	.then(() => db.times.destroy())
+	.then(() => Promise.each(locations, location => db.locations.add(location)))
+	.then(() => Promise.each(times, time => db.times.add(time)))
+	.catch(alert);
+}
 
 module.exports = {
 	db: db,
-	msToDateObj: msToDateObj
+	msToDateObj: msToDateObj,
+	seed: seed
 };

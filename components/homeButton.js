@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import styles from './styles';
 import {
+  seed,
   getCurrentLocation,
   getAddress,
   getDbData,
@@ -31,11 +32,14 @@ class HomeButton extends Component {
   }
 
   componentWillMount() {
-    getDbData()
-    .then(locations => {
-      this.setState({
-        locations: locations
-      });
+    seed()
+    .then(() => {
+      getDbData()
+      .then(locations => {
+        this.setState({
+          locations: locations
+        });
+      })
     })
     .catch(alert);
   }

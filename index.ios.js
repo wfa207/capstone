@@ -17,9 +17,6 @@ import TabBar from './components/tabBar';
 import styles from './components/styles';
 import {SERVER_ROUTE} from './server/env/development';
 import db from './database';
-import {
-  initialFetchAndStoreData
-} from './utils';
 
 class capstone extends Component {
   constructor(props) {

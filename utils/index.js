@@ -6,7 +6,7 @@ import {
   AsyncStorage
 } from 'react-native';
 
-import {db, msToDateObj} from '../database';
+import {db, seed, msToDateObj} from '../database';
 import {SERVER_ROUTE, GOOGLE} from '../server/env/development';
 
 var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -28,6 +28,8 @@ var utils = {
 
   msToDateObj: msToDateObj,
 
+  seed: seed,
+
   formatToDate(dateObj) {
     return dayNames[dateObj.dayOfWk] + ', ' + 
       monthNames[dateObj.month] + ' ' +
@@ -37,8 +39,8 @@ var utils = {
 
   formatToTime(dateObj) {
     let minutes = '0' + dateObj.minutes;
-    let formattedTime = ((!dateObj.hours) ? 12 : (dateObj.hours % 12)) + ':' +
-          minutes.substr(-2) + (dateObj.hours <= 12 ? "AM" : "PM");
+    let formattedTime = ((!dateObj.hours || dateObj.hours === 12) ? 12 : (dateObj.hours % 12)) + ':' +
+          minutes.substr(-2) + " " + (dateObj.hours < 12 ? "AM" : "PM");
     return formattedTime;
   },
 
@@ -80,9 +82,8 @@ var utils = {
         location.times = times.filter(time => {
           return time.locationId === location._id;
         });
-        var elapsedTimes = location.times.map(time => time.elapsedTime);
+        var elapsedTimes = location.times.map(time => time.elapsedTime ? time.elapsedTime : 0);
         location.timeSpentMS = elapsedTimes.reduce((a, b) => {
-          a = a || 0, b = b || 0;
           return a + b
         });
         return location;
