@@ -141,7 +141,6 @@ class Chart extends Component {
           <ListView
           dataSource={this.state.dataSource}
           renderRow={rowData => {
-
             let output = formatElapTime(rowData.timeSpent);
             let smallPercentage = rowData.ratio < 0.1;
             let barStyles = [rowData.percentageStyle, {opacity: this.state.fadeAnim, position: 'absolute', top: 60, left: 25}];

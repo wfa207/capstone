@@ -129,6 +129,7 @@ class HomeButton extends Component {
   startStopLog() {
     if (!this.state.logging) {
       getCurrentLocation(position => {
+        this.setState({position: position});
         let existNearbyLoc = this.findExistingNearbyLoc(position, this.state.locations);
         if (existNearbyLoc.length) {
            AlertIOS.alert('Location already exists', 'Location will be logged as ' + existNearbyLoc[0].name + '.', () => {
