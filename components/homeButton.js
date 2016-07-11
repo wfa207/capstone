@@ -6,6 +6,8 @@ import {
   Text,
   Image,
   Navigator,
+  TextInput,
+  TouchableOpacity,
   TouchableHighlight,
   AlertIOS,
   View
@@ -24,11 +26,15 @@ import {
 import {seed} from '../database';
 import {SERVER_ROUTE} from '../server/env/development';
 
+console.disableYellowBox = true;
+
 class HomeButton extends Component {
   constructor(props) {
     super(props)
     this.state = {
       logging: false,
+      collection: null,
+      inputShow: false
     }
   }
 
@@ -45,6 +51,19 @@ class HomeButton extends Component {
     .catch(alert);
   }
 
+  _type = (str) => {
+    var locationNames = this.state.locations.map(location => location.name);
+    var collection = locationNames.filter(name => name.substr(0, str.length) === str).slice(0,5);
+    this.setState({
+      searchString: str,
+      collection: collection
+    })
+  }
+
+  setLocationNameState(text) {
+    this.setState({locationName: text});
+  }
+
   findExistingNearbyLoc = (currPosition, locations) => {
     return locations.filter(location => {
       return (Math.abs(location.coords.latitude - currPosition.coords.latitude) <= 0.0003 && 
@@ -53,11 +72,15 @@ class HomeButton extends Component {
     });
   }
 
-  loggingToggle = () => {
-    this.setState({logging: !this.state.logging});
+  stateToggle = () => {
+    this.setState({
+      logging: !this.state.logging,
+      inputShow: !this.state.inputShow
+    });
   }
 
-  processLocationInput = (position, inputName) => {
+  processLocationInput = (inputName) => {
+    let position = this.state.position;
     let logTime = new Date(position.timestamp);
     let existNearbyLoc = this.findExistingNearbyLoc(position, this.state.locations)
     let name = inputName;
@@ -92,50 +115,46 @@ class HomeButton extends Component {
         })
         .then(location => {
           addUpdateTime(location, true, position.timestamp)
-          .then(this.loggingToggle)
+          .then(this.stateToggle)
         });
       })
       .catch(alert);
 
     } else {
-      addUpdateTime(existNearbyLoc[0], true, position.timestamp)
-      .then(this.loggingToggle)
-      .catch(alert);
+      AlertIOS.alert('Location already exists', 'Location will be logged as ' + existNearbyLoc[0].name + '.', () => {
+        addUpdateTime(existNearbyLoc[0], true, position.timestamp)
+        .then(this.stateToggle)
+        .catch(alert);
+      });
     }
 
-  }
-
-  saveLocation = position => {
-
-    if (!this.state.logging) {
-      AlertIOS.prompt('Location Name', 'Please enter a name for this location', [{
-          text: 'Not Now',
-          onPress: () => this.processLocationInput(position, null),
-          style: 'destructive'
-        }, {
-          text: 'Enter',
-          onPress: text => this.processLocationInput(position, text),
-          style: 'default'
-        }]);
-    } else {
-      addUpdateTime(null, false, position.timestamp)
-      .then(() => {
-        getDbData()
-        .then(locations => {
-          this.setState({
-            logging: !this.state.logging,
-            locations: locations
-          });
-        });
-      })
-      .catch(alert);
-    }
   }
 
   startStopLog() {
-    getCurrentLocation(position => {
-      this.saveLocation(position);
-    })
+    if (!this.state.logging) {
+      getCurrentLocation(position => {
+        this.setState({
+          inputShow: !this.state.inputShow,
+          position: position,
+        });
+      });
+    } else {
+      if (!this.state.inputShow) {
+        getCurrentLocation(position => {
+          addUpdateTime(null, false, position.timestamp)
+          .then(() => {
+            getDbData()
+            .then(locations => {
+              this.setState({
+                logging: !this.state.logging,
+                locations: locations
+              });
+            });
+          })
+          .catch(alert);
+        });
+      }
+    }
   }
 
   render() {
@@ -150,6 +169,27 @@ class HomeButton extends Component {
               {(this.state.logging ? 'Stop' : 'Start') + '\n'}logging
             </Text>
         </TouchableHighlight>
+       {this.state.inputShow && (
+          <View style={styles.modal}>
+            <Text style={[styles.locationInputHeader, {fontWeight: '600'}]}>Location Name</Text>
+            <TextInput
+              ref="input"
+              style={styles.autocomplete}
+              onChangeText={(value) => { this.setLocationNameState(value); this._type(value); }}
+              onSubmitEditing={() => this.processLocationInput(this.state.locationName)}
+              placeholder='Enter Location Name Here'
+            />
+            {this.state.collection && !!this.state.collection.length && this.state.collection.map((value, idx) => (
+                <TouchableOpacity
+                  style={styles.autocompleteList} 
+                  key={idx+1} 
+                  onPress={() => { this.refs.input.setNativeProps({ text: value ? value : '' }); this.setLocationNameState(value); }}>
+                  <Text style={styles.autocompleteText}>{value}</Text>
+                </TouchableOpacity>
+              )
+            )}
+          </View>
+        )}
       </View>
     )
   }

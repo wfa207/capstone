@@ -2,12 +2,14 @@
 
 import React, { Component } from 'react'
 import {
+  TextInput,
   Animated,
   Text,
   View,
   Dimensions,
   ListView,
   TouchableHighlight,
+  TouchableOpacity,
   ActivityIndicator
 } from 'react-native';
 import styles from './styles';
