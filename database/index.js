@@ -19,8 +19,8 @@ var startDate = new Date(todayYear, todayMonth, todayDay, 10, 2, 5);
 var locations = [{
 		name: 'Freedom Tower',
 		coords: {
-			latitude: 40.71323,
-			longitude: -74.0133669
+			latitude: 40.71298780000001,
+			longitude: -74.0131151
 		},
 		street: '285 Fulton St',
 		city: 'New York',
@@ -114,7 +114,7 @@ db.locations.destroy()
 .then(() => db.times.destroy())
 .then(() => Promise.each(locations, location => db.locations.add(location)))
 .then(() => Promise.each(times, time => db.times.add(time)))
-.catch(console.error);
+.catch(alert);
 
 module.exports = {
 	db: db,

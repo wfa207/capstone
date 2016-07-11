@@ -18,6 +18,7 @@ import {
   addLocation,
   addUpdateTime,
   nearbySearch,
+  formatToTime
 } from '../utils';
 import {SERVER_ROUTE} from '../server/env/development';
 
@@ -36,7 +37,7 @@ class HomeButton extends Component {
         locations: locations
       });
     })
-    .catch(console.error);
+    .catch(alert);
   }
 
   findExistingNearbyLoc = (currPosition, locations) => {
@@ -67,11 +68,12 @@ class HomeButton extends Component {
         let ZIP = stateZipArr[1];
 
         if (!name) {
-          let hours = logTime.getHours();
-          let minutes = "0" + logTime.getMinutes();
-          let formattedTime = ((!hours) ? 12 : (hours % 12)) + ':' +
-          minutes.substr(-2) + (hours <= 12 ? "AM" : "PM");
-          name = formattedTime + ': ' + street;
+          let dateObj = {
+            hours: logTime.getHours(),
+            minutes: logTime.getMinutes()
+          }
+          let formattedTime = formatToTime(dateObj);
+          name = formattedTime + ' | ' + street;
         }
 
         addLocation({
@@ -88,12 +90,12 @@ class HomeButton extends Component {
           .then(this.loggingToggle)
         });
       })
-      .catch(console.error);
+      .catch(alert);
 
     } else {
       addUpdateTime(existNearbyLoc[0], true, position.timestamp)
       .then(this.loggingToggle)
-      .catch(console.error);
+      .catch(alert);
     }
 
   }
@@ -103,7 +105,7 @@ class HomeButton extends Component {
     if (!this.state.logging) {
       AlertIOS.prompt('Location Name', 'Please enter a name for this location', [{
           text: 'Not Now',
-          onPress: () => this.processLocationInput(position),
+          onPress: () => this.processLocationInput(position, null),
           style: 'destructive'
         }, {
           text: 'Enter',
@@ -121,7 +123,7 @@ class HomeButton extends Component {
           });
         });
       })
-      .catch(console.error);
+      .catch(alert);
     }
   }
 

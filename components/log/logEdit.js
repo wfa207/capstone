@@ -8,30 +8,40 @@ import {
   AsyncStorage
 } from 'react-native';
 import styles from '../styles';
+import { getDbData } from '../../utils';
 
 var LogEditView = React.createClass({
   getInitialState() {
     return this.props;
   },
 
-  editLocationName(oldName, newName) {
-    var updatedLocation;
-    return AsyncStorage.getItem('locations')
-    .then((locations) => {
-      locations = JSON.parse(locations);
-      var index;
-      var location = locations.filter((location, idx) => {
-        var bool = location.name === oldName;
-        index = bool ? idx : index;
-        return bool;
-      })[0];
-      location.name = newName || oldName;
-      updatedLocation = location;
-      locations.splice(index, 1, location);
-      return AsyncStorage.setItem('locations', JSON.stringify(locations));
+  componentWillReceiveProps() {
+    return this._updateLocation();
+  },
+
+  componentWillMount() {
+    return this._updateLocation();
+  },
+
+  _updateLocation() {
+    return getDbData()
+    .then(locations => {
+      let location = locations.filter(elem => elem._id === this.state._id)[0];
+      this.setState(location);
+      return locations;
     })
-    .then(() => updatedLocation)
-    .catch(console.error);
+    .catch(alert);
+  },
+
+  saveNewStateProps(key) {
+    var newValue = this.refs[key]._lastNativeText;
+    var newLocationValues = this.state.newLocationValues;
+
+    if (!newLocationValues && newValue) this.setState({newLocationValues: {[key]: newValue}});
+    else if (newValue) {
+      newLocationValues[key] = newValue;
+      this.setState({newLocationValues: newLocationValues});
+    }
   },
 
   render() {
@@ -39,34 +49,45 @@ var LogEditView = React.createClass({
       <View ref={component => this._routeComponent = component}
       style={styles.detailContainer}>
         <TextInput style={[styles.detailViewTitle, {height: 40}]}
-          onSubmitEditing={arg => {console.log(this); console.log(arg)} }
-          defaultValue={this.props.name}/>
+          ref={'name'}
+          onEndEditing={() => this.saveNewStateProps('name')}
+          defaultValue={this.state.name}/>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>Street Address</Text>
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
-          defaultValue={this.props.street}/>
+          ref={'street'}
+          onEndEditing={() => this.saveNewStateProps('street')}
+          defaultValue={this.state.street}/>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>City</Text>
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
-          defaultValue={this.props.city}/>
+          ref={'city'}
+          onEndEditing={() => this.saveNewStateProps('city')}
+          defaultValue={this.state.city}/>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>State</Text>
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
-          defaultValue={this.props.state}/>
+          ref={'state'}
+          onEndEditing={() => this.saveNewStateProps('state')}
+          defaultValue={this.state.state}/>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>Zip Code</Text>
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
+          ref={'ZIP'}
+          onEndEditing={() => this.saveNewStateProps('ZIP')}
           keyboardType={'number-pad'}
-          defaultValue={this.props.ZIP.toString()}/>
+          defaultValue={this.state.ZIP.toString()}/>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>Country</Text>
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
-          defaultValue={this.props.country}/>
+          ref={'country'}
+          onEndEditing={() => this.saveNewStateProps('country')}
+          defaultValue={this.state.country}/>
       </View>
     )
   }

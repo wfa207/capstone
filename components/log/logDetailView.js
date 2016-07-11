@@ -5,46 +5,83 @@ import {
   View
 } from 'react-native';
 import styles from '../styles';
-import { formatElapTime } from '../../utils'
+import {
+  formatElapTime,
+  getDbData,
+  formatToTime,
+  formatToDate
+} from '../../utils'
+
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 class LogDetailView extends Component {
   constructor(props) {
     super(props);
+    let state = this.props;
+    state.dataSource = ds.cloneWithRows(['row 1', 'row 2']);
+    this.state = state;
+  }
+
+  componentWillReceiveProps() {
+    return getDbData()
+    .then(locations => {
+      let location = locations.filter(elem => elem._id === this.state._id)[0];
+      let newState = location;
+      newState.dataSource = ds.cloneWithRows(location.times);
+      this.setState(newState);
+      return locations;
+    })
+    .catch(alert);
+  }
+
+  componentWillMount() {
+    return this.setState({
+      dataSource: ds.cloneWithRows(this.state.times)
+    })
   }
 
   render() {
-    let times = this.props.times;
+    let times = this.state.times;
     var timeStr = times.length > 1 ? ' visits' : ' visit';
 
     return (
       <View style={styles.detailContainer}>
         <Text style={styles.detailViewTitle}>
-          {this.props.name}
+          {this.state.name}
         </Text>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>Address</Text>
         </View>
         <Text style={styles.detailViewBody}>
-          {this.props.street}
+          {this.state.street}
         </Text>
         <Text style={styles.detailViewBody}>
-          {this.props.city}, {this.props.state} {this.props.ZIP}
+          {this.state.city}, {this.state.state} {this.state.ZIP}
         </Text>
         <Text style={styles.detailViewBody}>
-          {this.props.country}
+          {this.state.country}
         </Text>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>Total time spent here</Text>
         </View>
-          <Text style={styles.detailViewBody}>{formatElapTime(this.props.timeSpentMS)}</Text>
+          <Text style={styles.detailViewBody}>{formatElapTime(this.state.timeSpentMS)}</Text>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>Total visits</Text>
         </View>
-          <Text style={styles.detailViewBody}>{this.props.times.length + timeStr}</Text>
+          <Text style={styles.detailViewBody}>{this.state.times.length + timeStr}</Text>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>Dates visited</Text>
         </View>
-          <Text style={styles.detailViewBody}>NEED TO UPDATE</Text>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={rowData => {
+            return (
+              <View style={styles.inline}>
+                <Text style={styles.detailViewBody}>{formatToDate(rowData.startTime)} at </Text>
+                <Text style={styles.detailViewBody}>{formatToTime(rowData.startTime)}</Text>
+              </View>)
+          }}
+        />
       </View>
     )}
 }

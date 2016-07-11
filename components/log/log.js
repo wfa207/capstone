@@ -43,7 +43,7 @@ var Log = React.createClass({
         refreshing: false
       })
     })
-    .catch(console.error);
+    .catch(alert);
   },
 
   componentWillMount() {
@@ -77,7 +77,7 @@ var Log = React.createClass({
             />}
           style={{marginTop: 10}}
           dataSource={this.state.dataSource}
-          renderRow={rowData  => {
+          renderRow={rowData => {
             return <TouchableHighlight
             onPress={() => this._navigate(rowData)}
             style={styles.rowStyle}>

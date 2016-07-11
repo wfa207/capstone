@@ -28,6 +28,20 @@ var utils = {
 
   msToDateObj: msToDateObj,
 
+  formatToDate(dateObj) {
+    return dayNames[dateObj.dayOfWk] + ', ' + 
+      monthNames[dateObj.month] + ' ' +
+      dateObj.date + ', ' + 
+      dateObj.year;
+  },
+
+  formatToTime(dateObj) {
+    let minutes = '0' + dateObj.minutes;
+    let formattedTime = ((!dateObj.hours) ? 12 : (dateObj.hours % 12)) + ':' +
+          minutes.substr(-2) + (dateObj.hours <= 12 ? "AM" : "PM");
+    return formattedTime;
+  },
+
   formatElapTime(elapTime) {
     let units = {
       year: 1000 * 60 * 60 * 24 * 365,
@@ -67,7 +81,10 @@ var utils = {
           return time.locationId === location._id;
         });
         var elapsedTimes = location.times.map(time => time.elapsedTime);
-        location.timeSpentMS = elapsedTimes.reduce((a, b) => a + b);
+        location.timeSpentMS = elapsedTimes.reduce((a, b) => {
+          a = a || 0, b = b || 0;
+          return a + b
+        });
         return location;
       });
       return assocLocations;
@@ -78,15 +95,15 @@ var utils = {
     if (start) {
       return db.times.add({
         locationId: location._id,
-        startTime: timeValue,
+        startTime: utils.msToDateObj(timeValue),
       });
     } else {
       return db.times.find()
       .then(times => {
         var lastTime = times[times.length-1];
-        var startTime = lastTime.startTime;
+        var startTime = lastTime.startTime.value;
         return db.times.updateById({
-          endTime: timeValue,
+          endTime: utils.msToDateObj(timeValue),
           elapsedTime: timeValue - startTime
         }, lastTime._id);
       })
