@@ -109,7 +109,6 @@ function timeGen(locationIdx, startTime) {
 		elapsedTime: locations[locationIdx].timeSpentMS
 	}
 }
-
 function seed() {
 	return db.locations.destroy()
 	.then(() => db.times.destroy())

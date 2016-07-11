@@ -6,7 +6,7 @@ import {
   AsyncStorage
 } from 'react-native';
 
-import {db, seed, msToDateObj} from '../database';
+import {db, msToDateObj} from '../database';
 import {SERVER_ROUTE, GOOGLE} from '../server/env/development';
 
 var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -27,8 +27,6 @@ var utils = {
   },
 
   msToDateObj: msToDateObj,
-
-  seed: seed,
 
   formatToDate(dateObj) {
     return dayNames[dateObj.dayOfWk] + ', ' + 
@@ -68,6 +66,10 @@ var utils = {
     }
 
     return res.length > 1 ? res.join(', ').replace(/,([^,]*)$/,' and'+'$1') : res[0];
+  },
+
+  initialDbFetch() {
+
   },
 
   getDbData() {

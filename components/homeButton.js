@@ -12,15 +12,16 @@ import {
 } from 'react-native';
 import styles from './styles';
 import {
-  seed,
   getCurrentLocation,
   getAddress,
+  initialDbFetch,
   getDbData,
   addLocation,
   addUpdateTime,
   nearbySearch,
   formatToTime
 } from '../utils';
+import {seed} from '../database';
 import {SERVER_ROUTE} from '../server/env/development';
 
 class HomeButton extends Component {

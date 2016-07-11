@@ -24,9 +24,7 @@ class capstone extends Component {
   }
 
   render() {
-    return (
-      <TabBar/>
-    );
+    return <TabBar/>
   }
 }
 
