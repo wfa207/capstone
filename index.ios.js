@@ -16,27 +16,15 @@ import {
 import TabBar from './components/tabBar';
 import styles from './components/styles';
 import {SERVER_ROUTE} from './server/env/development';
-import {
-  initialFetchAndStoreData
-} from './utils';
+import db from './database';
 
 class capstone extends Component {
   constructor(props) {
     super(props);
   }
 
-  componentWillMount() {
-    AsyncStorage.clear();
-    initialFetchAndStoreData("/api/users/1/locations", 'locations');
-    initialFetchAndStoreData("/api/users/1/trips", 'activities');
-    initialFetchAndStoreData("/api/users/1/times", 'times');
-    initialFetchAndStoreData("/api/users/1/days", 'days');
-  }
-
   render() {
-    return (
-      <TabBar/>
-    );
+    return <TabBar/>
   }
 }
 
