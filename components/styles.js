@@ -10,14 +10,6 @@ const styles = StyleSheet.create({
     marginTop: 60,
     marginBottom: 49
   },
-  detailContainer: {
-    flex: 1,
-    backgroundColor: '#232323',
-    marginTop: 60,
-    marginBottom: 48,
-    paddingVertical: 20,
-    paddingHorizontal: 10
-  },
   segmentControl: {
     marginTop: 10,
     marginHorizontal: 10
@@ -185,7 +177,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     height: 15,
     position: 'absolute',
-    top: 40,
+    top: 60,
     left: 20,
     right: 20
   },
@@ -195,11 +187,19 @@ const styles = StyleSheet.create({
     left: 5,
     backgroundColor: 'transparent'
   },
+  timeText: {
+    color: 'white',
+    fontSize: 10,
+    fontWeight: '700',
+    left: 10,
+    backgroundColor: 'transparent'
+  },
   lessThan1: {
     fontSize: 10,
     fontWeight: '700',
     color: 'white',
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    position: 'absolute',
   },
   chartContainer: {
     flex: 1,
@@ -251,6 +251,14 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: '700'
   },
+  detailContainer: {
+    flex: 1,
+    backgroundColor: '#232323',
+    marginTop: 60,
+    marginBottom: 48,
+    paddingVertical: 20,
+    paddingHorizontal: 10
+  },
   detailViewTitle: {
     color: '#48BBEC',
     fontSize: 30,
@@ -258,17 +266,23 @@ const styles = StyleSheet.create({
     fontWeight: '800',
     marginBottom: 30,
   },
+  detailHeaderContainer: {
+    borderColor: 'transparent',
+    borderBottomColor: '#929292',
+    borderWidth: 2,
+    marginBottom: 5
+  },
   detailViewBodyHeader: {
     fontWeight: '800',
     color: 'white',
     fontSize: 14,
-    marginVertical: 10,
-    borderBottomColor: '#929292'
+    marginTop: 10,
+    marginBottom: 5
   },
   detailViewBody: {
     color: 'white',
     fontSize: 14,
-    marginVertical: 10,
+    marginBottom: 10,
     borderBottomColor: '#929292'
   },
   editViewBody: {
@@ -276,6 +290,60 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginVertical: 10,
     borderBottomColor: '#929292'
+  },
+  modal: {
+    position: 'absolute',
+    top: 80,
+    left: 45,
+    bottom: 275,
+    right: 45,
+    flex: 1,
+    backgroundColor: 'white',
+    opacity: 0.75,
+    borderWidth: 0.5,
+    borderColor: '#636363',
+    borderRadius: 15,
+  },
+  autocomplete: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    flexDirection: 'row',
+    alignSelf: 'stretch',
+    height: 25,
+    marginHorizontal: 15,
+    backgroundColor: '#FFF',
+    borderWidth: 0.5,
+    borderColor: '#636363',
+    borderRadius: 15,
+    margin: 1,
+  },
+  autocompleteList: {
+    justifyContent: 'center',
+    textAlign: 'center',
+    flexDirection: 'row',
+    alignSelf: 'stretch',
+    height: 25,
+    backgroundColor: '#FFF',
+    borderWidth: 0.5,
+    borderTopColor: 'transparent',
+    borderBottomColor: '#636363',
+    borderLeftColor: 'transparent',
+    borderRightColor: 'transparent',
+    marginHorizontal: 35,
+    borderColor: '#636363',
+    margin: 1,
+  },
+  locationInputHeader: {
+    textAlign: 'center',
+    fontSize: 18,
+    marginTop: 8,
+    marginBottom: 8
+  },
+  autocompleteText: {
+    color: '#48AAEC',
+    fontWeight: '600',
+    marginTop: 2.5,
+    fontSize: 14
   }
 });
 

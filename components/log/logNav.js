@@ -12,6 +12,7 @@ import styles from '../styles';
 import Log from './log';
 import LogEditView from './logEdit';
 import LogDetailView from './logDetailView';
+import { db } from '../../database';
 
 var LogNav = React.createClass({
   configureScene(route, routeStack) {
@@ -42,32 +43,26 @@ var LogNav = React.createClass({
             case 'Details':
               return (
                 <TouchableHighlight
-                underlaycolor="transparent"
                 onPress={() => navigator.push({
-                  title: "Edit",
+                  title: "Edit Name",
                   component: LogEditView,
-                  passProps: route.passProps,
-                })}>
+                  passProps: route.passProps})}
+                underlayColor="transparent">
                 <Text style={styles.rightNavButtonText}>Edit</Text>
                 </TouchableHighlight>
               );
             break;
-            case 'Edit':
+            case 'Edit Name':
               return (
                 <TouchableHighlight
                 onPress={() => {
-                  var oldName = me._routeComponent.props.name;
-                  var newName = me._routeComponent._nameInput._lastNativeText;
-                  me._routeComponent.editLocationName(oldName, newName)
-                  .then((updatedLocation) => {
-                    updatedLocation.type = me._routeComponent.props.type;
-                    navigator.replacePreviousAndPop({
-                      title: 'Details',
-                      component: LogDetailView,
-                      passProps: updatedLocation
-                    });
-                  })
-                  .catch(console.error);
+                  var locationId = me._routeComponent.props._id;
+                  var newLocationValues = me._routeComponent.state.newLocationValues || {};
+                  if (Object.keys(newLocationValues).length) {
+                    return db.locations.updateById(newLocationValues, locationId)
+                    .then(() => navigator.pop())
+                  }
+                  navigator.pop();
                 }}
                 underlayColor="transparent">
                 <Text style={styles.rightNavButtonText}>Done</Text>

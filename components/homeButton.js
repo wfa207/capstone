@@ -4,81 +4,161 @@ import React, { Component } from 'react';
 import {
   AsyncStorage,
   Text,
+  Image,
   Navigator,
+  TextInput,
+  TouchableOpacity,
   TouchableHighlight,
   AlertIOS,
   View
 } from 'react-native';
 import styles from './styles';
-import {getCurrentLocation} from '../utils';
+import {
+  getCurrentLocation,
+  getAddress,
+  initialDbFetch,
+  getDbData,
+  addLocation,
+  addUpdateTime,
+  nearbySearch,
+  formatToTime
+} from '../utils';
+import {seed} from '../database';
 import {SERVER_ROUTE} from '../server/env/development';
+
+console.disableYellowBox = true;
 
 class HomeButton extends Component {
   constructor(props) {
     super(props)
     this.state = {
       logging: false,
-      activities: []
+      collection: null,
+      inputShow: false
     }
   }
 
-  saveLocation(position) {
-    var me = this;
-    me.setState({logging: !me.state.logging});
-    return AsyncStorage.getItem('locations')
-    .then(locations => {
+  componentWillMount() {
+    seed()
+    .then(() => {
+      getDbData()
+      .then(locations => {
+        this.setState({
+          locations: locations
+        });
+      })
+    })
+    .catch(alert);
+  }
 
-      function getLocationName(inputName) {
-        locations = JSON.parse(locations);
-        let latitude = position.coords.latitude, longitude = position.coords.longitude;
-        let id = (locations ? locations.length : 0) + 1;
-        var name = inputName;
+  _type = (str) => {
+    var locationNames = this.state.locations.map(location => location.name);
+    var collection = locationNames.filter(name => name.substr(0, str.length) === str).slice(0,5);
+    this.setState({
+      searchString: str,
+      collection: collection
+    })
+  }
+
+  setLocationNameState(text) {
+    this.setState({locationName: text});
+  }
+
+  findExistingNearbyLoc = (currPosition, locations) => {
+    return locations.filter(location => {
+      return (Math.abs(location.coords.latitude - currPosition.coords.latitude) <= 0.0003 && 
+        Math.abs(location.coords.longitude - currPosition.coords.longitude) <= 0.0003
+      )
+    });
+  }
+
+  stateToggle = () => {
+    this.setState({
+      logging: !this.state.logging,
+      inputShow: false
+    });
+  }
+
+  processLocationInput = (existNearbyLoc, inputName) => {
+    let position = this.state.position;
+    let logTime = new Date(position.timestamp);
+    let name = inputName;
+
+    if (!existNearbyLoc.length) {
+      getAddress(position)
+      .then(results => {
+        let addressObj = results[0];
+        let addressArr = addressObj.formatted_address.split(', ');
+        let [street, city, stateZip, country] = addressArr;
+        let stateZipArr = stateZip.split(' ');
+        let state = stateZipArr[0];
+        let ZIP = stateZipArr[1];
 
         if (!name) {
-          let date = new Date(position.timestamp);
-          let hours = date.getHours();
-          let minutes = "0" + date.getMinutes();
-          let formattedTime = ((hours == 0) ? 12 : (hours % 12)) + ':' +
-          minutes.substr(-2) + (hours <= 12 ? "AM" : "PM");
-
-          let lat = (Math.abs(Math.floor(latitude*100)/100)).toString() + (latitude >= 0 ? "N" : "S");
-          let long = (Math.abs(Math.floor(longitude*100)/100)).toString() + (longitude >= 0 ? "E" : "W");
-
-          name = formattedTime + " | " + lat + ", " + long;
+          let dateObj = {
+            hours: logTime.getHours(),
+            minutes: logTime.getMinutes()
+          }
+          let formattedTime = formatToTime(dateObj);
+          name = formattedTime + ' | ' + street;
         }
 
-        locations.push({
-          id: id,
+        addLocation({
           name: name,
-          coordinates: [latitude, longitude]
+          coords: position.coords,
+          street: street,
+          city: city,
+          state: state,
+          ZIP: ZIP,
+          country: country
+        })
+        .then(location => {
+          addUpdateTime(location, true, position.timestamp)
+          .then(this.stateToggle)
         });
-        return AsyncStorage.setItem('locations', JSON.stringify(locations))
-        .catch(console.error);
-      }
+      })
+      .catch(alert);
 
-      if (this.state.logging) {
-        AlertIOS.prompt('Location Name', 'Please enter a name for this location', [
-          {
-            text: 'Not Now',
-            onPress: () => getLocationName(),
-            style: 'destructive'
-          }, {
-            text: 'Enter',
-            onPress: text => getLocationName(text),
-            style: 'default'
-          }
-        ]);
-      }
-    })
-    .catch(console.error);
-
-}
+    } else {
+        addUpdateTime(existNearbyLoc[0], true, position.timestamp)
+        .then(this.stateToggle)
+        .catch(alert);
+    }
+  }
 
   startStopLog() {
-    getCurrentLocation(position => {
-      // Code goes before state switch
-      this.saveLocation(position);
-    });
+    if (!this.state.logging) {
+      getCurrentLocation(position => {
+        this.setState({position: position});
+        let existNearbyLoc = this.findExistingNearbyLoc(position, this.state.locations);
+        if (existNearbyLoc.length) {
+           AlertIOS.alert('Location already exists', 'Location will be logged as ' + existNearbyLoc[0].name + '.', () => {
+              this.processLocationInput(existNearbyLoc);
+           })
+        } else {
+          this.setState({
+            inputShow: true,
+            position: position,
+          });
+        }
+      });
+    } else {
+      if (!this.state.inputShow) {
+        getCurrentLocation(position => {
+          addUpdateTime(null, false, position.timestamp)
+          .then(() => {
+            getDbData()
+            .then(locations => {
+              this.setState({
+                logging: !this.state.logging,
+                locations: locations
+              });
+            });
+          })
+          .catch(alert);
+        });
+      }
+    }
   }
 
   render() {
@@ -93,6 +173,27 @@ class HomeButton extends Component {
               {(this.state.logging ? 'Stop' : 'Start') + '\n'}logging
             </Text>
         </TouchableHighlight>
+       {this.state.inputShow && (
+          <View style={styles.modal}>
+            <Text style={[styles.locationInputHeader, {fontWeight: '600'}]}>Location Name</Text>
+            <TextInput
+              ref="input"
+              style={styles.autocomplete}
+              onChangeText={(value) => { this.setLocationNameState(value); this._type(value); }}
+              onSubmitEditing={() => this.processLocationInput([], this.state.locationName)}
+              placeholder='Enter Location Name Here'
+            />
+            {this.state.collection && !!this.state.collection.length && this.state.collection.map((value, idx) => (
+                <TouchableOpacity
+                  style={styles.autocompleteList} 
+                  key={idx+1} 
+                  onPress={() => { this.refs.input.setNativeProps({ text: value ? value : '' }); this.setLocationNameState(value); }}>
+                  <Text style={styles.autocompleteText}>{value}</Text>
+                </TouchableOpacity>
+              )
+            )}
+          </View>
+        )}
       </View>
     )
   }

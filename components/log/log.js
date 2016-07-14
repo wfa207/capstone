@@ -5,6 +5,7 @@ import {
   SegmentedControlIOS,
   ListView,
   Text,
+  Image,
   View,
   ActivityIndicator,
   RefreshControl,
@@ -12,6 +13,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 import styles from '../styles';
+import { getDbData } from '../../utils';
 import LogDetailView from './logDetailView';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -20,9 +22,8 @@ var Log = React.createClass({
 
   getInitialState() {
     return {
-      values: ['Activities', 'Locations'],
-      value: 'Locations',
       dataSource: ds.cloneWithRows(['row 1', 'row 2']),
+      photos: [],
       loading: true,
       refreshing: false
     }
@@ -30,61 +31,27 @@ var Log = React.createClass({
 
   _onRefresh() {
     this.setState({refreshing: true});
-    this.refreshData();
+    this.getData();
   },
 
-  refreshData() {
-    this.fetchValueData(this.state.value)
-    .then((items) => {
-      var itemNames = {};
-      var condensedItems = [];
-      items.forEach((item) => {
-        var name = item.name;
-        if (!itemNames[name]) {
-          itemNames[name] = 1;
-          condensedItems.push(item);
-        } else {
-          itemNames[name] += 1;
-        }
-      });
-      condensedItems.forEach((item) => {
-        item.visits = itemNames[item.name];
-      });
+  getData() {
+    getDbData()
+    .then(locations => {
       this.setState({
-        dataSource: ds.cloneWithRows(condensedItems),
+        dataSource: ds.cloneWithRows(locations),
         loading: false,
         refreshing: false
-      });
+      })
     })
-    .catch(console.error);
+    .catch(alert);
   },
 
   componentWillMount() {
-    return this.refreshData();
+    return this.getData();
   },
 
   componentWillReceiveProps() {
-    return this.refreshData();
-  },
-
-  _onValueChange(value) {
-    this.fetchValueData(value)
-    .then((items) => {
-      this.setState({
-        dataSource: ds.cloneWithRows(items),
-        value: value
-      });
-    })
-    .catch(console.error);
-  },
-
-  fetchValueData(value) {
-    value = value.toLowerCase();
-    return AsyncStorage.getItem(value)
-    .then((items) => {
-      items = JSON.parse(items);
-      return items;
-    });
+    return this.getData();
   },
 
   _navigate(rowData) {
@@ -110,14 +77,14 @@ var Log = React.createClass({
             />}
           style={{marginTop: 10}}
           dataSource={this.state.dataSource}
-          renderRow={rowData=>
-            <TouchableHighlight
+          renderRow={rowData => {
+            return <TouchableHighlight
             onPress={() => this._navigate(rowData)}
             style={styles.rowStyle}>
               <View>
                 <Text style={styles.rowContent}>{rowData.name}</Text>
               </View>
-            </TouchableHighlight>}
+            </TouchableHighlight>}}
           />
         </View>
       )

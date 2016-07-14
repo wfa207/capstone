@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import styles from './styles';
 import HomeButton from './homeButton';
-import Map from './mapES5';
+import Map from './map';
 import LogTitleBar from './log/logNav';
 import Chart from './chart'
 
@@ -70,7 +70,7 @@ class HomeTitleBar extends Component {
         }}
         style={styles.banner}
         renderScene={renderScene}
-        navigationBar={genNavBar('Down Time')}
+        navigationBar={genNavBar('DownTime')}
       />
     );
   }

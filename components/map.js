@@ -10,7 +10,7 @@ import {
 import MapView, { Marker } from 'react-native-maps';
 import styles from './styles';
 import { SERVER_ROUTE } from '../server/env/development';
-import { getCurrentLocation, fetchValueData } from '../utils';
+import { getCurrentLocation, getDbData } from '../utils';
 
 var centerIcon = require('../resources/target.png');
 
@@ -36,16 +36,14 @@ var Map = React.createClass({
         longitudeDelta: 0.01
       }});
     });
-    this.fetchAllLocations();
+    this.mapAllLocations();
   },
 
   markerGenerator(locations) {
     var markers = locations.map(function(location) {
-      console.log(location);
       var marker = {
-        latlng: { latitude: location.coordinates[0], longitude: location.coordinates[1]},
-        title: location.name,
-        description: location.description
+        latlng: { latitude: location.coords.latitude, longitude: location.coords.longitude},
+        title: location.name
       };
       return marker;
     });
@@ -53,23 +51,17 @@ var Map = React.createClass({
   },
 
   componentWillReceiveProps() {
-    return fetchValueData('locations')
-    .then(locations => {
-      var markers = this.markerGenerator(locations);
-      this.setState({
-        markers: markers
-      });
-    })
-    .catch(console.error);
+    this.mapAllLocations();
   },
 
-  fetchAllLocations() {
-    AsyncStorage.getItem('locations')
+  mapAllLocations() {
+    return getDbData()
     .then((locations) => {
-      locations = JSON.parse(locations);
       var markers = this.markerGenerator(locations);
       this.setState({markers: markers});
+      return locations;
     })
+    .catch(alert);
   },
 
   onRegionChange(region) {
