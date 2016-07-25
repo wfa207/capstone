@@ -33,8 +33,8 @@ var LogEditView = React.createClass({
     .catch(alert);
   },
 
-  saveNewStateProps(key) {
-    var newValue = this.refs[key]._lastNativeText;
+  saveNewStateProps(key, newValue) {
+    newValue = newValue || this.refs[key]._lastNativeText;
     var newLocationValues = this.state.newLocationValues;
 
     if (!newLocationValues && newValue) this.setState({newLocationValues: {[key]: newValue}});
@@ -50,35 +50,45 @@ var LogEditView = React.createClass({
       style={styles.detailContainer}>
         <TextInput style={[styles.detailViewTitle, {height: 40}]}
           ref={'name'}
+          selectTextOnFocus={true}
           onEndEditing={() => this.saveNewStateProps('name')}
+          onChangeText={text => this.saveNewStateProps('name', text)}
           defaultValue={this.state.name}/>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>Street Address</Text>
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
           ref={'street'}
+          selectTextOnFocus={true}
           onEndEditing={() => this.saveNewStateProps('street')}
+          onChangeText={text => this.saveNewStateProps('street', text)}
           defaultValue={this.state.street}/>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>City</Text>
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
           ref={'city'}
+          selectTextOnFocus={true}
           onEndEditing={() => this.saveNewStateProps('city')}
+          onChangeText={text => this.saveNewStateProps('city', text)}
           defaultValue={this.state.city}/>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>State</Text>
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
           ref={'state'}
+          selectTextOnFocus={true}
           onEndEditing={() => this.saveNewStateProps('state')}
+          onChangeText={text => this.saveNewStateProps('state', text)}
           defaultValue={this.state.state}/>
         <View style={styles.detailHeaderContainer}>
           <Text style={styles.detailViewBodyHeader}>Zip Code</Text>
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
           ref={'ZIP'}
+          selectTextOnFocus={true}
           onEndEditing={() => this.saveNewStateProps('ZIP')}
+          onChangeText={text => this.saveNewStateProps('ZIP', text)}
           keyboardType={'number-pad'}
           defaultValue={this.state.ZIP.toString()}/>
         <View style={styles.detailHeaderContainer}>
@@ -86,7 +96,9 @@ var LogEditView = React.createClass({
         </View>
           <TextInput style={[styles.detailViewBody, {height: 30}]}
           ref={'country'}
+          selectTextOnFocus={true}
           onEndEditing={() => this.saveNewStateProps('country')}
+          onChangeText={text => this.saveNewStateProps('name', text)}
           defaultValue={this.state.country}/>
       </View>
     )
