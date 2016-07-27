@@ -42,3 +42,4 @@ android/keystores/debug.keystore
 
 server/env/development.js
 server/env/testing.js
+screencasts/
