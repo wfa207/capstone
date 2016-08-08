@@ -16,10 +16,10 @@ import {
   ChartRender
 } from './compiledRender';
 
-var homeIcon = require('../resources/home.png');
-var mapIcon = require('../resources/compass.png')
-var logIcon = require('../resources/diary.png');
-var chartIcon = require('../resources/pie-chart.png');
+var homeIcon = require('../../resources/home.png');
+var mapIcon = require('../../resources/compass.png')
+var logIcon = require('../../resources/diary.png');
+var chartIcon = require('../../resources/pie-chart.png');
 
 class TabBar extends Component {
   constructor(props) {

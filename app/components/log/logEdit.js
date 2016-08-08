@@ -8,7 +8,7 @@ import {
   AsyncStorage
 } from 'react-native';
 import styles from '../styles';
-import { getDbData } from '../../utils';
+import { getDbData } from '../../../utils';
 
 var LogEditView = React.createClass({
   getInitialState() {

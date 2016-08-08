@@ -22,9 +22,9 @@ import {
   addUpdateTime,
   nearbySearch,
   formatToTime
-} from '../utils';
-import {seed} from '../database';
-import {SERVER_ROUTE} from '../server/env/development';
+} from '../../utils';
+import {seed} from '../../database';
+import {SERVER_ROUTE} from '../../server/env/development';
 
 console.disableYellowBox = true;
 

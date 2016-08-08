@@ -13,7 +13,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 import styles from '../styles';
-import { getDbData } from '../../utils';
+import { getDbData } from '../../../utils';
 import LogDetailView from './logDetailView';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});

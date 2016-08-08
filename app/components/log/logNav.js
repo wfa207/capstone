@@ -12,7 +12,7 @@ import styles from '../styles';
 import Log from './log';
 import LogEditView from './logEdit';
 import LogDetailView from './logDetailView';
-import { db } from '../../database';
+import { db } from '../../../database';
 
 var LogNav = React.createClass({
   configureScene(route, routeStack) {
