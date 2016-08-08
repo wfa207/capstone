@@ -24,9 +24,6 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		F2212D621D32EBB2007D6B7E /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2212D611D32EA8E007D6B7E /* libRNFS.a */; };
-		F26491CD1D35474900A82CFF /* Fullstack.gpx in Resources */ = {isa = PBXBuildFile; fileRef = F26491CC1D35474900A82CFF /* Fullstack.gpx */; };
-		F26491E91D35977B00A82CFF /* mapstogpx20160712_212348.gpx in Resources */ = {isa = PBXBuildFile; fileRef = F26491E81D35977B00A82CFF /* mapstogpx20160712_212348.gpx */; };
-		F2AE83991D35F8430091726A /* Waterside.gpx in Resources */ = {isa = PBXBuildFile; fileRef = F2AE83981D35F8430091726A /* Waterside.gpx */; };
 		F2B228C81D2574C4009B6E17 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2B228BD1D2574AB009B6E17 /* libART.a */; };
 		F2EEE7C21D22D56200F324BC /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2EEE7B71D22D1F400F324BC /* libAirMaps.a */; };
 /* End PBXBuildFile section */
@@ -156,9 +153,6 @@
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		BA1887EAD3684C8C97205548 /* AirMaps.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 		F2212D501D32EA8D007D6B7E /* RNFS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
-		F26491CC1D35474900A82CFF /* Fullstack.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Fullstack.gpx; path = ../../../Downloads/Fullstack.gpx; sourceTree = "<group>"; };
-		F26491E81D35977B00A82CFF /* mapstogpx20160712_212348.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = mapstogpx20160712_212348.gpx; path = ../../../Downloads/mapstogpx20160712_212348.gpx; sourceTree = "<group>"; };
-		F2AE83981D35F8430091726A /* Waterside.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = Waterside.gpx; path = ../../../Downloads/Waterside.gpx; sourceTree = "<group>"; };
 		F2B228B71D2574AB009B6E17 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -328,9 +322,6 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				F2AE83981D35F8430091726A /* Waterside.gpx */,
-				F26491E81D35977B00A82CFF /* mapstogpx20160712_212348.gpx */,
-				F26491CC1D35474900A82CFF /* Fullstack.gpx */,
 				13B07FAE1A68108700A75B9A /* capstone */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* capstoneTests */,
@@ -610,9 +601,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				F2AE83991D35F8430091726A /* Waterside.gpx in Resources */,
-				F26491CD1D35474900A82CFF /* Fullstack.gpx in Resources */,
-				F26491E91D35977B00A82CFF /* mapstogpx20160712_212348.gpx in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
