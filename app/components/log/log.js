@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import styles from '../styles';
 import { getDbData } from '../../../utils';
-import LogDetailView from './logDetailView';
+import LogDetailView from './LogDetailView';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 

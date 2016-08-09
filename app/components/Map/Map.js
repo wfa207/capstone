@@ -8,11 +8,11 @@ import {
   TouchableHighlight
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import styles from './styles';
-import { SERVER_ROUTE } from '../server/env/development';
-import { getCurrentLocation, getDbData } from '../utils';
+import styles from '../styles';
+import { SERVER_ROUTE } from '../../../server/env/development';
+import { getCurrentLocation, getDbData } from '../../../utils';
 
-var centerIcon = require('../resources/target.png');
+var centerIcon = require('../../../resources/target.png');
 
 var Map = React.createClass({
   getInitialState() {

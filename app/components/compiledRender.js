@@ -8,10 +8,10 @@ import {
   View
 } from 'react-native';
 import styles from './styles';
-import HomeButton from './homeButton';
-import Map from './map';
-import LogTitleBar from './log/logNav';
-import Chart from './chart'
+import HomeButton from './HomeButton/HomeButton';
+import Map from './Map/Map';
+import LogTitleBar from './Log/LogNav';
+import Chart from './Chart/Chart'
 
 function genNavBarMapper(title) {
   return {

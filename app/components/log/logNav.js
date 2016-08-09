@@ -9,9 +9,9 @@ import {
   TouchableHighlight
 } from 'react-native';
 import styles from '../styles';
-import Log from './log';
-import LogEditView from './logEdit';
-import LogDetailView from './logDetailView';
+import Log from './Log';
+import LogEditView from './LogEdit';
+import LogDetailView from './LogDetailView';
 import { db } from '../../../database';
 
 var LogNav = React.createClass({
