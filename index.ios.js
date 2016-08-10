@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 // /**
 //  * Sample React Native App

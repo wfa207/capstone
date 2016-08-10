@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import React, {Component} from 'react';
 import {
@@ -8,13 +8,11 @@ import {
   View
 } from 'react-native'
 import styles from '../styles';
-
-import {
-  HomeRender,
-  MapRender,
-  LogRender,
-  ChartRender
-} from '../compiledRender';
+import NavBar from '../NavBar/NavBar';
+import HomeButton from '../HomeButton/HomeButton';
+import Map from '../Map/Map';
+import Log from '../Log/Log';
+import Chart from '../Chart/Chart';
 
 var homeIcon = require('../../../resources/home.png');
 var mapIcon = require('../../../resources/compass.png')
@@ -53,30 +51,30 @@ class TabBar extends Component {
           icon={homeIcon}
           selected={this.state.selectedTab === 'Home'}
           onPress={() => this._setTab('Home')}>
-          <HomeRender/>
+          <NavBar name='Home' component={HomeButton} title='DownTime'/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          title="Map"
+          title='Map'
           icon={mapIcon}
           selected={this.state.selectedTab === 'Map'}
           onPress={() => {
             this._setTab('Map')
           }}>
-          <MapRender/>
+          <NavBar name='Map' component={Map} title='Map'/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          title="Logs"
+          title='Logs'
           icon={logIcon}
           selected={this.state.selectedTab === 'Logs'}
           onPress={() => this._setTab('Logs')}>
-          <LogRender/>
+          <NavBar name='Log' component={Log} title='Log'/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          title="Chart"
+          title='Chart'
           icon={chartIcon}
           selected={this.state.selectedTab === 'Chart'}
           onPress={() => this._setTab('Chart')}>
-          <ChartRender/>
+          <NavBar name='Chart' component={Chart} title='Chart'/>
         </TabBarIOS.Item>
       </TabBarIOS>
     );

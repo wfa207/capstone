@@ -1,13 +1,18 @@
-'use strict'
+'use strict';
 
 import Promise from 'bluebird';
 
+import React, { Component } from 'react';
 import {
-  AsyncStorage
+  AsyncStorage,
+  TouchableHighlight,
+  Navigator,
+  Text
 } from 'react-native';
 
 import {db, msToDateObj} from '../database';
 import {SERVER_ROUTE, GOOGLE} from '../server/env/development';
+import styles from '../app/components/styles'
 
 var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
