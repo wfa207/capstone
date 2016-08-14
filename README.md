@@ -5,7 +5,7 @@ DownTime is a mobile app, developed with React Native, that lets users keep trac
 
 
 [![Video](https://img.youtube.com/vi/WXJsSVdsl1k/0.jpg)](https://www.youtube.com/watch?v=WXJsSVdsl1k)
-##### Click above picture to see video
+##### [Features on YouTube](https://www.youtube.com/watch?v=WXJsSVdsl1k)
 
 ### Views
 ##### Home Button
