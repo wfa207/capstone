@@ -4,6 +4,9 @@ Version 1.0.0
 DownTime is a mobile app, developed with React Native, that lets users keep track of productivity and location history by logging/saving locations.
 
 
+[![Video](https://img.youtube.com/vi/WXJsSVdsl1k/0.jpg)](https://www.youtube.com/watch?v=WXJsSVdsl1k)
+##### Click above picture to see video
+
 ### Views
 ##### Home Button
 - Press the start button to start logging at your current location. It saves your current location into your logs and creates a time stamp that will be used to determine how long you stayed at that location. If your current location is close to one of your saved locations, update your logs at that location (to prevent duplicate entries).
