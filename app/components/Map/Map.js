@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import React, { Component } from 'react';
 import {
@@ -8,15 +8,16 @@ import {
   TouchableHighlight
 } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
-import styles from './styles';
-import { SERVER_ROUTE } from '../server/env/development';
-import { getCurrentLocation, getDbData } from '../utils';
+import styles from '../styles';
+import { SERVER_ROUTE } from '../../../server/env/development';
+import { getCurrentLocation, getDbData } from '../../../utils';
 
-var centerIcon = require('../resources/target.png');
+let centerIcon = require('../../../resources/target.png');
 
-var Map = React.createClass({
-  getInitialState() {
-    return {
+class Map extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       region: {
         latitude: 0,
         longitude: 0,
@@ -25,9 +26,9 @@ var Map = React.createClass({
       },
       markers: []
     };
-  },
+  }
 
-  componentWillMount() {
+  componentWillMount = () => {
     getCurrentLocation(position => {
       this.setState({region: {
         latitude: position.coords.latitude,
@@ -37,7 +38,7 @@ var Map = React.createClass({
       }});
     });
     this.mapAllLocations();
-  },
+  }
 
   markerGenerator(locations) {
     var markers = locations.map(function(location) {
@@ -48,13 +49,13 @@ var Map = React.createClass({
       return marker;
     });
     return markers;
-  },
+  }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps = () => {
     this.mapAllLocations();
-  },
+  }
 
-  mapAllLocations() {
+  mapAllLocations = () => {
     return getDbData()
     .then((locations) => {
       var markers = this.markerGenerator(locations);
@@ -62,17 +63,17 @@ var Map = React.createClass({
       return locations;
     })
     .catch(alert);
-  },
+  }
 
-  onRegionChange(region) {
+  onRegionChange = region => {
     this.setState({region: region});
-  },
+  }
 
-  centerOnUser() {
+  centerOnUser = () => {
     getCurrentLocation(position => {
       this.refs.map.refs.node.animateToCoordinate(position.coords, 1000);
     });
-  },
+  }
 
   render() {
     return (
@@ -107,6 +108,6 @@ var Map = React.createClass({
       </View>
     );
   }
-});
+}
 
-module.exports = Map;
+export default Map;

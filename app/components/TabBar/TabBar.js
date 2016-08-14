@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import React, {Component} from 'react';
 import {
@@ -6,25 +6,24 @@ import {
   TabBarIOS,
   Text,
   View
-} from 'react-native'
-import styles from './styles';
+} from 'react-native';
+import styles from '../styles';
+import NavBar from '../NavBar/NavBar';
+import HomeButton from '../HomeButton/HomeButton';
+import Map from '../Map/Map';
+import Log from '../Log/Log';
+import Chart from '../Chart/Chart';
+import LogRightButtonLogic from '../Log/LogRightButtonLogic';
 
-import {
-  HomeRender,
-  MapRender,
-  LogRender,
-  ChartRender
-} from './compiledRender';
-
-var homeIcon = require('../resources/home.png');
-var mapIcon = require('../resources/compass.png')
-var logIcon = require('../resources/diary.png');
-var chartIcon = require('../resources/pie-chart.png');
+let homeIcon = require('../../../resources/home.png');
+let mapIcon = require('../../../resources/compass.png');
+let logIcon = require('../../../resources/diary.png');
+let chartIcon = require('../../../resources/pie-chart.png');
 
 class TabBar extends Component {
   constructor(props) {
     super(props);
-    this.state = {selectedTab: 'Home'}
+    this.state = {selectedTab: 'Home'};
   }
 
   _setTab(tabName) {
@@ -53,34 +52,34 @@ class TabBar extends Component {
           icon={homeIcon}
           selected={this.state.selectedTab === 'Home'}
           onPress={() => this._setTab('Home')}>
-          <HomeRender/>
+          <NavBar name='Home' component={HomeButton} title='DownTime'/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          title="Map"
+          title='Map'
           icon={mapIcon}
           selected={this.state.selectedTab === 'Map'}
           onPress={() => {
-            this._setTab('Map')
+            this._setTab('Map');
           }}>
-          <MapRender/>
+          <NavBar name='Map' component={Map} title='Map'/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          title="Logs"
+          title='Logs'
           icon={logIcon}
           selected={this.state.selectedTab === 'Logs'}
           onPress={() => this._setTab('Logs')}>
-          <LogRender/>
+          <NavBar name='Log' component={Log} title='Log' buttonLogic={LogRightButtonLogic}/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          title="Chart"
+          title='Chart'
           icon={chartIcon}
           selected={this.state.selectedTab === 'Chart'}
           onPress={() => this._setTab('Chart')}>
-          <ChartRender/>
+          <NavBar name='Chart' component={Chart} title='Chart'/>
         </TabBarIOS.Item>
       </TabBarIOS>
     );
   }
 }
 
-module.exports = TabBar;
+export default TabBar;

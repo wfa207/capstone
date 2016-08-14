@@ -1,3 +1,5 @@
+'use strict';
+
 import {
   StyleSheet
 } from 'react-native';
@@ -27,11 +29,11 @@ const styles = StyleSheet.create({
     }
   },
   logContainer: {
-   flex: 1,
-   flexDirection: 'row',
-   justifyContent: 'center',
-   alignItems: 'center',
-   backgroundColor: '#F5FCFF',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF'
   },
   leftNavButtonText: {
     color: '#393A3A',
@@ -51,11 +53,11 @@ const styles = StyleSheet.create({
     flex: 3,
     fontSize: 20,
     fontWeight: '700',
-    color: '#393A3A', //232323
+    color: '#393A3A',
     marginTop: 5
   },
   banner: {
-    flex: 1,
+    flex: 1
   },
   buttonText: {
     fontSize: 50,
@@ -79,7 +81,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#23A9E3',
     borderLeftColor: '#48BBEC',
     borderTopColor: '#48BBEC',
-    borderWidth: 1,
+    borderWidth: 10,
     shadowColor: '#636363',
     shadowOpacity: 90,
     shadowRadius: 50,
@@ -87,7 +89,6 @@ const styles = StyleSheet.create({
       height: 7
     },
     borderRadius: 25,
-    borderWidth: 10,
     alignSelf: 'center',
     justifyContent: 'center'
   },
@@ -113,7 +114,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#FFBB6F',
     borderLeftColor: '#FFA745',
     borderTopColor: '#FFA745',
-    borderWidth: 1,
+    borderWidth: 10,
     shadowColor: '#FF8700',
     shadowOpacity: 0,
     shadowRadius: 0,
@@ -121,7 +122,6 @@ const styles = StyleSheet.create({
       height: 1
     },
     borderRadius: 25,
-    borderWidth: 10,
     alignSelf: 'center',
     justifyContent: 'center'
   },
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#B93C22',
     borderLeftColor: '#D84727',
     borderTopColor: '#D84727',
-    borderWidth: 1,
+    borderWidth: 10,
     shadowColor: '#636363',
     shadowOpacity: 90,
     shadowRadius: 50,
@@ -141,7 +141,6 @@ const styles = StyleSheet.create({
       height: 7
     },
     borderRadius: 25,
-    borderWidth: 10,
     alignSelf: 'center',
     justifyContent: 'center'
   },
@@ -149,14 +148,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 75,
     left: 0,
-    right: 0,
+    right: 0
   },
   map: {
     position: 'absolute',
     top: 60,
     left: 0,
     right: 0,
-    bottom: 48,
+    bottom: 48
   },
   mapButton: {
     flex: 0.2,
@@ -199,7 +198,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     color: 'white',
     backgroundColor: 'transparent',
-    position: 'absolute',
+    position: 'absolute'
   },
   chartContainer: {
     flex: 1,
@@ -216,7 +215,7 @@ const styles = StyleSheet.create({
     padding: 3,
     top: 10,
     left: 0,
-    right: 0,
+    right: 0
   },
   chartText: {
     fontSize: 16,
@@ -230,7 +229,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     borderRightColor: 'transparent',
     borderLeftColor: 'transparent',
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
   },
   inline: {
     flex: 1,
@@ -264,7 +263,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     paddingBottom: 10,
     fontWeight: '800',
-    marginBottom: 30,
+    marginBottom: 30
   },
   detailHeaderContainer: {
     borderColor: 'transparent',
@@ -302,7 +301,7 @@ const styles = StyleSheet.create({
     opacity: 0.75,
     borderWidth: 0.5,
     borderColor: '#636363',
-    borderRadius: 15,
+    borderRadius: 15
   },
   autocomplete: {
     justifyContent: 'center',
@@ -315,7 +314,7 @@ const styles = StyleSheet.create({
     borderWidth: 0.5,
     borderColor: '#636363',
     borderRadius: 15,
-    margin: 1,
+    margin: 1
   },
   autocompleteList: {
     justifyContent: 'center',
@@ -331,7 +330,7 @@ const styles = StyleSheet.create({
     borderRightColor: 'transparent',
     marginHorizontal: 35,
     borderColor: '#636363',
-    margin: 1,
+    margin: 1
   },
   locationInputHeader: {
     textAlign: 'center',
@@ -347,4 +346,4 @@ const styles = StyleSheet.create({
   }
 });
 
-module.exports = styles;
+export default styles;

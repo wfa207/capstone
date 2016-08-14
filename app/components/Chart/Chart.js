@@ -12,8 +12,8 @@ import {
   TouchableOpacity,
   ActivityIndicator
 } from 'react-native';
-import styles from './styles';
-import { getDbData, formatElapTime } from '../utils';
+import styles from '../styles';
+import { getDbData, formatElapTime } from '../../../utils';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 var greatestPercentage = 0;
@@ -167,4 +167,4 @@ class Chart extends Component {
   }
 }
 
-module.exports = Chart;
+export default Chart;

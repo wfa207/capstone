@@ -12,7 +12,7 @@ import {
   AlertIOS,
   View
 } from 'react-native';
-import styles from './styles';
+import styles from '../styles';
 import {
   getCurrentLocation,
   getAddress,
@@ -22,9 +22,9 @@ import {
   addUpdateTime,
   nearbySearch,
   formatToTime
-} from '../utils';
-import {seed} from '../database';
-import {SERVER_ROUTE} from '../server/env/development';
+} from '../../../utils';
+import {seed} from '../../../database';
+import {SERVER_ROUTE} from '../../../server/env/development';
 
 console.disableYellowBox = true;
 
@@ -199,4 +199,4 @@ class HomeButton extends Component {
   }
 }
 
-module.exports = HomeButton;
+export default HomeButton;

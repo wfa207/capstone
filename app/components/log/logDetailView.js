@@ -1,3 +1,5 @@
+'use strict';
+
 import React, { Component } from 'react';
 import {
   Text,
@@ -10,16 +12,14 @@ import {
   getDbData,
   formatToTime,
   formatToDate
-} from '../../utils'
+} from '../../../utils';
 
-var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 class LogDetailView extends Component {
   constructor(props) {
     super(props);
-    let state = this.props;
-    state.dataSource = ds.cloneWithRows(['row 1', 'row 2']);
-    this.state = state;
+    this.state = this.props;
   }
 
   componentWillReceiveProps() {
@@ -37,7 +37,7 @@ class LogDetailView extends Component {
   componentWillMount() {
     return this.setState({
       dataSource: ds.cloneWithRows(this.state.times)
-    })
+    });
   }
 
   render() {
@@ -79,11 +79,11 @@ class LogDetailView extends Component {
               <View style={styles.inline}>
                 <Text style={styles.detailViewBody}>{formatToDate(rowData.startTime)} at </Text>
                 <Text style={styles.detailViewBody}>{formatToTime(rowData.startTime)}</Text>
-              </View>)
+              </View>);
           }}
         />
       </View>
-    )}
+    );}
 }
 
-module.exports = LogDetailView;
+export default LogDetailView;

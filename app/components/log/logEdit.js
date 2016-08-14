@@ -8,22 +8,25 @@ import {
   AsyncStorage
 } from 'react-native';
 import styles from '../styles';
-import { getDbData } from '../../utils';
+import { getDbData } from '../../../utils';
 
-var LogEditView = React.createClass({
-  getInitialState() {
-    return this.props;
-  },
+class LogEditView extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {...this.props,
+      newLocationValues: {}
+    };
+  }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps = () => {
     return this._updateLocation();
-  },
+  }
 
-  componentWillMount() {
+  componentWillMount = () => {
     return this._updateLocation();
-  },
+  }
 
-  _updateLocation() {
+  _updateLocation = () => {
     return getDbData()
     .then(locations => {
       let location = locations.filter(elem => elem._id === this.state._id)[0];
@@ -31,27 +34,23 @@ var LogEditView = React.createClass({
       return locations;
     })
     .catch(alert);
-  },
+  }
 
-  saveNewStateProps(key, newValue) {
-    newValue = newValue || this.refs[key]._lastNativeText;
-    var newLocationValues = this.state.newLocationValues;
-
-    if (!newLocationValues && newValue) this.setState({newLocationValues: {[key]: newValue}});
-    else if (newValue) {
-      newLocationValues[key] = newValue;
-      this.setState({newLocationValues: newLocationValues});
-    }
-  },
+  saveNewStateProps = (key, newValue) => {
+    newValue = newValue || this.props[key];
+    let newLocationValues = this.state.newLocationValues;
+    newLocationValues[key] = newValue;
+    this.setState({ newLocationValues: newLocationValues });
+  }
 
   render() {
+    this.props.navigator._component = this;
     return (
-      <View ref={component => this._routeComponent = component}
+      <View
       style={styles.detailContainer}>
         <TextInput style={[styles.detailViewTitle, {height: 40}]}
           ref={'name'}
           selectTextOnFocus={true}
-          onEndEditing={() => this.saveNewStateProps('name')}
           onChangeText={text => this.saveNewStateProps('name', text)}
           defaultValue={this.state.name}/>
         <View style={styles.detailHeaderContainer}>
@@ -60,7 +59,6 @@ var LogEditView = React.createClass({
           <TextInput style={[styles.detailViewBody, {height: 30}]}
           ref={'street'}
           selectTextOnFocus={true}
-          onEndEditing={() => this.saveNewStateProps('street')}
           onChangeText={text => this.saveNewStateProps('street', text)}
           defaultValue={this.state.street}/>
         <View style={styles.detailHeaderContainer}>
@@ -101,8 +99,8 @@ var LogEditView = React.createClass({
           onChangeText={text => this.saveNewStateProps('name', text)}
           defaultValue={this.state.country}/>
       </View>
-    )
+    );
   }
-});
+}
 
-module.exports = LogEditView;
+export default LogEditView;
