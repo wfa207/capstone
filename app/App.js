@@ -5,11 +5,11 @@ import TabBar from './components/TabBar/TabBar.js';
 
 class App extends Component {
   constructor(props) {
-    super(props)
+    super(props);
   }  
 
   render() {
-    return <TabBar/>
+    return <TabBar/>;
   }
 }
 
