@@ -17,8 +17,9 @@ class NavBar extends Component {
     return (
       <route.component
         navigator={navigator}
+        buttonLogic={route.buttonLogic}
         {...route.passProps}/>
-    )
+    );
   }
 
   render() {
@@ -35,34 +36,30 @@ class NavBar extends Component {
         navigationBar={<Navigator.NavigationBar
           style={styles.navBar}
           routeMapper={{
-          LeftButton(route, navigator, index, navState) {
-            if (index > 0) {
-              return (
-                <touchablehighlight
-                underlaycolor="transparent"
-                onpress={() => navigator.pop()}>
-                <text style={styles.leftnavbuttontext}>back</text>
-                </touchablehighlight>
-              );
-            } else {
-              return null;
-            }
-          },
+            LeftButton(route, navigator, index, navState) {
+              if (index > 0) {
+                return (
+                  <TouchableHighlight
+                  underlayColor="transparent"
+                  onPress={() => navigator.pop()}>
+                  <Text style={styles.leftNavButtonText}>Back</Text>
+                  </TouchableHighlight>
+                );
+              }
+            },
 
-          RightButton(route, navigator, index, navState) {
-            let buttonLogic = route.buttonLogic.rightButton;
-            if (!buttonLogic) {
-              return null;
-            } else {
-              return  buttonLogic(route.title);
-            }
-          },
+            RightButton(route, navigator, index, navState) {
+              let buttonLogic = route.buttonLogic;
+              if (buttonLogic) { return buttonLogic(route, navigator); }
+            },
 
-          Title(route, navigator, index, navState) {
-            return <Text style={styles.NavBarTitle}>{route.title}</Text>;
-          }}}/>}/>
+            Title(route, navigator, index, navState) {
+              return <Text style={styles.NavBarTitle}>{route.title}</Text>;
+            }
+          }}
+        />}/>
     );
   }
 }
 
-module.exports = NavBar;
+export default NavBar;

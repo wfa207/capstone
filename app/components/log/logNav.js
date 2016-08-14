@@ -95,4 +95,4 @@ var LogNav = React.createClass({
   }
 })
 
-module.exports = LogNav;
+export default LogNav;

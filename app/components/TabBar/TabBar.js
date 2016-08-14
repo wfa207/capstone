@@ -6,23 +6,24 @@ import {
   TabBarIOS,
   Text,
   View
-} from 'react-native'
+} from 'react-native';
 import styles from '../styles';
 import NavBar from '../NavBar/NavBar';
 import HomeButton from '../HomeButton/HomeButton';
 import Map from '../Map/Map';
 import Log from '../Log/Log';
 import Chart from '../Chart/Chart';
+import LogRightButtonLogic from '../Log/LogRightButtonLogic';
 
-var homeIcon = require('../../../resources/home.png');
-var mapIcon = require('../../../resources/compass.png')
-var logIcon = require('../../../resources/diary.png');
-var chartIcon = require('../../../resources/pie-chart.png');
+let homeIcon = require('../../../resources/home.png');
+let mapIcon = require('../../../resources/compass.png');
+let logIcon = require('../../../resources/diary.png');
+let chartIcon = require('../../../resources/pie-chart.png');
 
 class TabBar extends Component {
   constructor(props) {
     super(props);
-    this.state = {selectedTab: 'Home'}
+    this.state = {selectedTab: 'Home'};
   }
 
   _setTab(tabName) {
@@ -58,7 +59,7 @@ class TabBar extends Component {
           icon={mapIcon}
           selected={this.state.selectedTab === 'Map'}
           onPress={() => {
-            this._setTab('Map')
+            this._setTab('Map');
           }}>
           <NavBar name='Map' component={Map} title='Map'/>
         </TabBarIOS.Item>
@@ -67,7 +68,7 @@ class TabBar extends Component {
           icon={logIcon}
           selected={this.state.selectedTab === 'Logs'}
           onPress={() => this._setTab('Logs')}>
-          <NavBar name='Log' component={Log} title='Log'/>
+          <NavBar name='Log' component={Log} title='Log' buttonLogic={LogRightButtonLogic}/>
         </TabBarIOS.Item>
         <TabBarIOS.Item
           title='Chart'
@@ -81,4 +82,4 @@ class TabBar extends Component {
   }
 }
 
-module.exports = TabBar;
+export default TabBar;

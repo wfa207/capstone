@@ -1,72 +1,69 @@
-'use strict'
+'use strict';
 
 import React, { Component } from 'react';
 import {
-  SegmentedControlIOS,
   ListView,
   Text,
   Image,
   View,
   ActivityIndicator,
   RefreshControl,
-  AsyncStorage,
   TouchableHighlight
 } from 'react-native';
 import styles from '../styles';
 import { getDbData } from '../../../utils';
 import LogDetailView from './LogDetailView';
 
-var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-var Log = React.createClass({
-
-  getInitialState() {
-    return {
-      dataSource: ds.cloneWithRows(['row 1', 'row 2']),
+class Log extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
       photos: [],
       loading: true,
       refreshing: false
-    }
-  },
+    };
+  }
 
-  _onRefresh() {
+  _onRefresh = () => {
     this.setState({refreshing: true});
     this.getData();
-  },
+  }
 
-  getData() {
+  getData = () => {
     getDbData()
     .then(locations => {
       this.setState({
         dataSource: ds.cloneWithRows(locations),
         loading: false,
         refreshing: false
-      })
+      });
     })
     .catch(alert);
-  },
+  }
 
-  componentWillMount() {
+  componentWillMount = () => {
     return this.getData();
-  },
+  }
 
-  componentWillReceiveProps() {
+  componentWillReceiveProps = () => {
     return this.getData();
-  },
+  }
 
-  _navigate(rowData) {
-    rowData.type = this.state.value;
+  _navigate = (rowData) => {
     this.props.navigator.push({
       title: 'Details',
       component: LogDetailView,
+      buttonLogic: this.props.buttonLogic,
       passProps: rowData
     });
-  },
+  }
 
   render() {
-    if (this.state.loading) {
-      return <ActivityIndicator/>
-    } else {
+    let me = this;
+    if (this.state.loading) { return <ActivityIndicator/>; }
+    else {
       return (
         <View style={styles.container}>
           <ListView
@@ -84,12 +81,12 @@ var Log = React.createClass({
               <View>
                 <Text style={styles.rowContent}>{rowData.name}</Text>
               </View>
-            </TouchableHighlight>}}
+            </TouchableHighlight>;}}
           />
         </View>
-      )
+      );
     }
   }
-});
+}
 
-module.exports = Log;
+export default Log;

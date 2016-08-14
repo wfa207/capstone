@@ -199,4 +199,4 @@ class HomeButton extends Component {
   }
 }
 
-module.exports = HomeButton;
+export default HomeButton;
