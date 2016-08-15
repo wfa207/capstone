@@ -61,7 +61,6 @@ class Log extends Component {
   }
 
   render() {
-    let me = this;
     if (this.state.loading) { return <ActivityIndicator/>; }
     else {
       return (
