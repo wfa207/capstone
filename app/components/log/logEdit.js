@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import styles from '../styles';
 import { getDbData } from '../../../utils';
+import LogEditEntry from './LogEditEntry';
 
 class LogEditView extends Component {
   constructor(props) {
@@ -48,56 +49,37 @@ class LogEditView extends Component {
     return (
       <View
       style={styles.detailContainer}>
+
         <TextInput style={[styles.detailViewTitle, {height: 40}]}
           ref={'name'}
           selectTextOnFocus={true}
           onChangeText={text => this.saveNewStateProps('name', text)}
           defaultValue={this.state.name}/>
-        <View style={styles.detailHeaderContainer}>
-          <Text style={styles.detailViewBodyHeader}>Street Address</Text>
-        </View>
-          <TextInput style={[styles.detailViewBody, {height: 30}]}
+        <LogEditEntry header="Street address"
           ref={'street'}
-          selectTextOnFocus={true}
           onChangeText={text => this.saveNewStateProps('street', text)}
-          defaultValue={this.state.street}/>
-        <View style={styles.detailHeaderContainer}>
-          <Text style={styles.detailViewBodyHeader}>City</Text>
-        </View>
-          <TextInput style={[styles.detailViewBody, {height: 30}]}
+          defaultValue={this.state.street}
+        />
+        <LogEditEntry header="City"
           ref={'city'}
-          selectTextOnFocus={true}
-          onEndEditing={() => this.saveNewStateProps('city')}
           onChangeText={text => this.saveNewStateProps('city', text)}
-          defaultValue={this.state.city}/>
-        <View style={styles.detailHeaderContainer}>
-          <Text style={styles.detailViewBodyHeader}>State</Text>
-        </View>
-          <TextInput style={[styles.detailViewBody, {height: 30}]}
+          defaultValue={this.state.city}
+        />
+        <LogEditEntry header="State"
           ref={'state'}
-          selectTextOnFocus={true}
-          onEndEditing={() => this.saveNewStateProps('state')}
           onChangeText={text => this.saveNewStateProps('state', text)}
-          defaultValue={this.state.state}/>
-        <View style={styles.detailHeaderContainer}>
-          <Text style={styles.detailViewBodyHeader}>Zip Code</Text>
-        </View>
-          <TextInput style={[styles.detailViewBody, {height: 30}]}
+          defaultValue={this.state.state}
+        />
+        <LogEditEntry header="Zip code"
           ref={'ZIP'}
-          selectTextOnFocus={true}
-          onEndEditing={() => this.saveNewStateProps('ZIP')}
           onChangeText={text => this.saveNewStateProps('ZIP', text)}
-          keyboardType={'number-pad'}
-          defaultValue={this.state.ZIP.toString()}/>
-        <View style={styles.detailHeaderContainer}>
-          <Text style={styles.detailViewBodyHeader}>Country</Text>
-        </View>
-          <TextInput style={[styles.detailViewBody, {height: 30}]}
+          defaultValue={this.state.ZIP.toString()}
+        />
+        <LogEditEntry header="Country"
           ref={'country'}
-          selectTextOnFocus={true}
-          onEndEditing={() => this.saveNewStateProps('country')}
-          onChangeText={text => this.saveNewStateProps('name', text)}
-          defaultValue={this.state.country}/>
+          onChangeText={text => this.saveNewStateProps('country', text)}
+          defaultValue={this.state.country}
+        />
       </View>
     );
   }

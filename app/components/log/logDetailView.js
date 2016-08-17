@@ -13,6 +13,7 @@ import {
   formatToTime,
   formatToDate
 } from '../../../utils';
+import LogDetailEntry from './LogDetailEntry';
 
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -49,41 +50,23 @@ class LogDetailView extends Component {
         <Text style={styles.detailViewTitle}>
           {this.state.name}
         </Text>
-        <View style={styles.detailHeaderContainer}>
-          <Text style={styles.detailViewBodyHeader}>Address</Text>
-        </View>
-        <Text style={styles.detailViewBody}>
-          {this.state.street}
-        </Text>
-        <Text style={styles.detailViewBody}>
-          {this.state.city}, {this.state.state} {this.state.ZIP}
-        </Text>
-        <Text style={styles.detailViewBody}>
-          {this.state.country}
-        </Text>
-        <View style={styles.detailHeaderContainer}>
-          <Text style={styles.detailViewBodyHeader}>Total time spent here</Text>
-        </View>
-          <Text style={styles.detailViewBody}>{formatElapTime(this.state.timeSpentMS)}</Text>
-        <View style={styles.detailHeaderContainer}>
-          <Text style={styles.detailViewBodyHeader}>Total visits</Text>
-        </View>
-          <Text style={styles.detailViewBody}>{this.state.times.length + timeStr}</Text>
-        <View style={styles.detailHeaderContainer}>
-          <Text style={styles.detailViewBodyHeader}>Dates visited</Text>
-        </View>
+        <LogDetailEntry header="Address" value={[this.state.street, `${this.state.city}, ${this.state.state}, ${this.state.ZIP}`, this.state.country]}/>
+        <LogDetailEntry header="Total time spent here" value={[formatElapTime(this.state.timeSpentMS)]}/>
+        <LogDetailEntry header="Total visits" value={[this.state.times.length + timeStr]}/>
+        <LogDetailEntry header="Dates visited"/>
         <ListView
           dataSource={this.state.dataSource}
           renderRow={rowData => {
             return (
               <View style={styles.inline}>
-                <Text style={styles.detailViewBody}>{formatToDate(rowData.startTime)} at </Text>
-                <Text style={styles.detailViewBody}>{formatToTime(rowData.startTime)}</Text>
-              </View>);
+                <Text style={styles.detailViewBody}>{formatToDate(rowData.startTime)} at {formatToTime(rowData.startTime)}</Text>
+              </View>
+            );
           }}
         />
       </View>
-    );}
+    );
+  }
 }
 
 export default LogDetailView;
