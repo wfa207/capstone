@@ -43,3 +43,8 @@ android/keystores/debug.keystore
 server/env/development.js
 server/env/testing.js
 screencasts/
+
+ios/capstone.xcodeproj/project.pbxproj
+ios/capstone.xcodeproj/xcshareddata/xcschemes/capstone.xcscheme
+ios/capstone/AppDelegate.m
+ios/capstone/Info.plist
