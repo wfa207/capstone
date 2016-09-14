@@ -77,7 +77,9 @@ class Log extends Component {
             return <TouchableHighlight
             onPress={() => this._navigate(rowData)}
             style={styles.rowStyle}>
-              <View>
+              <View style={styles.inline}>
+                <Image source={{uri: rowData.url}}
+                style={{ resizeMode: 'contain', height: 50, width: 50}} />
                 <Text style={styles.rowContent}>{rowData.name}</Text>
               </View>
             </TouchableHighlight>;}}
