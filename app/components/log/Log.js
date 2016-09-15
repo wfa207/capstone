@@ -83,7 +83,7 @@ class Log extends Component {
             style={styles.rowStyle}>
               <View style={styles.inline}>
                 <Image source={{uri: rowData.url}}
-                style={{ resizeMode: 'contain', height: 50, width: 50}} />
+                style={{ resizeMode: 'cover', height: 50, width: 50, marginRight: 10}} />
                 <Text style={styles.rowContent}>{rowData.name}</Text>
               </View>
             </TouchableHighlight>;}}
