@@ -11,7 +11,10 @@ import {
   TouchableHighlight
 } from 'react-native';
 import styles from '../styles';
-import { getDbData } from '../../../utils';
+import { 
+  getDbData,
+  getInitialPhotos
+} from '../../../utils';
 import LogDetailView from './LogDetailView';
 
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -34,6 +37,7 @@ class Log extends Component {
   getData = () => {
     getDbData()
     .then(locations => {
+      locations = getInitialPhotos(locations);
       this.setState({
         dataSource: ds.cloneWithRows(locations),
         loading: false,

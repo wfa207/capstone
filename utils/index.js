@@ -77,6 +77,29 @@ var utils = {
 
   },
 
+  getInitialPhotos(locations) {
+    return locations.map(location => {
+      switch(location.name) {
+        case 'Freedom Tower':
+          location.url = 'http://nyc-architecture.com/120815/AAGAAR01-09.jpg';
+          break;
+        case 'Little Italy Pizza':
+          location.url = 'http://www.littleitalypizzany.com/nbloom/fckuploads/IMG_0319.JPG';
+          break;
+        case 'Central Park Zoo':
+          location.url = 'http://programs.wcs.org/Portals/176/Images/SocialEvents/CentralParkZoo/central%20park%20zoo%20weddings%202.jpg?ver=2015-12-01-062048-687';
+          break;
+        case 'Rockefeller Center':
+          location.url = 'http://macaulay.cuny.edu/eportfolios/brooks12/files/2012/05/Rockefeller-Center-Office-Space.jpg';
+          break;
+        case 'Empire State Building':
+          location.url = 'https://upload.wikimedia.org/wikipedia/commons/c/c7/Empire_State_Building_by_David_Shankbone_crop.jpg';
+          break;
+      }
+      return location;
+    })
+  },
+
   getDbData() {
     let gettingData = [
       db.locations.find(),
