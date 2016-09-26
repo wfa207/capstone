@@ -19,6 +19,7 @@ import {
   initialDbFetch,
   getDbData,
   addLocation,
+  getPhotoURL,
   addUpdateTime,
   nearbySearch,
   formatToTime
@@ -141,6 +142,21 @@ class HomeButton extends Component {
             position: position
           });
         }
+        let photoURL, currLocations;
+        nearbySearch(latitude, longitude, queryName)
+        .then(nearbyLocations => {
+          return getPhotoURL(nearbyLocations);
+        })
+        .then(_photoURL => {
+          photoURL = _photoURL;
+          return localFetch('photos')
+        })
+        .then(photos => {
+          if (!photos) photos = [];
+          photos.push({id: id, url: photoURL});
+          return localStore('photos', photos);
+        })
+        .catch(console.error);
       });
     } else {
       if (!this.state.inputShow) {

@@ -11,7 +11,10 @@ import {
   TouchableHighlight
 } from 'react-native';
 import styles from '../styles';
-import { getDbData } from '../../../utils';
+import { 
+  getDbData,
+  getInitialPhotos
+} from '../../../utils';
 import LogDetailView from './LogDetailView';
 
 let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -34,6 +37,7 @@ class Log extends Component {
   getData = () => {
     getDbData()
     .then(locations => {
+      locations = getInitialPhotos(locations);
       this.setState({
         dataSource: ds.cloneWithRows(locations),
         loading: false,
@@ -77,7 +81,9 @@ class Log extends Component {
             return <TouchableHighlight
             onPress={() => this._navigate(rowData)}
             style={styles.rowStyle}>
-              <View>
+              <View style={styles.inline}>
+                <Image source={{uri: rowData.url}}
+                style={{ resizeMode: 'cover', height: 50, width: 50, marginRight: 10}} />
                 <Text style={styles.rowContent}>{rowData.name}</Text>
               </View>
             </TouchableHighlight>;}}
