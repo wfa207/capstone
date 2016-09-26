@@ -88,6 +88,7 @@ class HomeButton extends Component {
     if (!existNearbyLoc.length) {
       getAddress(position)
       .then(results => {
+        if (!results.length) throw Error("No results - current position may be null");
         let addressObj = results[0];
         let addressArr = addressObj.formatted_address.split(', ');
         let [street, city, stateZip, country] = addressArr;
