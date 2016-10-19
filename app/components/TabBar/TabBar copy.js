@@ -16,6 +16,11 @@ import Chart from '../Chart/Chart';
 import LogRightButtonLogic from '../Log/LogRightButtonLogic';
 import Icon from 'react-native-vector-icons/Entypo';
 
+let homeIcon = require('../../../resources/home.png');
+let mapIcon = require('../../../resources/compass.png');
+let logIcon = require('../../../resources/diary.png');
+let chartIcon = require('../../../resources/pie-chart.png');
+
 class TabBar extends Component {
   constructor(props) {
     super(props);
@@ -43,38 +48,36 @@ class TabBar extends Component {
         itemPositioning="fill"
         translucent={true}
         barTintColor="#56545C">
-        <Icon.TabBarItemIOS
+        <TabBarIOS.Item
           title="Home"
-          iconName="home"
-          selectedIconName="home"
+          icon={homeIcon}
           selected={this.state.selectedTab === 'Home'}
           onPress={() => this._setTab('Home')}>
           <NavBar name='Home' component={HomeButton} title='DownTime'/>
-        </Icon.TabBarItemIOS>
-        <Icon.TabBarItemIOS
-          title="Map"
-          iconName="map"
-          selectedIconName="map"
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
+          title='Map'
+          icon={mapIcon}
           selected={this.state.selectedTab === 'Map'}
-          onPress={() => this._setTab('Map')}>
+          onPress={() => {
+            this._setTab('Map');
+          }}>
           <NavBar name='Map' component={Map} title='Map'/>
-        </Icon.TabBarItemIOS>
-        <Icon.TabBarItemIOS
-          title="Log"
-          iconName="book"
-          selectedIconName="book"
-          selected={this.state.selectedTab === 'Log'}
-          onPress={() => this._setTab('Log')}>
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
+          title='Logs'
+          icon={logIcon}
+          selected={this.state.selectedTab === 'Logs'}
+          onPress={() => this._setTab('Logs')}>
           <NavBar name='Log' component={Log} title='Log' buttonLogic={LogRightButtonLogic}/>
-        </Icon.TabBarItemIOS>
-        <Icon.TabBarItemIOS
-          title="Chart"
-          iconName="area-graph"
-          selectedIconName="area-graph"
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
+          title='Chart'
+          icon={chartIcon}
           selected={this.state.selectedTab === 'Chart'}
           onPress={() => this._setTab('Chart')}>
           <NavBar name='Chart' component={Chart} title='Chart'/>
-        </Icon.TabBarItemIOS>
+        </TabBarIOS.Item>
       </TabBarIOS>
     );
   }

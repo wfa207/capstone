@@ -4,7 +4,7 @@ import Promise from 'bluebird';
 const db = {
 	'locations': Store.model('locations'),
 	'times': Store.model('times')
-}
+};
 
 var secondMS = 1000;
 var minuteMS = secondMS * 60;
@@ -88,17 +88,17 @@ var time5 = timeGen(4, time4.endTime.value + 26 * minuteMS);
 var times = [time1, time2, time3, time4, time5];
 
 function msToDateObj(timeInMS) {
-    var date = new Date(timeInMS);
-    return {
-      value: timeInMS,
-      seconds: date.getSeconds(),
-      minutes: date.getMinutes(),
-      hours: date.getHours(),
-      date: date.getDate(),
-      dayOfWk: date.getDay(),
-      month: date.getMonth(),
-      year: date.getYear() + 1900
-    }
+  var date = new Date(timeInMS);
+  return {
+    value: timeInMS,
+    seconds: date.getSeconds(),
+    minutes: date.getMinutes(),
+    hours: date.getHours(),
+    date: date.getDate(),
+    dayOfWk: date.getDay(),
+    month: date.getMonth(),
+    year: date.getYear() + 1900
+  };
 }
 
 function timeGen(locationIdx, startTime) {
@@ -107,7 +107,7 @@ function timeGen(locationIdx, startTime) {
 		startTime: msToDateObj(startTime),
 		endTime: msToDateObj(startTime + locations[locationIdx].timeSpentMS),
 		elapsedTime: locations[locationIdx].timeSpentMS
-	}
+	};
 }
 function seed() {
 	return db.locations.destroy()
